@@ -16,4 +16,7 @@ export default defineConfig({
     viteReact(),
     tailwindcss(),
   ],
+  ssr: {
+    noExternal: ['streamdown'],
+  },
 })
