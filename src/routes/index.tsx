@@ -10,7 +10,6 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
 import {
   Conversation,
   ConversationContent,
@@ -26,11 +25,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const { messages, status, sendMessage } = useChat({
-    transport: new DefaultChatTransport({
-      api: "/api/chat",
-    }),
-  });
+  const { messages, status, sendMessage } = useChat();
 
   const [text, setText] = useState<string>("");
   const [isDirty, setIsDirty] = useState<boolean>(false);
@@ -45,6 +40,11 @@ function Home() {
     setIsDirty(true);
     sendMessage({ text: message.text || "" });
     setText("");
+  };
+
+  const handleSuggestion = (suggestion: string) => {
+    setText(suggestion);
+    handleSubmit({ text: suggestion });
   };
 
   return (
@@ -91,14 +91,24 @@ function Home() {
           </PromptInputBody>
           <PromptInputToolbar>
             <PromptInputTools></PromptInputTools>
-            <PromptInputSubmit disabled={!text} status={status} />
+            <PromptInputSubmit
+              disabled={!text && status !== "streaming"}
+              status={status}
+            />
           </PromptInputToolbar>
         </PromptInput>
-
-        <Suggestions className="mt-4">
-          <Suggestion suggestion="Onboarding Persona Física" />
-          <Suggestion suggestion="Onboarding Persona Moral" />
-        </Suggestions>
+        {!isDirty && (
+          <Suggestions className="mt-4">
+            <Suggestion
+              suggestion="¿Cómo funciona?"
+              onClick={handleSuggestion}
+            />
+            <Suggestion
+              suggestion="Formularios predefinidos"
+              onClick={handleSuggestion}
+            />
+          </Suggestions>
+        )}
       </div>
     </div>
   );
