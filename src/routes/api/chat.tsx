@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { streamText, UIMessage, convertToModelMessages } from "ai";
 import { json } from "@tanstack/react-start";
-import { anthropic } from "@ai-sdk/anthropic";
+import { openai } from "@ai-sdk/openai";
 
 export const Route = createFileRoute("/api/chat")({
   server: {
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/api/chat")({
           const { messages }: { messages: UIMessage[] } = await request.json();
 
           const result = streamText({
-            model: anthropic("claude-sonnet-4-20250514"),
+            model: openai("gpt-5-mini"),
             messages: convertToModelMessages(messages),
           });
 
