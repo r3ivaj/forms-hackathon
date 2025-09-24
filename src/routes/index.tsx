@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
 import {
   PromptInput,
   PromptInputBody,
@@ -7,109 +7,100 @@ import {
   PromptInputToolbar,
   PromptInputTools,
   type PromptInputMessage,
-} from "@/components/ai-elements/prompt-input";
-import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion";
-import { useChat } from "@ai-sdk/react";
+} from '@/components/ai-elements/prompt-input'
+import { useChat } from '@ai-sdk/react'
 import {
   Conversation,
   ConversationContent,
   ConversationScrollButton,
-} from "@/components/ai-elements/conversation";
-import { Message, MessageContent } from "@/components/ai-elements/message";
-import { Response } from "@/components/ai-elements/response";
+} from '@/components/ai-elements/conversation'
+import { Message, MessageContent } from '@/components/ai-elements/message'
+import { Response } from '@/components/ai-elements/response'
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from '@/components/ui/resizable'
+import { useState } from 'react'
 
-import { useState } from "react";
-
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Home,
-});
+})
 
 function Home() {
-  const { messages, status, sendMessage } = useChat();
+  const { messages, status, sendMessage } = useChat()
 
-  const [text, setText] = useState<string>("");
-  const [isDirty, setIsDirty] = useState<boolean>(false);
+  const [text, setText] = useState<string>('')
 
   const handleSubmit = (message: PromptInputMessage) => {
-    const hasText = Boolean(message.text);
+    const hasText = Boolean(message.text)
 
     if (!hasText) {
-      return;
+      return
     }
 
-    setIsDirty(true);
-    sendMessage({ text: message.text || "" });
-    setText("");
-  };
-
-  const handleSuggestion = (suggestion: string) => {
-    setText(suggestion);
-    handleSubmit({ text: suggestion });
-  };
+    sendMessage({ text: message.text || '' })
+    setText('')
+  }
 
   return (
-    <div className="flex justify-center">
-      <div className="w-full max-w-[48rem]">
-        {!isDirty && (
-          <div className="mt-60 flex justify-center mb-6">
-            <span className="text-4xl">🧁</span>
+    <div className="h-screen">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={25} minSize={15}>
+          <div className="flex h-full flex-col p-4">
+            <Conversation>
+              <ConversationContent>
+                {messages.map((message) => (
+                  <Message from={message.role} key={message.id}>
+                    <MessageContent>
+                      {message.parts.map((part, i) => {
+                        switch (part.type) {
+                          case 'text':
+                            return (
+                              <Response key={`${message.id}-${i}`}>
+                                {part.text}
+                              </Response>
+                            )
+                          default:
+                            return null
+                        }
+                      })}
+                    </MessageContent>
+                  </Message>
+                ))}
+              </ConversationContent>
+              <ConversationScrollButton />
+            </Conversation>
+            <PromptInput onSubmit={handleSubmit} className="mt-auto">
+              <PromptInputBody>
+                <PromptInputTextarea
+                  onChange={(e) => {
+                    setText(e.target.value)
+                  }}
+                  value={text}
+                  placeholder=""
+                />
+              </PromptInputBody>
+              <PromptInputToolbar>
+                <PromptInputTools></PromptInputTools>
+                <PromptInputSubmit
+                  disabled={!text && status !== 'streaming'}
+                  status={status}
+                />
+              </PromptInputToolbar>
+            </PromptInput>
           </div>
-        )}
-        <Conversation>
-          <ConversationContent>
-            {messages.map((message) => (
-              <Message from={message.role} key={message.id}>
-                <MessageContent>
-                  {message.parts.map((part, i) => {
-                    switch (part.type) {
-                      case "text":
-                        return (
-                          <Response key={`${message.id}-${i}`}>
-                            {part.text}
-                          </Response>
-                        );
-                      default:
-                        return null;
-                    }
-                  })}
-                </MessageContent>
-              </Message>
-            ))}
-          </ConversationContent>
-          <ConversationScrollButton />
-        </Conversation>
-
-        <PromptInput onSubmit={handleSubmit} className="relative">
-          <PromptInputBody>
-            <PromptInputTextarea
-              onChange={(e) => {
-                setText(e.target.value);
-              }}
-              value={text}
-              placeholder="Describe tu formulario"
-            />
-          </PromptInputBody>
-          <PromptInputToolbar>
-            <PromptInputTools></PromptInputTools>
-            <PromptInputSubmit
-              disabled={!text && status !== "streaming"}
-              status={status}
-            />
-          </PromptInputToolbar>
-        </PromptInput>
-        {!isDirty && (
-          <Suggestions className="mt-4">
-            <Suggestion
-              suggestion="¿Cómo funciona?"
-              onClick={handleSuggestion}
-            />
-            <Suggestion
-              suggestion="Formularios predefinidos"
-              onClick={handleSuggestion}
-            />
-          </Suggestions>
-        )}
-      </div>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={75} minSize={65}>
+          <div className="h-full rounded-lg p-4">
+            <h3 className="mb-4 text-lg font-semibold">Preview</h3>
+            <div className="text-muted-foreground">
+              Content preview will appear here
+            </div>
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
-  );
+  )
 }

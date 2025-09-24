@@ -28,8 +28,7 @@ export const Route = createRootRouteWithContext<{
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title:
-          'Forms Hackathon',
+        title: 'Forms Hackathon',
         description: `A hackathon project for building and sharing forms.`,
       }),
     ],
