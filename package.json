@@ -29,7 +29,8 @@
     "react-dom": "^19.1.1",
     "redaxios": "^0.5.1",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.13"
+    "tailwindcss": "^4.1.13",
+    "use-stick-to-bottom": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.18.6",
