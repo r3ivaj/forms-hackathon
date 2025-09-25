@@ -21,13 +21,11 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from '@/components/ui/resizable'
-import { useState } from 'react'
-import {
-  Reasoning,
-  ReasoningContent,
-  ReasoningTrigger,
-} from '@/components/ai-elements/reasoning'
+import { useState, useEffect } from 'react'
+import { Reasoning, ReasoningTrigger } from '@/components/ai-elements/reasoning'
 import { Loader } from '@/components/ai-elements/loader'
+import { FormsPreview } from '@/components/FormsPreview'
+import { getValidFormSchema } from '@/lib/getValidFormSchema'
 
 export const Route = createFileRoute('/')({
   component: Home,
@@ -37,6 +35,7 @@ function Home() {
   const { messages, status, sendMessage } = useChat()
 
   const [text, setText] = useState<string>('')
+  const [formSchema, setFormSchema] = useState<object | null>(null)
 
   const handleSubmit = (message: PromptInputMessage) => {
     const hasText = Boolean(message.text)
@@ -49,7 +48,12 @@ function Home() {
     setText('')
   }
 
-  console.log(messages)
+  useEffect(() => {
+    const validFormSchema = getValidFormSchema(messages)
+    if (validFormSchema) {
+      setFormSchema(validFormSchema)
+    }
+  }, [messages])
 
   return (
     <div className="h-screen">
@@ -117,10 +121,7 @@ function Home() {
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={70} minSize={55}>
           <div className="h-full rounded-lg p-4">
-            <h3 className="mb-4 text-lg font-semibold">Preview</h3>
-            <div className="text-muted-foreground">
-              Content preview will appear here
-            </div>
+            <FormsPreview formSchema={formSchema} />
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
