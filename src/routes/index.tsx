@@ -22,6 +22,12 @@ import {
   ResizableHandle,
 } from '@/components/ui/resizable'
 import { useState } from 'react'
+import {
+  Reasoning,
+  ReasoningContent,
+  ReasoningTrigger,
+} from '@/components/ai-elements/reasoning'
+import { Loader } from '@/components/ai-elements/loader'
 
 export const Route = createFileRoute('/')({
   component: Home,
@@ -43,10 +49,12 @@ function Home() {
     setText('')
   }
 
+  console.log(messages)
+
   return (
     <div className="h-screen">
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={25} minSize={15}>
+        <ResizablePanel defaultSize={30} minSize={25}>
           <div className="flex h-full flex-col p-4">
             <Conversation>
               <ConversationContent>
@@ -55,6 +63,20 @@ function Home() {
                     <MessageContent>
                       {message.parts.map((part, i) => {
                         switch (part.type) {
+                          case 'reasoning':
+                            return (
+                              <Reasoning
+                                key={`${message.id}-${i}`}
+                                className="w-full"
+                                isStreaming={
+                                  status === 'streaming' &&
+                                  i === message.parts.length - 1 &&
+                                  message.id === messages.at(-1)?.id
+                                }
+                              >
+                                <ReasoningTrigger />
+                              </Reasoning>
+                            )
                           case 'text':
                             return (
                               <Response key={`${message.id}-${i}`}>
@@ -68,6 +90,7 @@ function Home() {
                     </MessageContent>
                   </Message>
                 ))}
+                {status === 'submitted' && <Loader />}
               </ConversationContent>
               <ConversationScrollButton />
             </Conversation>
@@ -92,7 +115,7 @@ function Home() {
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={75} minSize={65}>
+        <ResizablePanel defaultSize={70} minSize={55}>
           <div className="h-full rounded-lg p-4">
             <h3 className="mb-4 text-lg font-semibold">Preview</h3>
             <div className="text-muted-foreground">
