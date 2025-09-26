@@ -121,9 +121,7 @@ function Home() {
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={70} minSize={55}>
-          <div className="h-full rounded-lg p-4">
-            <FormsPreview formSchema={formSchema} />
-          </div>
+          <FormsPreview formSchema={formSchema} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
