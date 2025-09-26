@@ -1,8 +1,21 @@
+import { EmptySection } from '@/components/EmptySection'
+import { Box } from 'lucide-react'
+import { FormRenderer } from './FormRenderer'
+
 export function FormsPreview({ formSchema }: { formSchema: any }) {
+  if (!formSchema) {
+    return (
+      <EmptySection
+        title="No hay algún formulario para mostrar"
+        description="Chatea con el asistente para crear uno"
+        icon={Box}
+      />
+    )
+  }
+
   return (
     <div>
-      <h1>FormsPreview</h1>
-      <pre>{JSON.stringify(formSchema, null, 2)}</pre>
+      <FormRenderer formSchema={formSchema} />
     </div>
   )
 }
