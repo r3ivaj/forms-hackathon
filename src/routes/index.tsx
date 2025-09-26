@@ -26,6 +26,7 @@ import { Reasoning, ReasoningTrigger } from '@/components/ai-elements/reasoning'
 import { Loader } from '@/components/ai-elements/loader'
 import { FormsPreview } from '@/components/FormsPreview'
 import { getValidFormSchema } from '@/lib/getValidFormSchema'
+import { FormSchema } from '@/lib/tools/validateFormSchema'
 
 export const Route = createFileRoute('/')({
   component: Home,
@@ -35,7 +36,7 @@ function Home() {
   const { messages, status, sendMessage } = useChat()
 
   const [text, setText] = useState<string>('')
-  const [formSchema, setFormSchema] = useState<object | null>(null)
+  const [formSchema, setFormSchema] = useState<FormSchema | null>(null)
 
   const handleSubmit = (message: PromptInputMessage) => {
     const hasText = Boolean(message.text)

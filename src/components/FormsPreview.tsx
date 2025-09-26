@@ -1,8 +1,13 @@
 import { EmptySection } from '@/components/EmptySection'
 import { Box } from 'lucide-react'
 import { FormRenderer } from './FormRenderer'
+import { FormSchema } from '@/lib/tools/validateFormSchema'
 
-export function FormsPreview({ formSchema }: { formSchema: any }) {
+export function FormsPreview({
+  formSchema,
+}: {
+  formSchema: FormSchema | null
+}) {
   if (!formSchema) {
     return (
       <EmptySection

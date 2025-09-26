@@ -22,10 +22,12 @@ const formSchema = z.object({
   steps: z.array(stepSchema).min(1),
 })
 
+export type FormSchema = z.infer<typeof formSchema>
+
 export const validateFormSchema = tool({
   description: 'Validate a form schema',
   inputSchema: formSchema,
-  execute: async (schema) => {
+  execute: async (schema: FormSchema) => {
     console.log('executing validateFormSchema tool')
     const result = formSchema.safeParse(schema)
 
