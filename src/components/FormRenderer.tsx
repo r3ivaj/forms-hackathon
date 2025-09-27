@@ -40,13 +40,21 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
     },
   })
 
-  const nextStep = () => {
-    if (currentStep < formSchema.steps.length - 1) {
+  const handleNextStepClick = async () => {
+    let isStepValid = true
+    for (const field of formSchema.steps[currentStep].fields) {
+      const validationResult = await form.validateField(field.id, 'submit')
+      if (validationResult.length > 0) {
+        isStepValid = false
+      }
+    }
+
+    if (isStepValid && currentStep < formSchema.steps.length - 1) {
       setCurrentStep(currentStep + 1)
     }
   }
 
-  const prevStep = () => {
+  const handlePrevStepClick = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1)
     }
@@ -240,7 +248,7 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
           <Button
             type="button"
             variant="outline"
-            onClick={prevStep}
+            onClick={handlePrevStepClick}
             disabled={isFirstStep}
           >
             Anterior
@@ -263,7 +271,7 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
               )}
             />
           ) : (
-            <Button type="button" onClick={nextStep}>
+            <Button type="button" onClick={handleNextStepClick}>
               Siguiente
             </Button>
           )}
