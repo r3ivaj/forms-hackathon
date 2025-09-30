@@ -63,7 +63,7 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   const renderField = (field: {
     id: string
     label: string
-    type: 'text' | 'textarea' | 'select' | 'file'
+    type: 'text' | 'textarea' | 'select' | 'file' | 'number'
     required?: boolean
     options?: string[]
   }) => {
@@ -93,6 +93,7 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
 
           switch (type) {
             case 'text':
+            case 'number':
               return (
                 <div className="space-y-2">
                   <Label htmlFor={id}>
@@ -101,7 +102,7 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
                   </Label>
                   <Input
                     id={id}
-                    type="text"
+                    type={type}
                     value={value || ''}
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}
