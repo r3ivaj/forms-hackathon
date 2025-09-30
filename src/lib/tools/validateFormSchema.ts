@@ -1,14 +1,80 @@
 import { tool } from 'ai'
 import { z } from 'zod'
 
-const fieldSchema = z.object({
-  id: z.string(),
-  label: z.string(),
-  type: z.enum(['text', 'textarea', 'select', 'file', 'number']),
+// 🔹 Common validations shared by all fields
+const baseValidation = z.object({
   required: z.boolean().optional(),
-  options: z.array(z.string()).optional(), // only if type is select
 })
 
+// 🔹 Specific validations per field type
+const textValidation = baseValidation.extend({
+  minLength: z.number().int().positive().optional(),
+  maxLength: z.number().int().positive().optional(),
+  regex: z.string().optional(),
+  email: z.boolean().optional(),
+})
+
+const numberValidation = baseValidation.extend({
+  min: z.number().optional(),
+  max: z.number().optional(),
+})
+
+const fileValidation = baseValidation.extend({
+  maxSize: z.number().optional(), // max size in KB/MB
+  extensions: z.array(z.string()).optional(),
+})
+
+const selectValidation = baseValidation.extend({
+  // placeholder for future select-specific validations
+})
+
+// 🔹 Field definitions discriminated by "type"
+const textFieldSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.literal('text'),
+  validation: textValidation.optional(),
+})
+
+const textareaFieldSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.literal('textarea'),
+  validation: textValidation.optional(),
+})
+
+const numberFieldSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.literal('number'),
+  validation: numberValidation.optional(),
+})
+
+const fileFieldSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.literal('file'),
+  validation: fileValidation.optional(),
+})
+
+const selectFieldSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.literal('select'),
+  options: z.array(z.string()),
+  validation: selectValidation.optional(),
+})
+
+// 🔹 Union of all field types
+const fieldSchema = z.discriminatedUnion('type', [
+  textFieldSchema,
+  textareaFieldSchema,
+  numberFieldSchema,
+  fileFieldSchema,
+  selectFieldSchema,
+])
+
+// 🔹 Step and form schemas
 const stepSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -28,7 +94,6 @@ export const validateFormSchema = tool({
   description: 'Validate a form schema',
   inputSchema: formSchema,
   execute: async (schema: FormSchema) => {
-    console.log('executing validateFormSchema tool')
     const result = formSchema.safeParse(schema)
 
     if (!result.success) {

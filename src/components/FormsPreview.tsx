@@ -1,6 +1,7 @@
 import { EmptySection } from '@/components/EmptySection'
 import { Box } from 'lucide-react'
 import { FormRenderer } from './FormRenderer'
+import { FormToolbar } from './FormToolbar'
 import { FormSchema } from '@/lib/tools/validateFormSchema'
 
 export function FormsPreview({
@@ -19,8 +20,11 @@ export function FormsPreview({
   }
 
   return (
-    <div className="h-full overflow-y-auto p-4">
-      <FormRenderer formSchema={formSchema} />
+    <div className="flex h-full flex-col">
+      <FormToolbar />
+      <div className="flex-1 overflow-y-auto p-4">
+        <FormRenderer formSchema={formSchema} />
+      </div>
     </div>
   )
 }
