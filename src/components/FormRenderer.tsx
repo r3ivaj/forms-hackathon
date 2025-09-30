@@ -64,27 +64,122 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
     id: string
     label: string
     type: 'text' | 'textarea' | 'select' | 'file' | 'number'
-    required?: boolean
+    validation?: {
+      required?: boolean
+      minLength?: number
+      maxLength?: number
+      regex?: string
+      email?: boolean
+      min?: number
+      max?: number
+      maxSize?: number
+      extensions?: string[]
+    }
     options?: string[]
   }) => {
-    const { id, label, type, required, options } = field
+    const { id, label, type, validation, options } = field
+    const required = validation?.required || false
 
     return (
       <form.Field
         key={id}
         name={id}
         validators={{
-          onChange: required
-            ? ({ value }) => {
-                if (
-                  !value ||
-                  (typeof value === 'string' && value.trim() === '')
-                ) {
-                  return `${label} es requerido`
-                }
-                return undefined
+          onChange: ({ value }) => {
+            // Required validation
+            if (
+              validation?.required &&
+              (!value || (typeof value === 'string' && value.trim() === ''))
+            ) {
+              return `${label} es requerido`
+            }
+
+            // Skip other validations if value is empty and not required
+            if (!value || (typeof value === 'string' && value.trim() === '')) {
+              return undefined
+            }
+
+            const stringValue = String(value)
+
+            // Text/Textarea validations
+            if (type === 'text' || type === 'textarea') {
+              // Min length validation
+              if (
+                validation?.minLength &&
+                stringValue.length < validation.minLength
+              ) {
+                return `${label} debe tener al menos ${validation.minLength} caracteres`
               }
-            : undefined,
+
+              // Max length validation
+              if (
+                validation?.maxLength &&
+                stringValue.length > validation.maxLength
+              ) {
+                return `${label} no puede tener más de ${validation.maxLength} caracteres`
+              }
+
+              // Email validation
+              if (validation?.email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                if (!emailRegex.test(stringValue)) {
+                  return `${label} debe ser un email válido`
+                }
+              }
+
+              // Regex validation
+              if (validation?.regex) {
+                try {
+                  const regex = new RegExp(validation.regex)
+                  if (!regex.test(stringValue)) {
+                    return `${label} no cumple con el formato requerido`
+                  }
+                } catch (error) {
+                  console.error('Invalid regex pattern:', validation.regex)
+                }
+              }
+            }
+
+            // Number validations
+            if (type === 'number') {
+              const numValue = Number(value)
+              if (isNaN(numValue)) {
+                return `${label} debe ser un número válido`
+              }
+
+              if (validation?.min !== undefined && numValue < validation.min) {
+                return `${label} debe ser mayor o igual a ${validation.min}`
+              }
+
+              if (validation?.max !== undefined && numValue > validation.max) {
+                return `${label} debe ser menor o igual a ${validation.max}`
+              }
+            }
+
+            // File validations
+            if (type === 'file' && value instanceof File) {
+              // Max size validation (in KB)
+              if (
+                validation?.maxSize &&
+                value.size > validation.maxSize * 1024
+              ) {
+                return `${label} no puede ser mayor a ${validation.maxSize} KB`
+              }
+
+              // File extension validation
+              if (validation?.extensions && validation.extensions.length > 0) {
+                const fileExtension = value.name.split('.').pop()?.toLowerCase()
+                if (
+                  !fileExtension ||
+                  !validation.extensions.includes(fileExtension)
+                ) {
+                  return `${label} debe ser uno de los siguientes tipos: ${validation.extensions.join(', ')}`
+                }
+              }
+            }
+
+            return undefined
+          },
         }}
         children={(fieldApi) => {
           const { handleChange, handleBlur } = fieldApi
@@ -107,6 +202,14 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}
                     placeholder={`Ingresa ${label.toLowerCase()}`}
+                    min={type === 'number' ? validation?.min : undefined}
+                    max={type === 'number' ? validation?.max : undefined}
+                    minLength={
+                      type === 'text' ? validation?.minLength : undefined
+                    }
+                    maxLength={
+                      type === 'text' ? validation?.maxLength : undefined
+                    }
                   />
                   {errors && errors.length > 0 && (
                     <p className="text-sm text-red-500">{errors[0]}</p>
@@ -128,6 +231,8 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
                     onChange={(e) => handleChange(e.target.value)}
                     placeholder={`Ingresa ${label.toLowerCase()}`}
                     rows={4}
+                    minLength={validation?.minLength}
+                    maxLength={validation?.maxLength}
                   />
                   {errors && errors.length > 0 && (
                     <p className="text-sm text-red-500">{errors[0]}</p>
@@ -172,6 +277,13 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
                   <Input
                     id={id}
                     type="file"
+                    accept={
+                      validation?.extensions
+                        ? validation.extensions
+                            .map((ext) => `.${ext}`)
+                            .join(',')
+                        : undefined
+                    }
                     onChange={(e) =>
                       handleChange(
                         e.target.files && e.target.files.length > 0
