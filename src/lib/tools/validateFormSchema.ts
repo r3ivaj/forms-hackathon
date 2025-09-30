@@ -4,7 +4,7 @@ import { z } from 'zod'
 const fieldSchema = z.object({
   id: z.string(),
   label: z.string(),
-  type: z.enum(['text', 'textarea', 'select', 'file']),
+  type: z.enum(['text', 'textarea', 'select', 'file', 'number']),
   required: z.boolean().optional(),
   options: z.array(z.string()).optional(), // only if type is select
 })
