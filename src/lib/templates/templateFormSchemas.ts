@@ -15,25 +15,33 @@ export const templateFormSchemas: Record<string, FormSchema> = {
             id: 'company-name',
             label: 'Nombre de la empresa',
             type: 'text',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'legal-representative',
             label: 'Nombre del representante legal',
             type: 'text',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'rfc',
             label: 'RFC',
             type: 'text',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'address',
             label: 'Domicilio',
             type: 'textarea',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
         ],
       },
@@ -45,19 +53,25 @@ export const templateFormSchemas: Record<string, FormSchema> = {
             id: 'constitutive-act',
             label: 'Acta Constitutiva',
             type: 'file',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'address-proof',
             label: 'Comprobante de domicilio',
             type: 'file',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'rfc-document',
             label: 'RFC',
             type: 'file',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
         ],
       },
@@ -76,31 +90,41 @@ export const templateFormSchemas: Record<string, FormSchema> = {
             id: 'full-name',
             label: 'Nombre completo',
             type: 'text',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'rfc',
             label: 'RFC',
             type: 'text',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'curp',
             label: 'CURP',
             type: 'text',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'address',
             label: 'Domicilio',
             type: 'textarea',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'marital-status',
             label: 'Estado civil',
             type: 'select',
-            required: true,
+            validation: {
+              required: true,
+            },
             options: [
               'Soltero(a)',
               'Casado(a)',
@@ -113,7 +137,9 @@ export const templateFormSchemas: Record<string, FormSchema> = {
             id: 'economic-dependents',
             label: 'Número de dependientes económicos',
             type: 'number',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
         ],
       },
@@ -125,31 +151,41 @@ export const templateFormSchemas: Record<string, FormSchema> = {
             id: 'ine-photo',
             label: 'Foto de INE (anverso y reverso)',
             type: 'file',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'address-proof',
             label: 'Comprobante de domicilio',
             type: 'file',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'rfc-document',
             label: 'RFC',
             type: 'file',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'curp-document',
             label: 'CURP',
             type: 'file',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
           {
             id: 'fiscal-situation',
             label: 'Constancia de Situación Fiscal',
             type: 'file',
-            required: true,
+            validation: {
+              required: true,
+            },
           },
         ],
       },

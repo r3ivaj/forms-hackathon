@@ -17,7 +17,7 @@ import {
   validateField,
   getInputAttributes,
   FieldValidation,
-} from '@/lib/validationUtils'
+} from '@/utils/chat/validationUtils'
 
 // Create default values from form schema
 const createDefaultValues = (formSchema: FormSchema) => {
