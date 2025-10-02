@@ -5,8 +5,6 @@ export default defineSchema({
   chats: defineTable({
     // Chat title to identify the form
     title: v.string(),
-    // Owner reference (if you handle auth)
-    ownerId: v.optional(v.string()),
     // Reference to form configuration
     formOptionsId: v.id("formOptions"),
     createdAt: v.number(),
