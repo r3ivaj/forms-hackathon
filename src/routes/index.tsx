@@ -27,16 +27,21 @@ import { Loader } from '@/components/ai-elements/loader'
 import { FormsPreview } from '@/components/chat/FormsPreview'
 import { getValidFormSchema } from '@/utils/chat/getValidFormSchema'
 import { FormSchema } from '@/lib/tools/validateFormSchema'
-
+import { useChatPersistence } from '@/hooks/useChatPersistence'
 export const Route = createFileRoute('/')({
   component: Home,
 })
 
 function Home() {
-  const { messages, status, sendMessage } = useChat()
-
   const [text, setText] = useState<string>('')
   const [formSchema, setFormSchema] = useState<FormSchema | null>(null)
+  const { chatId, persistMessages } = useChatPersistence()
+
+  const { messages, status, sendMessage } = useChat({
+    onFinish: async ({ messages }) => {
+      await persistMessages(messages)
+    },
+  })
 
   const handleSubmit = (message: PromptInputMessage) => {
     const hasText = Boolean(message.text)

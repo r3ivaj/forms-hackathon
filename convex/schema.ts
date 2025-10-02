@@ -6,18 +6,11 @@ export default defineSchema({
     // Chat title to identify the form
     title: v.string(),
     // Reference to form configuration
-    formOptionsId: v.id("formOptions"),
+    formOptionsId: v.optional(v.id("formOptions")),
+    messages: v.array(v.any()),
     createdAt: v.number(),
     updatedAt: v.number(),
   }),
-
-  // Each row stores an array of messages
-  messages: defineTable({
-    chatId: v.id("chats"),
-    // Array of messages [{ id, role, metadata, parts }]
-    messages: v.array(v.any()),
-    createdAt: v.number(),
-  }).index("by_chat", ["chatId", "createdAt"]),
 
   // Form configuration linked to a chat
   formOptions: defineTable({
