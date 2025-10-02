@@ -22,6 +22,7 @@ export function useChatPersistence() {
       try {
         const newId = await createChatMutation({});
         setChatId(newId);
+        chatIdRef.current = newId;
         return newId;
       } catch (error) {
         console.error('Error creating chat:', error);
