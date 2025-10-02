@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useConvexMutation } from "@convex-dev/react-query";
+import { useMutation } from "@tanstack/react-query";
 import type { Id } from "../../convex/_generated/dataModel";
 import { api } from "convex/_generated/api";
 
@@ -7,8 +8,13 @@ export function useChatPersistence() {
   const [chatId, setChatId] = useState<Id<"chats"> | null>(null);
   const chatIdRef = useRef<Id<"chats"> | null>(null);
 
-  const createChatMutation = useConvexMutation(api.chats.createChat);
-  const updateMessagesMutation = useConvexMutation(api.chats.updateMessages);
+  const createChatMutation = useMutation({
+    mutationFn: useConvexMutation(api.chats.createChat)
+  });
+
+  const updateMessagesMutation = useMutation({
+    mutationFn: useConvexMutation(api.chats.updateMessages)
+  });
 
   // Keep ref in sync with state
   useEffect(() => {
@@ -20,7 +26,7 @@ export function useChatPersistence() {
 
     if (!currentChatId) {
       try {
-        const newId = await createChatMutation({});
+        const newId = await createChatMutation.mutateAsync({});
         setChatId(newId);
         chatIdRef.current = newId;
         return newId;
@@ -31,14 +37,14 @@ export function useChatPersistence() {
     }
 
     return currentChatId;
-  }, []);
+  }, [createChatMutation]);
 
   const persistMessages = useCallback(
     async (messages: any[]) => {
       const id = await ensureChat();
-      await updateMessagesMutation({ chatId: id, messages });
+      await updateMessagesMutation.mutateAsync({ chatId: id, messages });
     },
-    [ensureChat]
+    [ensureChat, updateMessagesMutation]
   );
 
   return {
