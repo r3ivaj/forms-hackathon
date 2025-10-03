@@ -43,7 +43,7 @@ export function Conversation({ messages, status, onSendMessage }: ConversationPr
     <div className="flex h-full flex-col p-4">
       <ConversationWrapper>
         <ConversationContent>
-          {messages.map((message) => (
+          {messages.filter((message) => !(message.metadata as any)?.programmatic).map((message) => (
             <Message from={message.role} key={message.id}>
               <MessageContent>
                 {message.parts.map((part: any, i: number) => {

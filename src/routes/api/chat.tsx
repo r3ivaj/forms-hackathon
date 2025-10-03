@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { streamText, UIMessage, convertToModelMessages, stepCountIs } from 'ai'
+import { streamText, UIMessage, convertToModelMessages, stepCountIs, consumeStream, createIdGenerator } from 'ai'
 import { json } from '@tanstack/react-start'
 import { openai } from '@ai-sdk/openai'
 import { validateFormSchema } from '@/lib/tools/validateFormSchema'
@@ -43,6 +43,7 @@ export const Route = createFileRoute('/api/chat')({
               console.error(error)
             },
           })
+
 
           return result.toUIMessageStreamResponse()
         } catch (error) {

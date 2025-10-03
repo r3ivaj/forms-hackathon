@@ -9,6 +9,7 @@ export function FormsPreview({
 }: {
   formSchema: FormSchema | null
 }) {
+
   if (!formSchema) {
     return (
       <EmptySection
