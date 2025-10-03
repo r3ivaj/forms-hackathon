@@ -11,6 +11,9 @@ const textValidation = baseValidation.extend({
   minLength: z.number().int().positive().optional(),
   maxLength: z.number().int().positive().optional(),
   regex: z.string().optional(),
+})
+
+const emailValidation = baseValidation.extend({
   email: z.boolean().optional(),
 })
 
@@ -34,6 +37,13 @@ const textFieldSchema = z.object({
   label: z.string(),
   type: z.literal('text'),
   validation: textValidation.optional(),
+})
+
+const emailFieldSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.literal('email'),
+  validation: emailValidation.optional(),
 })
 
 const textareaFieldSchema = z.object({
@@ -67,6 +77,7 @@ const selectFieldSchema = z.object({
 
 // 🔹 Union of all field types
 const fieldSchema = z.discriminatedUnion('type', [
+  emailFieldSchema,
   textFieldSchema,
   textareaFieldSchema,
   numberFieldSchema,
