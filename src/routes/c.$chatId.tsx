@@ -5,11 +5,10 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from '@/components/ui/resizable'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { FormsPreview } from '@/components/chat/FormsPreview'
 import { Conversation } from '@/components/chat/Conversation'
-import { getValidFormSchema } from '@/utils/chat/getValidFormSchema'
-import { FormSchema } from '@/lib/tools/validateFormSchema'
+import { getFormSchema } from '@/utils/chat/getFormSchema'
 import type { Id } from "../../convex/_generated/dataModel"
 import { useChat } from '@/hooks/useChat'
 import { useMutateChatMessages } from '@/hooks/useMutateChatMessages'
@@ -18,7 +17,6 @@ export const Route = createFileRoute('/c/$chatId')({
 })
 
 function Home() {
-  const [formSchema, setFormSchema] = useState<FormSchema | null>(null)
   const chatLoadedOnce = useRef(false)
   const { chatId } = Route.useParams()
   const { chat, isLoading } = useChat(chatId as Id<"chats">)
@@ -42,13 +40,6 @@ function Home() {
     }
   }, [chat, sendMessage, setMessages])
 
-  useEffect(() => {
-    const validFormSchema = getValidFormSchema(messages)
-    if (validFormSchema) {
-      setFormSchema(validFormSchema)
-    }
-  }, [messages])
-
   return (
     <div className="h-screen">
       <ResizablePanelGroup direction="horizontal">
@@ -61,7 +52,7 @@ function Home() {
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={70} minSize={55}>
-          {!isLoading && <FormsPreview formSchema={formSchema} />}
+          {!isLoading && <FormsPreview formSchema={getFormSchema(messages)} />}
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
