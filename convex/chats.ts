@@ -18,7 +18,7 @@ export const createChat = mutation({
 export const updateMessages = mutation({
   args: {
     chatId: v.id("chats"),
-    messages: v.array(v.any()),
+    messages: v.string(),
   },
   handler: async (ctx, args) => {
     const chat = await ctx.db.get(args.chatId);
@@ -27,7 +27,7 @@ export const updateMessages = mutation({
     }
 
     await ctx.db.patch(args.chatId, {
-      messages: JSON.stringify(args.messages),
+      messages: args.messages,
       updatedAt: Date.now(),
     });
 

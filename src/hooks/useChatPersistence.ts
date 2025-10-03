@@ -42,7 +42,7 @@ export function useChatPersistence() {
   const persistMessages = useCallback(
     async (messages: any[]) => {
       const id = await ensureChat();
-      await updateMessagesMutation.mutateAsync({ chatId: id, messages });
+      await updateMessagesMutation.mutateAsync({ chatId: id, messages: JSON.stringify(messages) });
     },
     [ensureChat, updateMessagesMutation]
   );
