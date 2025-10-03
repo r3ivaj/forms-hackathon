@@ -68,7 +68,7 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   const renderField = (field: {
     id: string
     label: string
-    type: 'text' | 'textarea' | 'select' | 'file' | 'number'
+    type: 'text' | 'email' | 'textarea' | 'select' | 'file' | 'number'
     validation?: FieldValidation
     options?: string[]
   }) => {
@@ -99,6 +99,7 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
 
           switch (type) {
             case 'text':
+            case 'email':
             case 'number':
               return (
                 <div className="space-y-2">

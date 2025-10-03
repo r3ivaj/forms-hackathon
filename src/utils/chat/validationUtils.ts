@@ -26,7 +26,7 @@ export interface ValidationResult {
  */
 export function validateField(
   value: any,
-  type: 'text' | 'textarea' | 'select' | 'file' | 'number',
+  type: 'text' | 'email' | 'textarea' | 'select' | 'file' | 'number',
   validation: FieldValidation | undefined,
   label: string,
 ): ValidationResult {
@@ -48,8 +48,8 @@ export function validateField(
 
   const stringValue = String(value)
 
-  // Text/Textarea validations
-  if (type === 'text' || type === 'textarea') {
+  // Text/Email/Textarea validations
+  if (type === 'text' || type === 'email' || type === 'textarea') {
     // Min length validation
     if (validation?.minLength && stringValue.length < validation.minLength) {
       return {
@@ -154,12 +154,12 @@ export function validateField(
  * @returns Object with HTML attributes
  */
 export function getInputAttributes(
-  type: 'text' | 'textarea' | 'select' | 'file' | 'number',
+  type: 'text' | 'email' | 'textarea' | 'select' | 'file' | 'number',
   validation: FieldValidation | undefined,
 ) {
   const attributes: Record<string, any> = {}
 
-  if (type === 'text' || type === 'textarea') {
+  if (type === 'text' || type === 'email' || type === 'textarea') {
     if (validation?.minLength) {
       attributes.minLength = validation.minLength
     }
