@@ -7,7 +7,6 @@ export const createChat = mutation({
 
     const chatId = await ctx.db.insert("chats", {
       title: "Nuevo chat",
-      messages: [],
       createdAt: now,
       updatedAt: now,
     });
@@ -28,7 +27,7 @@ export const updateMessages = mutation({
     }
 
     await ctx.db.patch(args.chatId, {
-      messages: args.messages,
+      messages: JSON.stringify(args.messages),
       updatedAt: Date.now(),
     });
 

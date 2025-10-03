@@ -7,7 +7,7 @@ export default defineSchema({
     title: v.string(),
     // Reference to form configuration
     formOptionsId: v.optional(v.id("formOptions")),
-    messages: v.array(v.any()),
+    messages: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
   }),
