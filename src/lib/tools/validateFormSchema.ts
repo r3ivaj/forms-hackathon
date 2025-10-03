@@ -81,7 +81,7 @@ const stepSchema = z.object({
   fields: z.array(fieldSchema).min(1),
 })
 
-const formSchema = z.object({
+export const formSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string().optional(),

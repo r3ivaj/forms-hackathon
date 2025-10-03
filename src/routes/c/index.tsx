@@ -28,14 +28,15 @@ import { FormsPreview } from '@/components/chat/FormsPreview'
 import { getValidFormSchema } from '@/utils/chat/getValidFormSchema'
 import { FormSchema } from '@/lib/tools/validateFormSchema'
 import { useChatPersistence } from '@/hooks/useChatPersistence'
-export const Route = createFileRoute('/')({
+
+export const Route = createFileRoute('/c/')({
   component: Home,
 })
 
 function Home() {
   const [text, setText] = useState<string>('')
   const [formSchema, setFormSchema] = useState<FormSchema | null>(null)
-  const { chatId, persistMessages } = useChatPersistence()
+  const { persistMessages } = useChatPersistence()
 
   const { messages, status, sendMessage } = useChat({
     onFinish: async ({ messages }) => {
@@ -60,6 +61,8 @@ function Home() {
       setFormSchema(validFormSchema)
     }
   }, [messages])
+
+  console.log('messages', messages)
 
   return (
     <div className="h-screen">
