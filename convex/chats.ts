@@ -19,26 +19,6 @@ export const createChat = mutation({
   },
 });
 
-export const updateMessages = mutation({
-  args: {
-    chatId: v.id("chats"),
-    messages: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const chat = await ctx.db.get(args.chatId);
-    if (!chat) {
-      throw new Error("Chat not found");
-    }
-
-    await ctx.db.patch(args.chatId, {
-      messages: args.messages,
-      updatedAt: Date.now(),
-    });
-
-    return true;
-  },
-});
-
 export const getChat = query({
   args: {
     chatId: v.id("chats"),
@@ -48,12 +28,15 @@ export const getChat = query({
   },
 });
 
-export const updateChatMessages = mutation({
+export const patchChatMessages = mutation({
   args: {
     chatId: v.id("chats"),
     messages: v.string(),
   },
   handler: async (ctx, args) => {
-    return await ctx.db.patch(args.chatId, { messages: args.messages });
+    return await ctx.db.patch(
+      args.chatId,
+      { messages: args.messages, updatedAt: Date.now() }
+    );
   },
 });

@@ -6,7 +6,7 @@ import { Id } from "convex/_generated/dataModel";
 
 export function useMutateChatMessages({ id }: { id: Id<"chats"> }) {
   const updateChatMessagesMutation = useMutation({
-    mutationFn: useConvexMutation(api.chats.updateChatMessages)
+    mutationFn: useConvexMutation(api.chats.patchChatMessages)
   });
 
   const mutateChatMessages = useCallback(async (messages: string) => {
