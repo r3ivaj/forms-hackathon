@@ -69,17 +69,6 @@ export function FormSettingsDialog({ children, formOptions }: FormSettingsDialog
     },
   })
 
-  // Update form values when formOptions change
-  useEffect(() => {
-    if (formOptions) {
-      form.setFieldValue('sessionDuration', formOptions.sessionDuration || 'unlimited')
-      form.setFieldValue('customDuration', formOptions.customDuration?.toString() || '')
-      form.setFieldValue('slug', formOptions.slug || '')
-      form.setFieldValue('nipValidation', formOptions.nipValidation || false)
-    }
-  }, [formOptions, form])
-
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
