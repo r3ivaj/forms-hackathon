@@ -3,8 +3,8 @@ import { convexQuery } from '@convex-dev/react-query'
 import { api } from 'convex/_generated/api'
 import { Id } from 'convex/_generated/dataModel'
 
-export function useFormOptions(chatId: string) {
+export function useFormSettings(chatId: string) {
   return useQuery(
-    convexQuery(api.chats.getFormOptions, { chatId: chatId as Id<"chats"> })
+    convexQuery(api.chats.getFormSettings, { chatId: chatId as Id<"chats"> })
   )
 }

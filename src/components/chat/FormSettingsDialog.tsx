@@ -21,11 +21,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useForm } from '@tanstack/react-form'
-import { useMutateFormOptions } from '@/hooks/useMutateFormOptions'
+import { useMutateFormSettings } from '@/hooks/useMutateFormSettings'
 import { useParams } from '@tanstack/react-router'
 import { wait } from '@/utils/wait'
 
-interface FormOptions {
+interface FormSettings {
   status: 'draft' | 'published'
   sessionDuration: 'unlimited' | 'custom'
   customDuration?: number
@@ -34,23 +34,23 @@ interface FormOptions {
 
 interface FormSettingsDialogProps {
   children: React.ReactNode
-  formOptions?: FormOptions | null
+  formSettings?: FormSettings | null
 }
 
-export function FormSettingsDialog({ children, formOptions }: FormSettingsDialogProps) {
+export function FormSettingsDialog({ children, formSettings }: FormSettingsDialogProps) {
   const [open, setOpen] = useState<boolean>(false)
   const { chatId } = useParams({ from: '/c/$chatId' })
-  const { mutateAsync: mutateFormOptionsAsync } = useMutateFormOptions()
+  const { mutateAsync: mutateFormSettingsAsync } = useMutateFormSettings()
 
   const form = useForm({
     defaultValues: {
-      sessionDuration: formOptions?.sessionDuration || 'unlimited',
-      customDuration: formOptions?.customDuration?.toString() || '',
-      nipValidation: formOptions?.nipValidation || false,
+      sessionDuration: formSettings?.sessionDuration || 'unlimited',
+      customDuration: formSettings?.customDuration?.toString() || '',
+      nipValidation: formSettings?.nipValidation || false,
     },
     onSubmit: async ({ value }) => {
       try {
-        await mutateFormOptionsAsync({
+        await mutateFormSettingsAsync({
           chatId: chatId as any,
           sessionDuration: value.sessionDuration,
           customDuration: value.sessionDuration === 'custom' && value.customDuration

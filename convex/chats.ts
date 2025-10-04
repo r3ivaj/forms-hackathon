@@ -20,8 +20,8 @@ export const createChat = mutation({
     // Generate a short ID (6 characters)
     const short_id = nanoid(6);
 
-    // Create formOption with default configuration
-    const formOptionsId = await ctx.db.insert("formOptions", {
+    // Create formSettings with default configuration
+    const formSettingsId = await ctx.db.insert("formSettings", {
       chatId: chatId,
       short_id: short_id,
       status: "draft",
@@ -31,9 +31,9 @@ export const createChat = mutation({
       updatedAt: now,
     });
 
-    // Update the chat to link the formOption
+    // Update the chat to link the formSettings
     await ctx.db.patch(chatId, {
-      formOptionsId: formOptionsId,
+      formSettingsId: formSettingsId,
       updatedAt: now,
     });
 
@@ -63,21 +63,21 @@ export const patchChatMessages = mutation({
   },
 });
 
-export const getFormOptions = query({
+export const getFormSettings = query({
   args: {
     chatId: v.id("chats"),
   },
   handler: async (ctx, args) => {
     const chat = await ctx.db.get(args.chatId);
-    if (!chat?.formOptionsId) {
+    if (!chat?.formSettingsId) {
       return null;
     }
-    return await ctx.db.get(chat.formOptionsId);
+    return await ctx.db.get(chat.formSettingsId);
   },
 });
 
 
-export const patchFormOptions = mutation({
+export const patchFormSettings = mutation({
   args: {
     chatId: v.id("chats"),
     sessionDuration: v.optional(v.union(v.literal("unlimited"), v.literal("custom"))),
@@ -87,8 +87,8 @@ export const patchFormOptions = mutation({
   },
   handler: async (ctx, args) => {
     const chat = await ctx.db.get(args.chatId);
-    if (!chat?.formOptionsId) {
-      throw new Error("Form options not found for this chat");
+    if (!chat?.formSettingsId) {
+      throw new Error("Form settings not found for this chat");
     }
 
     // Build update data with only provided fields
@@ -100,6 +100,6 @@ export const patchFormOptions = mutation({
       }
     });
 
-    return await ctx.db.patch(chat.formOptionsId, updateData);
+    return await ctx.db.patch(chat.formSettingsId, updateData);
   },
 });

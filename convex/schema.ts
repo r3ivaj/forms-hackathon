@@ -6,14 +6,14 @@ export default defineSchema({
     // Chat title to identify the form
     title: v.string(),
     // Reference to form configuration
-    formOptionsId: v.optional(v.id("formOptions")),
+    formSettingsId: v.optional(v.id("formSettings")),
     messages: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
   }),
 
   // Form configuration linked to a chat
-  formOptions: defineTable({
+  formSettings: defineTable({
     chatId: v.id("chats"),
     // Short ID for friendly URLs (auto-generated)
     short_id: v.string(),

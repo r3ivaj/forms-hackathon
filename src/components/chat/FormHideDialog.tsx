@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { EyeOff } from 'lucide-react'
 import { useParams } from '@tanstack/react-router'
-import { useMutateFormOptions } from '@/hooks/useMutateFormOptions'
+import { useMutateFormSettings } from '@/hooks/useMutateFormSettings'
 
 interface FormHideDialogProps {
   children: React.ReactNode
@@ -20,10 +20,10 @@ interface FormHideDialogProps {
 export function FormHideDialog({ children }: FormHideDialogProps) {
   const [open, setOpen] = useState(false)
   const { chatId } = useParams({ from: '/c/$chatId' })
-  const { mutateAsync: mutateFormOptionsAsync } = useMutateFormOptions()
+  const { mutateAsync: mutateFormSettingsAsync } = useMutateFormSettings()
 
   const handleHide = async () => {
-    await mutateFormOptionsAsync({
+    await mutateFormSettingsAsync({
       chatId: chatId as any,
       status: 'draft',
     })
