@@ -23,6 +23,7 @@ import {
 import { useForm } from '@tanstack/react-form'
 import { useMutateFormOptions } from '@/hooks/useMutateFormOptions'
 import { useParams } from '@tanstack/react-router'
+import { wait } from '@/utils/wait'
 
 interface FormOptions {
   slug?: string
@@ -245,11 +246,11 @@ export function FormSettingsDialog({ children, formOptions }: FormSettingsDialog
           </DialogClose>
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
-            children={([canSubmit, isSubmitting]) => (
+            children={([canSubmit]) => (
               <Button
                 type="submit"
                 form="form-settings"
-                disabled={!canSubmit || isSubmitting}
+                disabled={!canSubmit}
               >
                 Guardar configuración
               </Button>
