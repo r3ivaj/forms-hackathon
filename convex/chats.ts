@@ -134,8 +134,9 @@ export const getFormSchemaByShortId = query({
       const formSchema = getFormSchema(messages);
 
       return {
-        formSchema,
-        formSettings
+        formSchema: formSettings.status === "draft" ? null : formSchema,
+        formSettings: formSettings.status === "draft" ? null : formSettings,
+        status: formSettings.status,
       };
     } catch (error) {
       console.error("Error parsing messages or getting form schema:", error);
