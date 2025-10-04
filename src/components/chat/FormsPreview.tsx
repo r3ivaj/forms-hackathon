@@ -3,14 +3,18 @@ import { Box } from 'lucide-react'
 import { FormRenderer } from './FormRenderer'
 import { FormToolbar } from './FormToolbar'
 import { FormSchema } from '@/lib/tools/validateFormSchema'
+import { isEqual } from 'es-toolkit';
+import { useMemo } from 'react'
 
 export function FormsPreview({
-  formSchema,
+  latestFormSchema,
+  publishedFormSchema,
 }: {
-  formSchema: FormSchema | null
+  latestFormSchema: FormSchema | null
+  publishedFormSchema: FormSchema | null
 }) {
 
-  if (!formSchema) {
+  if (!latestFormSchema) {
     return (
       <EmptySection
         title="No hay algún formulario para mostrar"
@@ -20,11 +24,15 @@ export function FormsPreview({
     )
   }
 
+  const isSchemaDifferent = useMemo(() => {
+    return !isEqual(publishedFormSchema, latestFormSchema)
+  }, [publishedFormSchema, latestFormSchema])
+
   return (
     <div className="flex h-full flex-col">
-      <FormToolbar formSchema={formSchema} />
+      <FormToolbar latestFormSchema={latestFormSchema} isSchemaDifferent={isSchemaDifferent} />
       <div className="flex-1 overflow-y-auto p-4">
-        <FormRenderer formSchema={formSchema} />
+        <FormRenderer formSchema={latestFormSchema} />
       </div>
     </div>
   )

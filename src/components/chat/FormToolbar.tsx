@@ -9,7 +9,13 @@ import { useFormSettings } from '@/hooks/useFormSettings'
 import { useMutateFormSettings } from '@/hooks/useMutateFormSettings'
 import { FormSchema } from '@/lib/tools/validateFormSchema'
 
-export function FormToolbar({ formSchema }: { formSchema: FormSchema }) {
+export function FormToolbar({
+  latestFormSchema,
+  isSchemaDifferent
+}: {
+  latestFormSchema: FormSchema
+  isSchemaDifferent?: boolean
+}) {
   const { chatId } = useParams({ from: '/c/$chatId' })
   const { mutateAsync: mutateFormSettingsAsync } = useMutateFormSettings()
 
@@ -19,7 +25,7 @@ export function FormToolbar({ formSchema }: { formSchema: FormSchema }) {
     await mutateFormSettingsAsync({
       chatId: chatId as any,
       status: 'published',
-      formSchema: JSON.stringify(formSchema),
+      formSchema: JSON.stringify(latestFormSchema),
     })
   }
 
@@ -71,12 +77,20 @@ export function FormToolbar({ formSchema }: { formSchema: FormSchema }) {
                   Publicar
                 </Button>
               ) : (
-                <FormCancelDialog>
-                  <Button variant="outline">
-                    <EyeOff className="h-4 w-4" />
-                    Cancelar publicación
-                  </Button>
-                </FormCancelDialog>
+                <div className="flex items-center gap-2">
+                  {isSchemaDifferent && (
+                    <Button onClick={handlePublish} variant="default">
+                      <Globe className="h-4 w-4" />
+                      Publicar cambios
+                    </Button>
+                  )}
+                  <FormCancelDialog>
+                    <Button variant="outline">
+                      <EyeOff className="h-4 w-4" />
+                      Cancelar publicación
+                    </Button>
+                  </FormCancelDialog>
+                </div>
               )}
             </>
           )}

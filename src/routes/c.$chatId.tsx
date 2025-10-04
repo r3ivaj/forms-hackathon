@@ -5,7 +5,7 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from '@/components/ui/resizable'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { FormsPreview } from '@/components/chat/FormsPreview'
 import { Conversation } from '@/components/chat/Conversation'
 import { getFormSchema } from '@/utils/chat/getFormSchema'
@@ -40,6 +40,20 @@ function Home() {
     }
   }, [chat, sendMessage, setMessages])
 
+  const publishedFormSchema = useMemo(() => {
+    if (!chat) {
+      return null
+    }
+    return JSON.parse(chat.formSettings?.formSchema || '{}')
+  }, [chat])
+
+  const lastFormSchema = useMemo(() => {
+    if (!messages) {
+      return null
+    }
+    return getFormSchema(messages)
+  }, [messages])
+
   return (
     <div className="h-screen">
       <ResizablePanelGroup direction="horizontal">
@@ -52,7 +66,12 @@ function Home() {
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={70} minSize={55}>
-          {!isLoading && <FormsPreview formSchema={getFormSchema(messages)} />}
+          {!isLoading && (
+            <FormsPreview
+              latestFormSchema={lastFormSchema}
+              publishedFormSchema={publishedFormSchema}
+            />
+          )}
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

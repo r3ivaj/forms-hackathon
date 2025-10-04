@@ -37,6 +37,7 @@
     "clsx": "^2.1.1",
     "convex": "^1.27.3",
     "dotenv": "^17.2.3",
+    "es-toolkit": "^1.39.10",
     "lucide-react": "^0.544.0",
     "nanoid": "^5.1.6",
     "react": "^19.2.0",

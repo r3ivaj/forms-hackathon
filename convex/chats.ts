@@ -47,7 +47,21 @@ export const getChat = query({
     chatId: v.id("chats"),
   },
   handler: async (ctx, args) => {
-    return await ctx.db.get(args.chatId);
+    // Get chat first
+    const chat = await ctx.db.get(args.chatId);
+    if (!chat) {
+      return null;
+    }
+
+    // Get formSettings in a single query using the formSettingsId
+    const formSettings = chat.formSettingsId
+      ? await ctx.db.get(chat.formSettingsId)
+      : null;
+
+    return {
+      ...chat,
+      formSettings,
+    };
   },
 });
 
