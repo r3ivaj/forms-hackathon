@@ -11,7 +11,7 @@ import {
 interface FormUrlCopyButtonProps {
   formOptions: {
     _id: string
-    slug?: string
+    short_id: string
   }
 }
 
@@ -20,8 +20,7 @@ export function FormUrlCopyButton({ formOptions }: FormUrlCopyButtonProps) {
 
   const copyFormUrl = async () => {
     const frontendUrl = import.meta.env.VITE_FRONTEND_URL || 'http://localhost:3000'
-    const identifier = formOptions.slug || formOptions._id
-    const formUrl = `${frontendUrl}/formulario/${identifier}`
+    const formUrl = `${frontendUrl}/formulario/${formOptions.short_id}`
 
     try {
       await navigator.clipboard.writeText(formUrl)
@@ -33,8 +32,7 @@ export function FormUrlCopyButton({ formOptions }: FormUrlCopyButtonProps) {
 
   const getFormUrl = () => {
     const frontendUrl = import.meta.env.VITE_FRONTEND_URL || 'http://localhost:3000'
-    const identifier = formOptions.slug || formOptions._id
-    return `${frontendUrl}/formulario/${identifier}`
+    return `${frontendUrl}/formulario/${formOptions.short_id}`
   }
 
   return (

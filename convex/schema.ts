@@ -15,8 +15,8 @@ export default defineSchema({
   // Form configuration linked to a chat
   formOptions: defineTable({
     chatId: v.id("chats"),
-    // Custom slug for the form
-    slug: v.optional(v.string()),
+    // Short ID for friendly URLs (auto-generated)
+    short_id: v.string(),
     // Form status (draft / published)
     status: v.union(v.literal("draft"), v.literal("published")),
     // Session duration configuration
@@ -27,7 +27,7 @@ export default defineSchema({
     nipValidation: v.boolean(),
     createdAt: v.number(),
     updatedAt: v.number(),
-  }).index("by_slug", ["slug"]),
+  }).index("by_short_id", ["short_id"]),
 
   // End-user sessions when filling the form
   sessions: defineTable({

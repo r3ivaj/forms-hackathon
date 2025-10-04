@@ -26,7 +26,6 @@ import { useParams } from '@tanstack/react-router'
 import { wait } from '@/utils/wait'
 
 interface FormOptions {
-  slug?: string
   status: 'draft' | 'published'
   sessionDuration: 'unlimited' | 'custom'
   customDuration?: number
@@ -47,14 +46,12 @@ export function FormSettingsDialog({ children, formOptions }: FormSettingsDialog
     defaultValues: {
       sessionDuration: formOptions?.sessionDuration || 'unlimited',
       customDuration: formOptions?.customDuration?.toString() || '',
-      slug: formOptions?.slug || '',
       nipValidation: formOptions?.nipValidation || false,
     },
     onSubmit: async ({ value }) => {
       try {
         await mutateFormOptionsAsync({
           chatId: chatId as any,
-          slug: value.slug,
           sessionDuration: value.sessionDuration,
           customDuration: value.sessionDuration === 'custom' && value.customDuration
             ? parseInt(value.customDuration)
@@ -166,41 +163,6 @@ export function FormSettingsDialog({ children, formOptions }: FormSettingsDialog
             }}
           />
 
-          {/* Slug del formulario */}
-          <form.Field
-            name="slug"
-            validators={{
-              onChange: ({ value }) => {
-                if (value && !/^[a-z0-9-]+$/.test(value)) {
-                  return 'El slug solo puede contener letras minúsculas, números y guiones'
-                }
-                return undefined
-              },
-            }}
-            children={(fieldApi) => {
-              const { handleChange, handleBlur } = fieldApi
-              const { value } = fieldApi.state
-              const { errors } = fieldApi.state.meta
-              return (
-                <div className="space-y-3">
-                  <Label htmlFor="form-slug">Slug del formulario</Label>
-                  <Input
-                    id="form-slug"
-                    value={value || ''}
-                    onChange={(e) => handleChange(e.target.value)}
-                    onBlur={handleBlur}
-                    placeholder="mi-formulario-personalizado"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Opcional. Se genera automáticamente si se deja vacío.
-                  </p>
-                  {errors && errors.length > 0 && (
-                    <p className="text-sm text-red-500">{errors[0]}</p>
-                  )}
-                </div>
-              )
-            }}
-          />
 
           {/* Validación de NIP */}
           <form.Field

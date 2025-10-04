@@ -17,9 +17,13 @@ export const createChat = mutation({
       ...(args.initialMessage && { initialMessage: args.initialMessage }),
     });
 
+    // Generate a short ID (6 characters)
+    const short_id = nanoid(6);
+
     // Create formOption with default configuration
     const formOptionsId = await ctx.db.insert("formOptions", {
       chatId: chatId,
+      short_id: short_id,
       status: "draft",
       sessionDuration: "unlimited",
       nipValidation: false,
@@ -72,10 +76,10 @@ export const getFormOptions = query({
   },
 });
 
+
 export const patchFormOptions = mutation({
   args: {
     chatId: v.id("chats"),
-    slug: v.optional(v.string()),
     sessionDuration: v.optional(v.union(v.literal("unlimited"), v.literal("custom"))),
     customDuration: v.optional(v.number()),
     nipValidation: v.optional(v.boolean()),
