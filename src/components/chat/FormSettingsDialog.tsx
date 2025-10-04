@@ -22,19 +22,28 @@ import {
 } from '@/components/ui/select'
 import { useForm } from '@tanstack/react-form'
 
-interface FormSettingsDialogProps {
-  children: React.ReactNode
+interface FormOptions {
+  slug: string
+  status: 'draft' | 'published'
+  sessionDuration: 'unlimited' | 'custom'
+  customDuration?: number
+  nipValidation: boolean
 }
 
-export function FormSettingsDialog({ children }: FormSettingsDialogProps) {
+interface FormSettingsDialogProps {
+  children: React.ReactNode
+  formOptions?: FormOptions | null
+}
+
+export function FormSettingsDialog({ children, formOptions }: FormSettingsDialogProps) {
   const [open, setOpen] = useState<boolean>(false)
 
   const form = useForm({
     defaultValues: {
-      sessionDuration: 'unlimited',
-      customDuration: '',
-      slug: '',
-      nipValidation: false,
+      sessionDuration: formOptions?.sessionDuration || 'unlimited',
+      customDuration: formOptions?.customDuration?.toString() || '',
+      slug: formOptions?.slug || '',
+      nipValidation: formOptions?.nipValidation || false,
     },
     onSubmit: async ({ value }) => {
       // TODO: Implement save functionality
@@ -70,14 +79,15 @@ export function FormSettingsDialog({ children }: FormSettingsDialogProps) {
           <form.Field
             name="sessionDuration"
             children={(fieldApi) => {
-              const { handleChange } = fieldApi
               const { value } = fieldApi.state
               return (
                 <div className="space-y-3">
                   <Label htmlFor="session-duration">Duración de sesión</Label>
                   <Select
                     value={value}
-                    onValueChange={handleChange}
+                    onValueChange={(newValue) => {
+                      fieldApi.setValue(newValue as 'unlimited' | 'custom')
+                    }}
                   >
                     <SelectTrigger id="session-duration">
                       <SelectValue placeholder="Seleccionar duración" />

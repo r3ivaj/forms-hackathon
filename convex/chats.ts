@@ -72,3 +72,28 @@ export const getFormOptions = query({
     return await ctx.db.get(chat.formOptionsId);
   },
 });
+
+export const updateFormOptions = mutation({
+  args: {
+    chatId: v.id("chats"),
+    slug: v.string(),
+    sessionDuration: v.union(v.literal("unlimited"), v.literal("custom")),
+    customDuration: v.optional(v.number()),
+    nipValidation: v.boolean(),
+  },
+  handler: async (ctx, args) => {
+    const chat = await ctx.db.get(args.chatId);
+    if (!chat?.formOptionsId) {
+      throw new Error("Form options not found for this chat");
+    }
+
+    const now = Date.now();
+    return await ctx.db.patch(chat.formOptionsId, {
+      slug: args.slug,
+      sessionDuration: args.sessionDuration,
+      customDuration: args.customDuration,
+      nipValidation: args.nipValidation,
+      updatedAt: now,
+    });
+  },
+});
