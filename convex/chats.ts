@@ -75,10 +75,11 @@ export const getFormOptions = query({
 export const patchFormOptions = mutation({
   args: {
     chatId: v.id("chats"),
-    slug: v.string(),
-    sessionDuration: v.union(v.literal("unlimited"), v.literal("custom")),
+    slug: v.optional(v.string()),
+    sessionDuration: v.optional(v.union(v.literal("unlimited"), v.literal("custom"))),
     customDuration: v.optional(v.number()),
-    nipValidation: v.boolean(),
+    nipValidation: v.optional(v.boolean()),
+    status: v.optional(v.union(v.literal("draft"), v.literal("published"))),
   },
   handler: async (ctx, args) => {
     const chat = await ctx.db.get(args.chatId);
@@ -86,13 +87,15 @@ export const patchFormOptions = mutation({
       throw new Error("Form options not found for this chat");
     }
 
-    const now = Date.now();
-    return await ctx.db.patch(chat.formOptionsId, {
-      slug: args.slug,
-      sessionDuration: args.sessionDuration,
-      customDuration: args.customDuration,
-      nipValidation: args.nipValidation,
-      updatedAt: now,
+    // Build update data with only provided fields
+    const updateData: Record<string, any> = { updatedAt: Date.now() };
+
+    Object.entries(args).forEach(([key, value]) => {
+      if (key !== 'chatId' && value !== undefined) {
+        updateData[key] = value;
+      }
     });
+
+    return await ctx.db.patch(chat.formOptionsId, updateData);
   },
 });
