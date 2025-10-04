@@ -40,7 +40,7 @@ interface FormSettingsDialogProps {
 export function FormSettingsDialog({ children, formOptions }: FormSettingsDialogProps) {
   const [open, setOpen] = useState<boolean>(false)
   const { chatId } = useParams({ from: '/c/$chatId' })
-  const { mutateFormOptions, isUpdating } = useMutateFormOptions()
+  const { mutateAsync: mutateFormOptionsAsync } = useMutateFormOptions()
 
   const form = useForm({
     defaultValues: {
@@ -51,7 +51,7 @@ export function FormSettingsDialog({ children, formOptions }: FormSettingsDialog
     },
     onSubmit: async ({ value }) => {
       try {
-        await mutateFormOptions({
+        await mutateFormOptionsAsync({
           chatId: chatId as any,
           slug: value.slug,
           sessionDuration: value.sessionDuration,

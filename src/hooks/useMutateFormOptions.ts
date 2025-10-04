@@ -5,28 +5,7 @@ import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 
 export function useMutateFormOptions() {
-  const formOptionsMutation = useMutation({
+  return useMutation({
     mutationFn: useConvexMutation(api.chats.patchFormOptions)
   });
-
-  const mutateFormOptions = useCallback(async (params: {
-    chatId: Id<"chats">;
-    slug: string;
-    sessionDuration: "unlimited" | "custom";
-    customDuration?: number;
-    nipValidation: boolean;
-  }) => {
-    try {
-      const updated = await formOptionsMutation.mutateAsync(params);
-      return updated;
-    } catch (error) {
-      console.error('Error patching form options:', error);
-      throw error;
-    }
-  }, [formOptionsMutation]);
-
-  return {
-    mutateFormOptions,
-    isUpdating: formOptionsMutation.isPending,
-  };
 }
