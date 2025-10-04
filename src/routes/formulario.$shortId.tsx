@@ -1,8 +1,9 @@
-import { useFormSchemaByShortId } from '@/hooks/useFormSchemaByShortId'
+import { useFormSettingsByShortId } from '@/hooks/useFormSettingsByShortId'
 import { createFileRoute } from '@tanstack/react-router'
 import { FormRenderer } from '@/components/chat/FormRenderer'
 import { EmptySection } from '@/components/EmptySection'
 import { FileX } from 'lucide-react'
+import { useMemo } from 'react'
 
 export const Route = createFileRoute('/formulario/$shortId')({
   component: RouteComponent,
@@ -10,13 +11,20 @@ export const Route = createFileRoute('/formulario/$shortId')({
 
 function RouteComponent() {
   const { shortId } = Route.useParams()
-  const { data } = useFormSchemaByShortId(shortId)
+  const { data } = useFormSettingsByShortId(shortId)
+
+  const formSchema = useMemo(() => {
+    if (!data?.formSchema) {
+      return null
+    }
+    return JSON.parse(data.formSchema)
+  }, [data?.formSchema])
 
   if (!data) {
     return null
   }
 
-  if (data?.status === 'draft') {
+  if (data.status === 'draft') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <EmptySection
@@ -28,6 +36,5 @@ function RouteComponent() {
     )
   }
 
-
-  return <FormRenderer formSchema={data.formSchema} />
+  return <FormRenderer formSchema={formSchema} />
 }

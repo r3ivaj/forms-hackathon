@@ -85,6 +85,7 @@ export const patchFormSettings = mutation({
     customDuration: v.optional(v.number()),
     nipValidation: v.optional(v.boolean()),
     status: v.optional(v.union(v.literal("draft"), v.literal("published"))),
+    formSchema: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const chat = await ctx.db.get(args.chatId);
@@ -105,7 +106,7 @@ export const patchFormSettings = mutation({
   },
 });
 
-export const getFormSchemaByShortId = query({
+export const getFormSettingsByShortId = query({
   args: {
     shortId: v.string(),
   },
@@ -120,24 +121,8 @@ export const getFormSchemaByShortId = query({
       return null;
     }
 
-    // Get the chat to access the messages
-    const chat = await ctx.db.get(formSettings.chatId);
-    if (!chat || !chat.messages) {
-      return null;
-    }
-
     try {
-      // Parse the messages from the stored string
-      const messages = JSON.parse(chat.messages);
-
-      // Use the getFormSchema function to extract the schema
-      const formSchema = getFormSchema(messages);
-
-      return {
-        formSchema: formSettings.status === "draft" ? null : formSchema,
-        formSettings: formSettings.status === "draft" ? null : formSettings,
-        status: formSettings.status,
-      };
+      return formSettings;
     } catch (error) {
       console.error("Error parsing messages or getting form schema:", error);
       return null;

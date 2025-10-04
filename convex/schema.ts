@@ -19,6 +19,8 @@ export default defineSchema({
     short_id: v.string(),
     // Form status (draft / published)
     status: v.union(v.literal("draft"), v.literal("published")),
+    // Form schema stored as a string
+    formSchema: v.optional(v.string()),
     // Session duration configuration
     sessionDuration: v.union(v.literal("unlimited"), v.literal("custom")),
     // Custom session duration in minutes (only used when sessionDuration is "custom")

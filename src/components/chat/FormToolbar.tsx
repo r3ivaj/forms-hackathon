@@ -7,18 +7,19 @@ import { FormUrlCopyButton } from './FormUrlCopyButton'
 import { useParams } from '@tanstack/react-router'
 import { useFormSettings } from '@/hooks/useFormSettings'
 import { useMutateFormSettings } from '@/hooks/useMutateFormSettings'
+import { FormSchema } from '@/lib/tools/validateFormSchema'
 
-export function FormToolbar() {
+export function FormToolbar({ formSchema }: { formSchema: FormSchema }) {
   const { chatId } = useParams({ from: '/c/$chatId' })
   const { mutateAsync: mutateFormSettingsAsync } = useMutateFormSettings()
 
   const { data: formSettings, isLoading: isFormSettingsLoading } = useFormSettings(chatId)
 
   const handlePublish = async () => {
-    console.log('Publishing form...', formSettings)
     await mutateFormSettingsAsync({
       chatId: chatId as any,
       status: 'published',
+      formSchema: JSON.stringify(formSchema),
     })
   }
 
