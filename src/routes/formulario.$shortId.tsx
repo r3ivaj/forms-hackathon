@@ -1,5 +1,6 @@
 import { useFormSchemaByShortId } from '@/hooks/useFormSchemaByShortId'
 import { createFileRoute } from '@tanstack/react-router'
+import { FormRenderer } from '@/components/chat/FormRenderer'
 
 export const Route = createFileRoute('/formulario/$shortId')({
   component: RouteComponent,
@@ -7,9 +8,11 @@ export const Route = createFileRoute('/formulario/$shortId')({
 
 function RouteComponent() {
   const { shortId } = Route.useParams()
-  const { data: formSchema } = useFormSchemaByShortId(shortId)
+  const { data } = useFormSchemaByShortId(shortId)
 
-  console.log(formSchema)
+  if (!data?.formSchema) {
+    return null
+  }
 
-  return <div>Hello "/formulario/$shortId"!</div>
+  return <FormRenderer formSchema={data.formSchema} />
 }
