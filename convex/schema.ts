@@ -19,6 +19,12 @@ export default defineSchema({
     slug: v.string(),
     // Form status (draft / published)
     status: v.union(v.literal("draft"), v.literal("published")),
+    // Session duration configuration
+    sessionDuration: v.union(v.literal("unlimited"), v.literal("custom")),
+    // Custom session duration in minutes (only used when sessionDuration is "custom")
+    customDuration: v.optional(v.number()),
+    // NIP validation requirement
+    nipValidation: v.boolean(),
     createdAt: v.number(),
     updatedAt: v.number(),
   }).index("by_slug", ["slug"]),
