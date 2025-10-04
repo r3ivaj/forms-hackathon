@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -21,6 +21,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useForm } from '@tanstack/react-form'
+import { useMutateFormOptions } from '@/hooks/useMutateFormOptions'
+import { useParams } from '@tanstack/react-router'
 
 interface FormOptions {
   slug?: string
@@ -37,6 +39,8 @@ interface FormSettingsDialogProps {
 
 export function FormSettingsDialog({ children, formOptions }: FormSettingsDialogProps) {
   const [open, setOpen] = useState<boolean>(false)
+  const { chatId } = useParams({ from: '/c/$chatId' })
+  const { mutateFormOptions, isUpdating } = useMutateFormOptions()
 
   const form = useForm({
     defaultValues: {
@@ -46,11 +50,33 @@ export function FormSettingsDialog({ children, formOptions }: FormSettingsDialog
       nipValidation: formOptions?.nipValidation || false,
     },
     onSubmit: async ({ value }) => {
-      // TODO: Implement save functionality
-      console.log('Saving settings:', value)
-      setOpen(false)
+      try {
+        await mutateFormOptions({
+          chatId: chatId as any,
+          slug: value.slug,
+          sessionDuration: value.sessionDuration,
+          customDuration: value.sessionDuration === 'custom' && value.customDuration
+            ? parseInt(value.customDuration)
+            : undefined,
+          nipValidation: value.nipValidation,
+        })
+        setOpen(false)
+      } catch (error) {
+        console.error('Error saving form settings:', error)
+        // You might want to show a toast notification here
+      }
     },
   })
+
+  // Update form values when formOptions change
+  useEffect(() => {
+    if (formOptions) {
+      form.setFieldValue('sessionDuration', formOptions.sessionDuration || 'unlimited')
+      form.setFieldValue('customDuration', formOptions.customDuration?.toString() || '')
+      form.setFieldValue('slug', formOptions.slug || '')
+      form.setFieldValue('nipValidation', formOptions.nipValidation || false)
+    }
+  }, [formOptions, form])
 
 
   return (
@@ -225,7 +251,7 @@ export function FormSettingsDialog({ children, formOptions }: FormSettingsDialog
                 form="form-settings"
                 disabled={!canSubmit || isSubmitting}
               >
-                {isSubmitting ? 'Guardando...' : 'Guardar configuración'}
+                Guardar configuración
               </Button>
             )}
           />

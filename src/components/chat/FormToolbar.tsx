@@ -12,7 +12,7 @@ export function FormToolbar() {
   }
   const { chatId } = useParams({ from: '/c/$chatId' })
   const { data: formOptions, isLoading: isFormOptionsLoading } = useFormOptions(chatId)
-
+  console.log(formOptions)
   return (
     <div className="bg-background border-b px-6 py-4">
       <div className="flex items-center justify-end gap-2">

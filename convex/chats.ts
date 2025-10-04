@@ -72,7 +72,7 @@ export const getFormOptions = query({
   },
 });
 
-export const updateFormOptions = mutation({
+export const patchFormOptions = mutation({
   args: {
     chatId: v.id("chats"),
     slug: v.string(),
