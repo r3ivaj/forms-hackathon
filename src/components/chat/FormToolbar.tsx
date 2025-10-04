@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Settings, EyeOff, Globe } from 'lucide-react'
 import { FormSettingsDialog } from './FormSettingsDialog'
-import { FormHideDialog } from './FormHideDialog'
+import { FormCancelDialog } from './FormCancelDialog'
 import { FormUrlCopyButton } from './FormUrlCopyButton'
 import { useParams } from '@tanstack/react-router'
 import { useFormSettings } from '@/hooks/useFormSettings'
@@ -70,12 +70,12 @@ export function FormToolbar() {
                   Publicar
                 </Button>
               ) : (
-                <FormHideDialog>
+                <FormCancelDialog>
                   <Button variant="outline">
                     <EyeOff className="h-4 w-4" />
-                    Ocultar
+                    Cancelar publicación
                   </Button>
-                </FormHideDialog>
+                </FormCancelDialog>
               )}
             </>
           )}

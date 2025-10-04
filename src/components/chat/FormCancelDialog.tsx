@@ -13,11 +13,11 @@ import { EyeOff } from 'lucide-react'
 import { useParams } from '@tanstack/react-router'
 import { useMutateFormSettings } from '@/hooks/useMutateFormSettings'
 
-interface FormHideDialogProps {
+interface FormCancelDialogProps {
   children: React.ReactNode
 }
 
-export function FormHideDialog({ children }: FormHideDialogProps) {
+export function FormCancelDialog({ children }: FormCancelDialogProps) {
   const [open, setOpen] = useState(false)
   const { chatId } = useParams({ from: '/c/$chatId' })
   const { mutateAsync: mutateFormSettingsAsync } = useMutateFormSettings()
@@ -37,9 +37,9 @@ export function FormHideDialog({ children }: FormHideDialogProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Ocultar formulario</DialogTitle>
+          <DialogTitle>Cancelar publicación</DialogTitle>
           <DialogDescription>
-            ¿Estás seguro de que quieres ocultar este formulario?
+            ¿Estás seguro de que quieres cancelar la publicación de este formulario?
             Ya no será visible al público y volverá al estado de borrador.
           </DialogDescription>
         </DialogHeader>
@@ -56,7 +56,7 @@ export function FormHideDialog({ children }: FormHideDialogProps) {
             variant="destructive"
           >
             <EyeOff className="h-4 w-4" />
-            Ocultar
+            Cancelar publicación
           </Button>
         </DialogFooter>
       </DialogContent>
