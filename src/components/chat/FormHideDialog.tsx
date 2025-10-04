@@ -13,16 +13,16 @@ import { EyeOff } from 'lucide-react'
 import { useParams } from '@tanstack/react-router'
 import { useMutateFormOptions } from '@/hooks/useMutateFormOptions'
 
-interface FormDeactivateDialogProps {
+interface FormHideDialogProps {
   children: React.ReactNode
 }
 
-export function FormDeactivateDialog({ children }: FormDeactivateDialogProps) {
+export function FormHideDialog({ children }: FormHideDialogProps) {
   const [open, setOpen] = useState(false)
   const { chatId } = useParams({ from: '/c/$chatId' })
   const { mutateAsync: mutateFormOptionsAsync } = useMutateFormOptions()
 
-  const handleDeactivate = async () => {
+  const handleHide = async () => {
     await mutateFormOptionsAsync({
       chatId: chatId as any,
       status: 'draft',
@@ -37,9 +37,9 @@ export function FormDeactivateDialog({ children }: FormDeactivateDialogProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Desactivar formulario</DialogTitle>
+          <DialogTitle>Ocultar formulario</DialogTitle>
           <DialogDescription>
-            ¿Estás seguro de que quieres desactivar este formulario?
+            ¿Estás seguro de que quieres ocultar este formulario?
             Ya no será visible al público y volverá al estado de borrador.
           </DialogDescription>
         </DialogHeader>
@@ -52,11 +52,11 @@ export function FormDeactivateDialog({ children }: FormDeactivateDialogProps) {
             Cancelar
           </Button>
           <Button
-            onClick={handleDeactivate}
+            onClick={handleHide}
             variant="destructive"
           >
             <EyeOff className="h-4 w-4" />
-            Desactivar
+            Ocultar
           </Button>
         </DialogFooter>
       </DialogContent>
