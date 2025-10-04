@@ -23,7 +23,7 @@ import {
 import { useForm } from '@tanstack/react-form'
 
 interface FormOptions {
-  slug: string
+  slug?: string
   status: 'draft' | 'published'
   sessionDuration: 'unlimited' | 'custom'
   customDuration?: number

@@ -20,7 +20,6 @@ export const createChat = mutation({
     // Create formOption with default configuration
     const formOptionsId = await ctx.db.insert("formOptions", {
       chatId: chatId,
-      slug: nanoid(),
       status: "draft",
       sessionDuration: "unlimited",
       nipValidation: false,

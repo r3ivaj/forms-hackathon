@@ -15,8 +15,8 @@ export default defineSchema({
   // Form configuration linked to a chat
   formOptions: defineTable({
     chatId: v.id("chats"),
-    // Fixed or auto-suggested slug
-    slug: v.string(),
+    // Custom slug for the form
+    slug: v.optional(v.string()),
     // Form status (draft / published)
     status: v.union(v.literal("draft"), v.literal("published")),
     // Session duration configuration
