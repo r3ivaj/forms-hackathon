@@ -78,18 +78,17 @@ export function FormToolbar({
                 </Button>
               ) : (
                 <div className="flex items-center gap-2">
+                  <FormCancelDialog>
+                    <Button variant="outline" title="Cancelar publicación">
+                      <EyeOff className="h-4 w-4" />
+                    </Button>
+                  </FormCancelDialog>
                   {isSchemaDifferent && (
                     <Button onClick={handlePublish} variant="default">
                       <Globe className="h-4 w-4" />
                       Publicar cambios
                     </Button>
                   )}
-                  <FormCancelDialog>
-                    <Button variant="outline">
-                      <EyeOff className="h-4 w-4" />
-                      Cancelar publicación
-                    </Button>
-                  </FormCancelDialog>
                 </div>
               )}
             </>
