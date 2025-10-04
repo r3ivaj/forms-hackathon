@@ -1,6 +1,7 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { nanoid } from "nanoid";
+import { getFormSchema } from "../src/utils/chat/getFormSchema";
 
 export const createChat = mutation({
   args: {
@@ -101,5 +102,44 @@ export const patchFormSettings = mutation({
     });
 
     return await ctx.db.patch(chat.formSettingsId, updateData);
+  },
+});
+
+export const getFormSchemaByShortId = query({
+  args: {
+    shortId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    // First, get the formSettings by short_id
+    const formSettings = await ctx.db
+      .query("formSettings")
+      .withIndex("by_short_id", (q) => q.eq("short_id", args.shortId))
+      .first();
+
+    if (!formSettings) {
+      return null;
+    }
+
+    // Get the chat to access the messages
+    const chat = await ctx.db.get(formSettings.chatId);
+    if (!chat || !chat.messages) {
+      return null;
+    }
+
+    try {
+      // Parse the messages from the stored string
+      const messages = JSON.parse(chat.messages);
+
+      // Use the getFormSchema function to extract the schema
+      const formSchema = getFormSchema(messages);
+
+      return {
+        formSchema,
+        formSettings
+      };
+    } catch (error) {
+      console.error("Error parsing messages or getting form schema:", error);
+      return null;
+    }
   },
 });
