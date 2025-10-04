@@ -12,8 +12,11 @@ function RouteComponent() {
   const { shortId } = Route.useParams()
   const { data } = useFormSchemaByShortId(shortId)
 
+  if (!data) {
+    return null
+  }
 
-  if (data?.status === 'draft' || !data?.formSchema) {
+  if (data?.status === 'draft') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <EmptySection
