@@ -85,6 +85,17 @@ const fieldSchema = z.discriminatedUnion('type', [
   selectFieldSchema,
 ])
 
+// 🔹 Session duration schema
+const sessionDurationSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('unlimited'),
+  }),
+  z.object({
+    type: z.literal('custom'),
+    customMinutes: z.number().int().positive(),
+  }),
+])
+
 // 🔹 Step and form schemas
 const stepSchema = z.object({
   id: z.string(),
@@ -97,6 +108,8 @@ export const formSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
   steps: z.array(stepSchema).min(1),
+  sessionDuration: sessionDurationSchema,
+  nipValidation: z.boolean(),
 })
 
 export type FormSchema = z.infer<typeof formSchema>
