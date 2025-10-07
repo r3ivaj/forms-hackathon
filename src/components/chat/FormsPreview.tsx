@@ -32,7 +32,7 @@ export function FormsPreview({
     <div className="flex h-full flex-col">
       <FormToolbar latestFormSchema={latestFormSchema} isSchemaDifferent={isSchemaDifferent} />
       <div className="flex-1 overflow-y-auto p-4">
-        <FormRenderer formSchema={latestFormSchema} />
+        <FormRenderer formSchema={latestFormSchema} isSchemaDifferent={isSchemaDifferent} />
       </div>
     </div>
   )

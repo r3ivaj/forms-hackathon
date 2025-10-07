@@ -1,5 +1,5 @@
 import { FormSchema } from '@/lib/tools/validateFormSchema'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { validateField, FieldValidation } from '@/utils/chat/validationUtils'
 import { StepProgress } from './StepProgress'
@@ -10,22 +10,19 @@ import { createDefaultValues } from '@/utils/form-renderer/createDefaultValues'
 import { TimerStartScreen } from './TimerStartScreen'
 import { TimerDisplay } from './TimerDisplay'
 import { useTimer } from '@/hooks/useTimer'
+import { isEqual } from 'es-toolkit'
 
-export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
+export function FormRenderer({ formSchema, isSchemaDifferent }: { formSchema: FormSchema; isSchemaDifferent?: boolean }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
+  const previousSchemaRef = useRef<FormSchema | null>(null)
 
   // Check if form has custom duration
   const hasCustomDuration = formSchema.sessionDuration.type === 'custom'
   const durationMinutes = hasCustomDuration ? (formSchema.sessionDuration as { type: 'custom'; customMinutes: number }).customMinutes : 0
 
   // Timer logic
-  const timer = useTimer({
-    durationMinutes,
-    onTimeExpired: () => {
-      // Timer expired - user can't continue
-    }
-  })
+  const timer = useTimer({ durationMinutes })
 
   const form = useForm({
     defaultValues: createDefaultValues(formSchema),
@@ -34,6 +31,27 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
       console.log('Form submitted with values:', value)
     },
   })
+
+  // Reset form when schema actually changes
+  useEffect(() => {
+    const previousSchema = previousSchemaRef.current
+
+    // Only reset if schema has actually changed (not just if it's different from published)
+    if (previousSchema && !isEqual(previousSchema, formSchema)) {
+      // Reset form state
+      setCurrentStep(0)
+      setHasStarted(false)
+
+      // Reset form values
+      form.reset()
+
+      // Reset timer
+      timer.reset()
+    }
+
+    // Update the ref with current schema
+    previousSchemaRef.current = formSchema
+  }, [formSchema, form, timer])
 
   const handleNextStepClick = async () => {
     // Block navigation if timer has expired
