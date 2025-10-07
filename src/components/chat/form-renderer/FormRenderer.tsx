@@ -12,7 +12,7 @@ import { TimerDisplay } from './TimerDisplay'
 import { useTimer } from '@/hooks/useTimer'
 import { isEqual } from 'es-toolkit'
 
-export function FormRenderer({ formSchema, isSchemaDifferent }: { formSchema: FormSchema; isSchemaDifferent?: boolean }) {
+export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
   const previousSchemaRef = useRef<FormSchema | null>(null)
