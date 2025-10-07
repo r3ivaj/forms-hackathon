@@ -54,11 +54,6 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   }, [formSchema, form, timer])
 
   const handleNextStepClick = async () => {
-    // Block navigation if timer has expired
-    if (hasCustomDuration && timer.isExpired) {
-      return
-    }
-
     let isStepValid = true
     for (const field of formSchema.steps[currentStep].fields) {
       const validationResult = await form.validateField(field.id, 'submit')
@@ -73,11 +68,6 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   }
 
   const handlePrevStepClick = () => {
-    // Block navigation if timer has expired
-    if (hasCustomDuration && timer.isExpired) {
-      return
-    }
-
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1)
     }
