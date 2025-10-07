@@ -1,6 +1,6 @@
 import { EmptySection } from '@/components/EmptySection'
 import { Box } from 'lucide-react'
-import { FormRenderer } from './FormRenderer'
+import { FormRenderer } from './form-renderer/FormRenderer'
 import { FormToolbar } from './FormToolbar'
 import { FormSchema } from '@/lib/tools/validateFormSchema'
 import { isEqual } from 'es-toolkit';

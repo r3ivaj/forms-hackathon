@@ -1,13 +1,14 @@
 import { FormSchema } from '@/lib/tools/validateFormSchema'
-import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import { Send } from 'lucide-react'
 import { useForm } from '@tanstack/react-form'
 import { validateField, FieldValidation } from '@/utils/chat/validationUtils'
-import { TextInput } from './form-components/TextInput'
-import { TextArea } from './form-components/TextArea'
-import { SelectField } from './form-components/SelectField'
-import { FileInput } from './form-components/FileInput'
+import { TextInput } from './fields/TextInput'
+import { TextArea } from './fields/TextArea'
+import { SelectField } from './fields/SelectField'
+import { FileInput } from './fields/FileInput'
+import { StepProgress } from './StepProgress'
+import { FormHeader } from './FormHeader'
+import { Navigation } from './Navigation'
 
 // Create default values from form schema
 const createDefaultValues = (formSchema: FormSchema) => {
@@ -166,30 +167,17 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
     >
       <div className="mx-auto max-w-2xl space-y-6 p-6">
         {/* Form Header */}
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold">{formSchema.title}</h1>
-          {formSchema.description && (
-            <p className="text-muted-foreground">{formSchema.description}</p>
-          )}
-        </div>
+        <FormHeader
+          title={formSchema.title}
+          description={formSchema.description}
+        />
 
         {/* Step Progress */}
-        <div className="space-y-2">
-          <div className="text-muted-foreground flex items-center justify-between text-sm">
-            <span>
-              Paso {currentStep + 1} de {formSchema.steps.length}
-            </span>
-            <span>{currentStepData.title}</span>
-          </div>
-          <div className="bg-muted h-2 w-full rounded-full">
-            <div
-              className="bg-primary h-2 rounded-full transition-all duration-300"
-              style={{
-                width: `${((currentStep + 1) / formSchema.steps.length) * 100}%`,
-              }}
-            />
-          </div>
-        </div>
+        <StepProgress
+          currentStep={currentStep}
+          totalSteps={formSchema.steps.length}
+          currentStepTitle={currentStepData.title}
+        />
 
         {/* Render all steps, but only show the current step */}
         {formSchema.steps.map((step, idx) => (
@@ -203,38 +191,19 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
         ))}
 
         {/* Navigation */}
-        <div className="flex justify-between">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handlePrevStepClick}
-            disabled={isFirstStep}
-          >
-            Anterior
-          </Button>
-
-          {isLastStep ? (
-            <form.Subscribe
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
-              children={([canSubmit, isSubmitting]) => (
-                <Button type="submit" disabled={!canSubmit || isSubmitting}>
-                  {isSubmitting ? (
-                    'Enviando...'
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      Enviar
-                    </>
-                  )}
-                </Button>
-              )}
+        <form.Subscribe
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
+          children={([canSubmit, isSubmitting]) => (
+            <Navigation
+              isFirstStep={isFirstStep}
+              isLastStep={isLastStep}
+              onPrevStep={handlePrevStepClick}
+              onNextStep={handleNextStepClick}
+              canSubmit={canSubmit}
+              isSubmitting={isSubmitting}
             />
-          ) : (
-            <Button type="button" onClick={handleNextStepClick}>
-              Siguiente
-            </Button>
           )}
-        </div>
+        />
       </div>
     </form>
   )

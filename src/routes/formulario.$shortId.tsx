@@ -1,6 +1,6 @@
 import { useFormSettingsByShortId } from '@/hooks/useFormSettingsByShortId'
 import { createFileRoute } from '@tanstack/react-router'
-import { FormRenderer } from '@/components/chat/FormRenderer'
+import { FormRenderer } from '@/components/chat/form-renderer/FormRenderer'
 import { EmptySection } from '@/components/EmptySection'
 import { FileX } from 'lucide-react'
 import { useMemo } from 'react'
