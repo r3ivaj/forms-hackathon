@@ -148,10 +148,6 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
       onSubmit={(e) => {
         e.preventDefault()
         e.stopPropagation()
-        // Block submission if timer has expired
-        if (hasCustomDuration && timer.isExpired) {
-          return
-        }
         form.handleSubmit()
       }}
     >
