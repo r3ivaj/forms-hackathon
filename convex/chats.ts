@@ -26,8 +26,6 @@ export const createChat = mutation({
       chatId: chatId,
       short_id: short_id,
       status: "draft",
-      sessionDuration: "unlimited",
-      nipValidation: false,
       createdAt: now,
       updatedAt: now,
     });

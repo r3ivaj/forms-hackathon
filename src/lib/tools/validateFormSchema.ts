@@ -8,7 +8,7 @@ const baseValidation = z.object({
 
 // 🔹 Specific validations per field type
 const textValidation = baseValidation.extend({
-  minLength: z.number().int().positive().optional(),
+  minLength: z.number().int().min(0).optional(),
   maxLength: z.number().int().positive().optional(),
   regex: z.string().optional(),
 })

@@ -65,12 +65,6 @@ export function FormToolbar({
             </>
           ) : (
             <>
-              <FormSettingsDialog formSettings={formSettings}>
-                <Button variant="outline" size="icon" title="Configuración">
-                  <Settings className="h-4 w-4" />
-                </Button>
-              </FormSettingsDialog>
-
               {formSettings?.status === 'draft' ? (
                 <Button onClick={handlePublish}>
                   <Globe className="h-4 w-4" />

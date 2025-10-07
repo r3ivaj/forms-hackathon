@@ -21,12 +21,6 @@ export default defineSchema({
     status: v.union(v.literal("draft"), v.literal("published")),
     // Form schema stored as a string
     formSchema: v.optional(v.string()),
-    // Session duration configuration
-    sessionDuration: v.union(v.literal("unlimited"), v.literal("custom")),
-    // Custom session duration in minutes (only used when sessionDuration is "custom")
-    customDuration: v.optional(v.number()),
-    // NIP validation requirement
-    nipValidation: v.boolean(),
     createdAt: v.number(),
     updatedAt: v.number(),
   }).index("by_short_id", ["short_id"]),
