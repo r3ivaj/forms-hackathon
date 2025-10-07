@@ -1,23 +1,13 @@
 import { FormSchema } from '@/lib/tools/validateFormSchema'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import { useState } from 'react'
 import { Send } from 'lucide-react'
 import { useForm } from '@tanstack/react-form'
-import {
-  validateField,
-  getInputAttributes,
-  FieldValidation,
-} from '@/utils/chat/validationUtils'
+import { validateField, FieldValidation } from '@/utils/chat/validationUtils'
+import { TextInput } from './form-components/TextInput'
+import { TextArea } from './form-components/TextArea'
+import { SelectField } from './form-components/SelectField'
+import { FileInput } from './form-components/FileInput'
 
 // Create default values from form schema
 const createDefaultValues = (formSchema: FormSchema) => {
@@ -102,98 +92,56 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
             case 'email':
             case 'number':
               return (
-                <div className="space-y-2">
-                  <Label htmlFor={id}>
-                    {label}
-                    {required && <span className="text-red-500">*</span>}
-                  </Label>
-                  <Input
-                    id={id}
-                    type={type}
-                    value={value || ''}
-                    onBlur={handleBlur}
-                    onChange={(e) => handleChange(e.target.value)}
-                    placeholder={`Ingresa ${label.toLowerCase()}`}
-                    {...getInputAttributes(type, validation)}
-                  />
-                  {errors && errors.length > 0 && (
-                    <p className="text-sm text-red-500">{errors[0]}</p>
-                  )}
-                </div>
+                <TextInput
+                  id={id}
+                  label={label}
+                  type={type}
+                  value={value || ''}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  validation={validation}
+                  required={required}
+                  errors={(errors as string[]) || []}
+                />
               )
 
             case 'textarea':
               return (
-                <div className="space-y-2">
-                  <Label htmlFor={id}>
-                    {label}
-                    {required && <span className="text-red-500">*</span>}
-                  </Label>
-                  <Textarea
-                    id={id}
-                    value={value || ''}
-                    onBlur={handleBlur}
-                    onChange={(e) => handleChange(e.target.value)}
-                    placeholder={`Ingresa ${label.toLowerCase()}`}
-                    rows={4}
-                    {...getInputAttributes(type, validation)}
-                  />
-                  {errors && errors.length > 0 && (
-                    <p className="text-sm text-red-500">{errors[0]}</p>
-                  )}
-                </div>
+                <TextArea
+                  id={id}
+                  label={label}
+                  value={value || ''}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  validation={validation}
+                  required={required}
+                  errors={(errors as string[]) || []}
+                />
               )
 
             case 'select':
               return (
-                <div className="space-y-2">
-                  <Label htmlFor={id}>
-                    {label}
-                    {required && <span className="text-red-500">*</span>}
-                  </Label>
-                  <Select value={value || ''} onValueChange={handleChange}>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={`Selecciona ${label.toLowerCase()}`}
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {options?.map((option: string) => (
-                        <SelectItem key={option} value={option}>
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {errors && errors.length > 0 && (
-                    <p className="text-sm text-red-500">{errors[0]}</p>
-                  )}
-                </div>
+                <SelectField
+                  id={id}
+                  label={label}
+                  value={value || ''}
+                  onChange={handleChange}
+                  options={options}
+                  required={required}
+                  errors={(errors as string[]) || []}
+                />
               )
 
             case 'file':
               return (
-                <div className="space-y-2">
-                  <Label htmlFor={id}>
-                    {label}
-                    {required && <span className="text-red-500">*</span>}
-                  </Label>
-                  <Input
-                    id={id}
-                    type="file"
-                    onChange={(e) =>
-                      handleChange(
-                        e.target.files && e.target.files.length > 0
-                          ? e.target.files[0]
-                          : null,
-                      )
-                    }
-                    {...getInputAttributes(type, validation)}
-                  />
-                  {errors && errors.length > 0 && (
-                    <p className="text-sm text-red-500">{errors[0]}</p>
-                  )}
-                </div>
+                <FileInput
+                  id={id}
+                  label={label}
+                  onChange={handleChange}
+                  validation={validation}
+                  required={required}
+                  errors={(errors as string[]) || []}
+                />
               )
 
             default:
