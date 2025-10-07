@@ -2,28 +2,11 @@ import { FormSchema } from '@/lib/tools/validateFormSchema'
 import { useState } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { validateField, FieldValidation } from '@/utils/chat/validationUtils'
-import { TextInput } from './fields/TextInput'
-import { TextArea } from './fields/TextArea'
-import { SelectField } from './fields/SelectField'
-import { FileInput } from './fields/FileInput'
 import { StepProgress } from './StepProgress'
 import { FormHeader } from './FormHeader'
 import { Navigation } from './Navigation'
-
-// Create default values from form schema
-const createDefaultValues = (formSchema: FormSchema) => {
-  const defaultValues: Record<string, any> = {}
-  formSchema.steps.forEach((step) => {
-    step.fields.forEach((field) => {
-      if (field.type === 'file') {
-        defaultValues[field.id] = null
-      } else {
-        defaultValues[field.id] = ''
-      }
-    })
-  })
-  return defaultValues
-}
+import { FieldSelector } from './FieldSelector'
+import { createDefaultValues } from '@/utils/form-renderer/createDefaultValues'
 
 export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   const [currentStep, setCurrentStep] = useState(0)
@@ -88,66 +71,20 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
           const { value } = fieldApi.state
           const { errors } = fieldApi.state.meta
 
-          switch (type) {
-            case 'text':
-            case 'email':
-            case 'number':
-              return (
-                <TextInput
-                  id={id}
-                  label={label}
-                  type={type}
-                  value={value || ''}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  validation={validation}
-                  required={required}
-                  errors={(errors as string[]) || []}
-                />
-              )
-
-            case 'textarea':
-              return (
-                <TextArea
-                  id={id}
-                  label={label}
-                  value={value || ''}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  validation={validation}
-                  required={required}
-                  errors={(errors as string[]) || []}
-                />
-              )
-
-            case 'select':
-              return (
-                <SelectField
-                  id={id}
-                  label={label}
-                  value={value || ''}
-                  onChange={handleChange}
-                  options={options}
-                  required={required}
-                  errors={(errors as string[]) || []}
-                />
-              )
-
-            case 'file':
-              return (
-                <FileInput
-                  id={id}
-                  label={label}
-                  onChange={handleChange}
-                  validation={validation}
-                  required={required}
-                  errors={(errors as string[]) || []}
-                />
-              )
-
-            default:
-              return null
-          }
+          return (
+            <FieldSelector
+              id={id}
+              label={label}
+              type={type}
+              value={value}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              validation={validation}
+              required={required}
+              errors={(errors as string[]) || []}
+              options={options}
+            />
+          )
         }}
       />
     )
