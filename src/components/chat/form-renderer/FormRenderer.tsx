@@ -19,7 +19,7 @@ export function FormRenderer({ formSchema, isSchemaDifferent }: { formSchema: Fo
 
   // Check if form has custom duration
   const hasCustomDuration = formSchema.sessionDuration.type === 'custom'
-  const durationMinutes = hasCustomDuration ? (formSchema.sessionDuration as { type: 'custom'; customMinutes: number }).customMinutes : 0
+  const durationMinutes = formSchema.sessionDuration.type === 'custom' ? formSchema.sessionDuration.customMinutes : 0
 
   // Timer logic
   const timer = useTimer({ durationMinutes })
