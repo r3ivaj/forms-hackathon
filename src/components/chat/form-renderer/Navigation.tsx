@@ -5,9 +5,10 @@ interface NavigationProps {
   isFirstStep: boolean
   isLastStep: boolean
   onPrevStep: () => void
-  onNextStep: () => void
+  onNextStep: () => void | Promise<void>
   canSubmit: boolean
   isSubmitting: boolean
+  isTimerExpired?: boolean
 }
 
 export function Navigation({
@@ -17,6 +18,7 @@ export function Navigation({
   onNextStep,
   canSubmit,
   isSubmitting,
+  isTimerExpired = false,
 }: NavigationProps) {
   return (
     <div className="flex justify-between">
@@ -24,13 +26,13 @@ export function Navigation({
         type="button"
         variant="outline"
         onClick={onPrevStep}
-        disabled={isFirstStep}
+        disabled={isFirstStep || isTimerExpired}
       >
         Anterior
       </Button>
 
       {isLastStep ? (
-        <Button type="submit" disabled={!canSubmit || isSubmitting}>
+        <Button type="submit" disabled={!canSubmit || isSubmitting || isTimerExpired}>
           {isSubmitting ? (
             'Enviando...'
           ) : (
@@ -41,7 +43,7 @@ export function Navigation({
           )}
         </Button>
       ) : (
-        <Button type="button" onClick={onNextStep}>
+        <Button type="button" onClick={onNextStep} disabled={isTimerExpired}>
           Siguiente
         </Button>
       )}

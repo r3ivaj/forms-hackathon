@@ -7,9 +7,25 @@ import { FormHeader } from './FormHeader'
 import { Navigation } from './Navigation'
 import { FieldSelector } from './FieldSelector'
 import { createDefaultValues } from '@/utils/form-renderer/createDefaultValues'
+import { TimerStartScreen } from './TimerStartScreen'
+import { TimerDisplay } from './TimerDisplay'
+import { useTimer } from '@/hooks/useTimer'
 
 export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   const [currentStep, setCurrentStep] = useState(0)
+  const [hasStarted, setHasStarted] = useState(false)
+
+  // Check if form has custom duration
+  const hasCustomDuration = formSchema.sessionDuration.type === 'custom'
+  const durationMinutes = hasCustomDuration ? (formSchema.sessionDuration as { type: 'custom'; customMinutes: number }).customMinutes : 0
+
+  // Timer logic
+  const timer = useTimer({
+    durationMinutes,
+    onTimeExpired: () => {
+      // Timer expired - user can't continue
+    }
+  })
 
   const form = useForm({
     defaultValues: createDefaultValues(formSchema),
@@ -20,6 +36,11 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   })
 
   const handleNextStepClick = async () => {
+    // Block navigation if timer has expired
+    if (hasCustomDuration && timer.isExpired) {
+      return
+    }
+
     let isStepValid = true
     for (const field of formSchema.steps[currentStep].fields) {
       const validationResult = await form.validateField(field.id, 'submit')
@@ -34,9 +55,19 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   }
 
   const handlePrevStepClick = () => {
+    // Block navigation if timer has expired
+    if (hasCustomDuration && timer.isExpired) {
+      return
+    }
+
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1)
     }
+  }
+
+  const handleStartTimer = () => {
+    setHasStarted(true)
+    timer.start()
   }
 
   const renderField = (field: {
@@ -94,15 +125,38 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
   const isLastStep = currentStep === formSchema.steps.length - 1
   const isFirstStep = currentStep === 0
 
+  // Show timer start screen if custom duration and not started
+  if (hasCustomDuration && !hasStarted) {
+    return (
+      <TimerStartScreen
+        duration={durationMinutes}
+        onStart={handleStartTimer}
+      />
+    )
+  }
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault()
         e.stopPropagation()
+        // Block submission if timer has expired
+        if (hasCustomDuration && timer.isExpired) {
+          return
+        }
         form.handleSubmit()
       }}
     >
       <div className="mx-auto max-w-2xl space-y-6 p-6">
+        {/* Timer Display */}
+        {hasCustomDuration && (
+          <TimerDisplay
+            timeLeft={timer.timeLeft}
+            isExpired={timer.isExpired}
+            formatTime={timer.formatTime}
+          />
+        )}
+
         {/* Form Header */}
         <FormHeader
           title={formSchema.title}
@@ -136,8 +190,9 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
               isLastStep={isLastStep}
               onPrevStep={handlePrevStepClick}
               onNextStep={handleNextStepClick}
-              canSubmit={canSubmit}
+              canSubmit={canSubmit && !(hasCustomDuration && timer.isExpired)}
               isSubmitting={isSubmitting}
+              isTimerExpired={hasCustomDuration && timer.isExpired}
             />
           )}
         />
