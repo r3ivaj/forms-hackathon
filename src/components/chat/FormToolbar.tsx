@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Settings, EyeOff, Globe } from 'lucide-react'
-import { FormSettingsDialog } from './FormSettingsDialog'
+import { EyeOff, Globe } from 'lucide-react'
 import { FormCancelDialog } from './FormCancelDialog'
 import { FormUrlCopyButton } from './FormUrlCopyButton'
 import { useParams } from '@tanstack/react-router'
