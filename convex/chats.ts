@@ -26,6 +26,7 @@ export const createChat = mutation({
       chatId: chatId,
       short_id: short_id,
       status: "draft",
+      publishedOnce: false,
       createdAt: now,
       updatedAt: now,
     });
@@ -97,6 +98,7 @@ export const patchFormSettings = mutation({
     customDuration: v.optional(v.number()),
     status: v.optional(v.union(v.literal("draft"), v.literal("published"))),
     formSchema: v.optional(v.string()),
+    publishedOnce: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const chat = await ctx.db.get(args.chatId);
