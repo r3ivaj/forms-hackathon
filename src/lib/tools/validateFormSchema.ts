@@ -109,7 +109,6 @@ export const formSchema = z.object({
   description: z.string().optional(),
   steps: z.array(stepSchema).min(1),
   sessionDuration: sessionDurationSchema,
-  nipValidation: z.boolean(),
 })
 
 export type FormSchema = z.infer<typeof formSchema>

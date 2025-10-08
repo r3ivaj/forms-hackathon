@@ -95,7 +95,6 @@ export const patchFormSettings = mutation({
     chatId: v.id("chats"),
     sessionDuration: v.optional(v.union(v.literal("unlimited"), v.literal("custom"))),
     customDuration: v.optional(v.number()),
-    nipValidation: v.optional(v.boolean()),
     status: v.optional(v.union(v.literal("draft"), v.literal("published"))),
     formSchema: v.optional(v.string()),
   },
