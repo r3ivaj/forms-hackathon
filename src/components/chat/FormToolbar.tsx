@@ -110,6 +110,7 @@ export function FormToolbar({
         open={showFirstTimeDialog}
         onOpenChange={setShowFirstTimeDialog}
         onConfirm={handlePublish}
+        formTitle={latestFormSchema?.title}
       />
     </div>
   )
