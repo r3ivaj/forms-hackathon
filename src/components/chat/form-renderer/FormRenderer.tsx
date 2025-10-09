@@ -37,27 +37,6 @@ export function FormRenderer({
     },
   })
 
-  // // Reset form when schema actually changes
-  // useEffect(() => {
-  //   const previousSchema = previousSchemaRef.current
-
-  //   // Only reset if schema has actually changed (not just if it's different from published)
-  //   if (previousSchema && !isEqual(previousSchema, formSchema)) {
-  //     // Reset form state
-  //     setCurrentStep(0)
-  //     setHasStarted(false)
-
-  //     // Reset form values
-  //     form.reset()
-
-  //     // Reset timer
-  //     timer.reset()
-  //   }
-
-  //   // Update the ref with current schema
-  //   previousSchemaRef.current = formSchema
-  // }, [formSchema, form, timer])
-
   const handleNextStepClick = async () => {
     let isStepValid = true
     for (const field of formSchema.steps[currentStep].fields) {
