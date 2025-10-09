@@ -5,13 +5,13 @@ import { EmptySection } from '@/components/EmptySection'
 import { FileX } from 'lucide-react'
 import { useMemo } from 'react'
 
-export const Route = createFileRoute('/formulario/$shortId')({
+export const Route = createFileRoute('/formulario/$formSettingsShortId')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { shortId } = Route.useParams()
-  const { data } = useFormSettingsByShortId(shortId)
+  const { formSettingsShortId } = Route.useParams()
+  const { data } = useFormSettingsByShortId(formSettingsShortId)
 
   const formSchema = useMemo(() => {
     if (!data?.formSchema) {

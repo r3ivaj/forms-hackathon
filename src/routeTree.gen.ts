@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as FormularioShortIdRouteImport } from './routes/formulario.$shortId'
+import { Route as FormularioFormSettingsShortIdRouteImport } from './routes/formulario.$formSettingsShortId'
 import { Route as CChatIdRouteImport } from './routes/c.$chatId'
 import { Route as ApiFormconfigRouteImport } from './routes/api/formconfig'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -20,11 +20,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FormularioShortIdRoute = FormularioShortIdRouteImport.update({
-  id: '/formulario/$shortId',
-  path: '/formulario/$shortId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const FormularioFormSettingsShortIdRoute =
+  FormularioFormSettingsShortIdRouteImport.update({
+    id: '/formulario/$formSettingsShortId',
+    path: '/formulario/$formSettingsShortId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const CChatIdRoute = CChatIdRouteImport.update({
   id: '/c/$chatId',
   path: '/c/$chatId',
@@ -46,14 +47,14 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/api/formconfig': typeof ApiFormconfigRoute
   '/c/$chatId': typeof CChatIdRoute
-  '/formulario/$shortId': typeof FormularioShortIdRoute
+  '/formulario/$formSettingsShortId': typeof FormularioFormSettingsShortIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
   '/api/formconfig': typeof ApiFormconfigRoute
   '/c/$chatId': typeof CChatIdRoute
-  '/formulario/$shortId': typeof FormularioShortIdRoute
+  '/formulario/$formSettingsShortId': typeof FormularioFormSettingsShortIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,7 +62,7 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/api/formconfig': typeof ApiFormconfigRoute
   '/c/$chatId': typeof CChatIdRoute
-  '/formulario/$shortId': typeof FormularioShortIdRoute
+  '/formulario/$formSettingsShortId': typeof FormularioFormSettingsShortIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -70,21 +71,21 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/formconfig'
     | '/c/$chatId'
-    | '/formulario/$shortId'
+    | '/formulario/$formSettingsShortId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/api/chat'
     | '/api/formconfig'
     | '/c/$chatId'
-    | '/formulario/$shortId'
+    | '/formulario/$formSettingsShortId'
   id:
     | '__root__'
     | '/'
     | '/api/chat'
     | '/api/formconfig'
     | '/c/$chatId'
-    | '/formulario/$shortId'
+    | '/formulario/$formSettingsShortId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -92,7 +93,7 @@ export interface RootRouteChildren {
   ApiChatRoute: typeof ApiChatRoute
   ApiFormconfigRoute: typeof ApiFormconfigRoute
   CChatIdRoute: typeof CChatIdRoute
-  FormularioShortIdRoute: typeof FormularioShortIdRoute
+  FormularioFormSettingsShortIdRoute: typeof FormularioFormSettingsShortIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -104,11 +105,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/formulario/$shortId': {
-      id: '/formulario/$shortId'
-      path: '/formulario/$shortId'
-      fullPath: '/formulario/$shortId'
-      preLoaderRoute: typeof FormularioShortIdRouteImport
+    '/formulario/$formSettingsShortId': {
+      id: '/formulario/$formSettingsShortId'
+      path: '/formulario/$formSettingsShortId'
+      fullPath: '/formulario/$formSettingsShortId'
+      preLoaderRoute: typeof FormularioFormSettingsShortIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/c/$chatId': {
@@ -140,7 +141,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiChatRoute: ApiChatRoute,
   ApiFormconfigRoute: ApiFormconfigRoute,
   CChatIdRoute: CChatIdRoute,
-  FormularioShortIdRoute: FormularioShortIdRoute,
+  FormularioFormSettingsShortIdRoute: FormularioFormSettingsShortIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
