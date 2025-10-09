@@ -13,8 +13,10 @@ import { useTimer } from '@/hooks/useTimer'
 
 export function FormRenderer({
   formSchema,
+  onSubmit,
 }: {
-  formSchema: FormSchema
+  formSchema: FormSchema,
+  onSubmit?: (values: any) => void | Promise<void>,
 }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
@@ -29,8 +31,9 @@ export function FormRenderer({
   const form = useForm({
     defaultValues: createDefaultValues(formSchema),
     onSubmit: async ({ value }) => {
-      // Do something with form data
-      console.log('Form submitted with values:', value)
+      if (onSubmit) {
+        await onSubmit(value)
+      }
     },
   })
 
