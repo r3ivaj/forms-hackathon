@@ -158,12 +158,12 @@ export function FirstTimePublishDialog({
                 >
                   {isPublishing ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
                       Publicando...
                     </>
                   ) : (
                     <>
-                      <Globe className="h-4 w-4 mr-2" />
+                      <Globe className="h-4 w-4" />
                       Publicar
                     </>
                   )}
