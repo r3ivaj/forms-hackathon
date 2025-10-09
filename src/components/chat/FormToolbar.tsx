@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { EyeOff, Globe } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { EyeOff, Globe, User, Building } from 'lucide-react'
 import { FormCancelDialog } from './FormCancelDialog'
 import { FormUrlCopyButton } from './FormUrlCopyButton'
 import { FirstTimePublishDialog } from './FirstTimePublishDialog'
@@ -52,19 +54,41 @@ export function FormToolbar({
         <div className="flex items-center gap-3">
           {!isFormSettingsLoading && formSettings && (
             <>
-              <div className="flex items-center gap-2">
+              {/* Account Type Badge */}
+              {formSettings.accountType && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge variant="secondary" className="h-6 w-6 p-0">
+                      {formSettings.accountType === 'PF' ? (
+                        <User className="h-3 w-3" />
+                      ) : formSettings.accountType === 'PM' ? (
+                        <Building className="h-3 w-3" />
+                      ) : null}
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      {formSettings.accountType === 'PF'
+                        ? 'Formulario para Persona Física'
+                        : 'Formulario para Persona Moral'}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+
+              <Badge variant="secondary">
                 {formSettings.status === 'published' ? (
                   <>
-                    <Globe className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium text-foreground">Público</span>
+                    <Globe className="h-3 w-3" />
+                    Público
                   </>
                 ) : (
                   <>
-                    <EyeOff className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium text-muted-foreground">Borrador</span>
+                    <EyeOff className="h-3 w-3" />
+                    Borrador
                   </>
                 )}
-              </div>
+              </Badge>
               {formSettings.status === 'published' && (
                 <FormUrlCopyButton formOptions={formSettings} />
               )}
