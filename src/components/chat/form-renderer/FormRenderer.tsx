@@ -13,10 +13,8 @@ import { useTimer } from '@/hooks/useTimer'
 
 export function FormRenderer({
   formSchema,
-  isPreview = false,
 }: {
   formSchema: FormSchema
-  isPreview?: boolean
 }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
