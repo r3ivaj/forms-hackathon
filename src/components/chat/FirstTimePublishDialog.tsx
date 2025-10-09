@@ -2,13 +2,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   Dialog,
   DialogContent,
@@ -71,10 +65,7 @@ export function FirstTimePublishDialog({
               name="slug"
               validators={{
                 onChange: ({ value }) => {
-                  if (!value || value.trim() === '') {
-                    return 'El slug es requerido'
-                  }
-                  if (!/^[a-zA-Z0-9-_]+$/.test(value)) {
+                  if (value && value.trim() !== '' && !/^[a-zA-Z0-9-_]+$/.test(value)) {
                     return 'El slug solo puede contener letras, números, guiones y guiones bajos'
                   }
                   return undefined
@@ -83,7 +74,7 @@ export function FirstTimePublishDialog({
               children={(field) => (
                 <div className="space-y-2">
                   <Label htmlFor={field.name} className="text-sm font-medium">
-                    URL del formulario
+                    URL del formulario (opcional)
                   </Label>
                   <div className="flex items-center rounded-md border border-input bg-background">
                     <span className="px-3 py-2 text-sm text-muted-foreground border-r border-input">
@@ -118,18 +109,26 @@ export function FirstTimePublishDialog({
               }}
               children={(field) => (
                 <div className="space-y-2">
-                  <Label htmlFor={field.name} className="text-sm font-medium">
+                  <Label className="text-sm font-medium">
                     Tipo de persona
                   </Label>
-                  <Select value={field.state.value} onValueChange={field.handleChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona el tipo de persona" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Persona Física">Persona Física</SelectItem>
-                      <SelectItem value="Persona Moral">Persona Moral</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <RadioGroup
+                    value={field.state.value}
+                    onValueChange={field.handleChange}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Persona Física" id="persona-fisica" />
+                      <Label htmlFor="persona-fisica" className="text-sm font-normal cursor-pointer">
+                        Persona Física
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Persona Moral" id="persona-moral" />
+                      <Label htmlFor="persona-moral" className="text-sm font-normal cursor-pointer">
+                        Persona Moral
+                      </Label>
+                    </div>
+                  </RadioGroup>
                   {field.state.meta.errors && (
                     <p className="text-sm text-destructive">
                       {field.state.meta.errors[0]}
