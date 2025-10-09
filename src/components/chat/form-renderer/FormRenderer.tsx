@@ -18,7 +18,6 @@ export function FormRenderer({
 }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
-  const previousSchemaRef = useRef<FormSchema | null>(null)
 
   // Check if form has custom duration
   const hasCustomDuration = formSchema.sessionDuration.type === 'custom'
