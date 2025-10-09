@@ -99,6 +99,8 @@ export const patchFormSettings = mutation({
     status: v.optional(v.union(v.literal("draft"), v.literal("published"))),
     formSchema: v.optional(v.string()),
     publishedOnce: v.optional(v.boolean()),
+    externalFormConfigId: v.optional(v.number()),
+    accountType: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const chat = await ctx.db.get(args.chatId);

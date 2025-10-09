@@ -111,6 +111,7 @@ export function FormToolbar({
         onOpenChange={setShowFirstTimeDialog}
         onConfirm={handlePublish}
         formTitle={latestFormSchema?.title}
+        chatId={chatId}
       />
     </div>
   )

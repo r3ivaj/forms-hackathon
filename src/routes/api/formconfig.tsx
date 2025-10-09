@@ -1,17 +1,19 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { json } from '@tanstack/react-start'
+import { ConvexHttpClient } from 'convex/browser'
+import { api } from '../../../convex/_generated/api'
 
 export const Route = createFileRoute('/api/formconfig')({
   server: {
     handlers: {
       POST: async ({ request }) => {
         try {
-          const { accountType, name, slug } = await request.json()
+          const { accountType, name, slug, chatId } = await request.json()
 
           // Validate required parameters
-          if (!accountType || !name || !slug) {
+          if (!accountType || !name || !slug || !chatId) {
             return json(
-              { error: { message: 'accountType, name and slug are required' } },
+              { error: { message: 'accountType, name, slug and chatId are required' } },
               { status: 400 }
             )
           }
@@ -24,13 +26,20 @@ export const Route = createFileRoute('/api/formconfig')({
             accountType,
             name,
             slug,
+            configuration: {
+              isActive: true,
+            },
           }
+
+          // Get the API key from environment variable
+          const apiKey = process.env.MOFFIN_API_KEY!
 
           // Make the POST request to the external API
           const response = await fetch(`${apiUrl}/v1/formconfigs`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Token ${apiKey}`,
             },
             body: JSON.stringify(requestBody)
           })
@@ -44,6 +53,18 @@ export const Route = createFileRoute('/api/formconfig')({
           }
 
           const data = await response.json()
+          console.log('data', data)
+          // Initialize Convex client
+          const convex = new ConvexHttpClient(process.env.CONVEX_URL!)
+
+          // Update formSettings with Moffin data
+          await convex.mutation(api.chats.patchFormSettings, {
+            chatId: chatId,
+            externalFormConfigId: data.id,
+            accountType: accountType,
+            publishedOnce: true,
+          })
+
           return json(data)
 
         } catch (error) {

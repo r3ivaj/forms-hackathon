@@ -4,6 +4,7 @@ interface FormConfigData {
   accountType: string
   name: string
   slug: string
+  chatId: string
 }
 
 interface FormConfigResponse {

@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
@@ -14,52 +12,53 @@ import {
 import { useForm } from '@tanstack/react-form'
 import { Globe } from 'lucide-react'
 import { useFormConfig } from '@/hooks/useFormConfig'
+import { customAlphabet } from 'nanoid'
 
 interface FirstTimePublishDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onConfirm: (data: { slug: string; personType: string }) => void
   formTitle?: string
+  chatId: string
 }
 
-// Function to generate slug from title
-const generateSlug = (title: string): string => {
-  return title
-    .normalize('NFD') // Decompose accented characters
-    .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-    .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
-}
 
 export function FirstTimePublishDialog({
   open,
   onOpenChange,
   onConfirm,
   formTitle,
+  chatId,
 }: FirstTimePublishDialogProps) {
   const formConfigMutation = useFormConfig()
 
   const form = useForm({
     defaultValues: {
-      title: formTitle || '',
-      slug: formTitle ? generateSlug(formTitle) : '',
       personType: '',
     },
     onSubmit: async ({ value }) => {
       try {
+        // Map personType to Moffin API values
+        const accountTypeMap: Record<string, string> = {
+          'Persona Física': 'PF',
+          'Persona Moral': 'PM',
+        }
+
+        // Generate title and slug directly
+        const title = formTitle || 'Mi Formulario'
+        const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10)
+        const slug = nanoid() // Generate random 8-character slug with allowed characters only
+
         // Call the formconfig API
         await formConfigMutation.mutateAsync({
-          accountType: value.personType,
-          name: value.title,
-          slug: value.slug,
+          accountType: accountTypeMap[value.personType],
+          name: title,
+          slug: slug,
+          chatId: chatId,
         })
 
         // If successful, call the original onConfirm
-        await onConfirm({ slug: value.slug, personType: value.personType })
+        await onConfirm({ slug: slug, personType: value.personType })
         onOpenChange(false)
       } catch (error) {
         console.error('Error creating form config:', error)
@@ -68,22 +67,14 @@ export function FirstTimePublishDialog({
     },
   })
 
-  // Auto-update slug when title changes
-  useEffect(() => {
-    const titleValue = form.getFieldValue('title')
-    if (titleValue && titleValue.trim() !== '') {
-      const newSlug = generateSlug(titleValue)
-      form.setFieldValue('slug', newSlug)
-    }
-  }, [form.getFieldValue('title')])
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="text-center">
-          <DialogTitle className="text-xl font-semibold">Primera publicación</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">Selecciona el tipo de persona</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Configura la información básica antes de publicar el formulario
+            Elige el tipo de persona para el formulario antes de publicarlo
           </DialogDescription>
         </DialogHeader>
 
@@ -95,76 +86,6 @@ export function FirstTimePublishDialog({
           }}
         >
           <div className="space-y-6 py-4">
-            {/* Form Title Field */}
-            <form.Field
-              name="title"
-              validators={{
-                onChange: ({ value }) => {
-                  if (!value || value.trim() === '') {
-                    return 'El nombre del formulario es requerido'
-                  }
-                  return undefined
-                },
-              }}
-              children={(field) => (
-                <div className="space-y-2">
-                  <Label htmlFor={field.name} className="text-sm font-medium">
-                    Nombre del formulario
-                  </Label>
-                  <Input
-                    id={field.name}
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="Ingresa el nombre del formulario"
-                  />
-                  {field.state.meta.errors && (
-                    <p className="text-sm text-destructive">
-                      {field.state.meta.errors[0]}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
-
-            <form.Field
-              name="slug"
-              validators={{
-                onChange: ({ value }) => {
-                  if (!value || value.trim() === '') {
-                    return 'El slug es requerido'
-                  }
-                  if (!/^[a-zA-Z0-9\-]*$/.test(value)) {
-                    return 'La URL sólo puede contener letras, números y guiones'
-                  }
-                  return undefined
-                },
-              }}
-              children={(field) => (
-                <div className="space-y-2">
-                  <Label htmlFor={field.name} className="text-sm font-medium">
-                    URL del formulario
-                  </Label>
-                  <div className="flex items-center rounded-md border border-input bg-background">
-                    <span className="px-3 py-2 text-sm text-muted-foreground border-r border-input">
-                      /formulario/
-                    </span>
-                    <Input
-                      id={field.name}
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="mi-formulario"
-                      className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                    />
-                  </div>
-                  {field.state.meta.errors && (
-                    <p className="text-sm text-destructive">
-                      {field.state.meta.errors[0]}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
-
             <form.Field
               name="personType"
               validators={{
