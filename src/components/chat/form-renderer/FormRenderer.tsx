@@ -1,5 +1,5 @@
 import { FormSchema } from '@/lib/tools/validateFormSchema'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { validateField, FieldValidation } from '@/utils/chat/validationUtils'
 import { StepProgress } from './StepProgress'
@@ -10,9 +10,14 @@ import { createDefaultValues } from '@/utils/form-renderer/createDefaultValues'
 import { TimerStartScreen } from './TimerStartScreen'
 import { TimerDisplay } from './TimerDisplay'
 import { useTimer } from '@/hooks/useTimer'
-import { isEqual } from 'es-toolkit'
 
-export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
+export function FormRenderer({
+  formSchema,
+  isPreview = false,
+}: {
+  formSchema: FormSchema
+  isPreview?: boolean
+}) {
   const [currentStep, setCurrentStep] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
   const previousSchemaRef = useRef<FormSchema | null>(null)
@@ -32,26 +37,26 @@ export function FormRenderer({ formSchema }: { formSchema: FormSchema }) {
     },
   })
 
-  // Reset form when schema actually changes
-  useEffect(() => {
-    const previousSchema = previousSchemaRef.current
+  // // Reset form when schema actually changes
+  // useEffect(() => {
+  //   const previousSchema = previousSchemaRef.current
 
-    // Only reset if schema has actually changed (not just if it's different from published)
-    if (previousSchema && !isEqual(previousSchema, formSchema)) {
-      // Reset form state
-      setCurrentStep(0)
-      setHasStarted(false)
+  //   // Only reset if schema has actually changed (not just if it's different from published)
+  //   if (previousSchema && !isEqual(previousSchema, formSchema)) {
+  //     // Reset form state
+  //     setCurrentStep(0)
+  //     setHasStarted(false)
 
-      // Reset form values
-      form.reset()
+  //     // Reset form values
+  //     form.reset()
 
-      // Reset timer
-      timer.reset()
-    }
+  //     // Reset timer
+  //     timer.reset()
+  //   }
 
-    // Update the ref with current schema
-    previousSchemaRef.current = formSchema
-  }, [formSchema, form, timer])
+  //   // Update the ref with current schema
+  //   previousSchemaRef.current = formSchema
+  // }, [formSchema, form, timer])
 
   const handleNextStepClick = async () => {
     let isStepValid = true
