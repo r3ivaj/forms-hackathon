@@ -5,6 +5,6 @@ import { Id } from 'convex/_generated/dataModel'
 
 export function useFormSettings(chatId: string) {
   return useQuery(
-    convexQuery(api.chats.getFormSettings, { chatId: chatId as Id<"chats"> })
+    convexQuery(api.formSettings.getFormSettings, { chatId: chatId as Id<"chats"> })
   )
 }

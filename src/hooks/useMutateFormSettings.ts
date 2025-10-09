@@ -4,6 +4,6 @@ import { api } from "convex/_generated/api";
 
 export function useMutateFormSettings() {
   return useMutation({
-    mutationFn: useConvexMutation(api.chats.patchFormSettings)
+    mutationFn: useConvexMutation(api.formSettings.patchFormSettings)
   });
 }

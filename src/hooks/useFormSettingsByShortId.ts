@@ -4,6 +4,6 @@ import { api } from 'convex/_generated/api'
 
 export function useFormSettingsByShortId(shortId: string) {
   return useQuery(
-    convexQuery(api.chats.getFormSettingsByShortId, { shortId })
+    convexQuery(api.formSettings.getFormSettingsByShortId, { shortId })
   )
 }

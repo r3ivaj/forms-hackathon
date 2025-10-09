@@ -58,7 +58,7 @@ export const Route = createFileRoute('/api/formconfig')({
           const convex = new ConvexHttpClient(process.env.CONVEX_URL!)
 
           // Update formSettings with Moffin data
-          await convex.mutation(api.chats.patchFormSettings, {
+          await convex.mutation(api.formSettings.patchFormSettings, {
             chatId: chatId,
             externalFormConfigId: data.id,
             accountType: accountType,
