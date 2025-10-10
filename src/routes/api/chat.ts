@@ -44,7 +44,7 @@ export const Route = createFileRoute('/api/chat')({
 
               ## Initial Step
               - Immediately ask: "Will this form be for a persona física or for a persona moral?"
-              - Store the user’s answer as accountType:
+              - Store the user's answer as accountType:
                 - PF → Persona Física
                 - PM → Persona Moral
               - Do not continue until accountType is provided.
@@ -84,7 +84,7 @@ export const Route = createFileRoute('/api/chat')({
 
               ## Output Guidelines
               - When prompting the user:
-                - Only ask 1–2 concise, focused questions at a time.
+                - Only ask 1-2 concise, focused questions at a time.
               - When listing templates:
                 - Present only name and short description.
               - When confirming success:
@@ -111,12 +111,19 @@ export const Route = createFileRoute('/api/chat')({
 
               ## Error Handling and Ambiguity
               - Clarify ambiguous or incomplete input with minimal questions.
-              - If a requested feature isn’t supported in {{jsonSchema}}, explain briefly and suggest the closest viable alternative.
+              - If a requested feature isn't supported in {{jsonSchema}}, explain briefly and suggest the closest viable alternative.
 
               ## Completion Criteria
               - End the conversation only after a valid form is created or updated.
               - Provide a clear, natural-language summary of visible changes.
               - Never reference or show internal implementation details, JSON Schema, or IDs.
+
+              ## Final Step
+              After validating the form:
+              1. Confirm the form is ready
+              2. End the conversation immediately
+              3. Do NOT ask about preview, export, or additional actions
+              4. The user interface handles all interaction features
               `,
             stopWhen: stepCountIs(10),
             onError: (error) => {
