@@ -33,6 +33,8 @@ export const Route = createFileRoute('/api/chat')({
 
               Important: Never display or mention any "id" fields or values from the data structures (such as templates, form templates, forms, steps, or fields) in your responses to the user. Only show user-friendly information like names, titles, and descriptions.
 
+              CRITICAL: Before creating any form (whether from a template or custom), you MUST ask the user whether the form is for a "persona física" (natural person) or "persona moral" (legal entity). This information is essential for proper form configuration.
+
               - If you need to know the structure or format of a form schema, always call the \`getFormSchema\` tool first to obtain the schema structure before generating or validating any form schema.
               - If the user asks about available templates or form templates, call the \`getTemplatesList\` tool to get and show the current list, but do not show any ids.
               - If the user describes what they need, try to infer if an existing template or form template matches their request. If so, recommend the template or form template (without showing its id) and ask the user to confirm if it is the one they want.

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { EyeOff, Globe } from 'lucide-react'
+import { EyeOff, Globe, Building2, User } from 'lucide-react'
 import { FormCancelDialog } from './FormCancelDialog'
 import { FormUrlCopyButton } from './FormUrlCopyButton'
 import { useParams } from '@tanstack/react-router'
@@ -44,6 +44,27 @@ export function FormToolbar({
       <div className="flex items-center justify-between">
         {/* Estado del formulario */}
         <div className="flex items-center gap-3">
+          {/* Account Type Badge */}
+          {latestFormSchema?.accountType && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge variant="secondary">
+                  {latestFormSchema.accountType === 'PM' ? (
+                    <Building2 className="h-3 w-3" />
+                  ) : (
+                    <User className="h-3 w-3" />
+                  )}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                {latestFormSchema.accountType === 'PM'
+                  ? 'Formulario para Persona Moral'
+                  : 'Formulario para Persona Física'
+                }
+              </TooltipContent>
+            </Tooltip>
+          )}
+
           {!isFormSettingsLoading && formSettings && (
             <>
 
