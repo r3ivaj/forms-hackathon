@@ -1,5 +1,5 @@
 import { tool } from "ai"
-import { formSchema } from "./validateFormSchema"
+import { formSchema } from "@/utils/schemas/formSchema"
 import * as z from "zod";
 
 export const getFormSchema = tool({

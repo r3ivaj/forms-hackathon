@@ -2,7 +2,7 @@ import { EmptySection } from '@/components/EmptySection'
 import { Box } from 'lucide-react'
 import { FormRenderer } from './form-renderer/FormRenderer'
 import { FormToolbar } from './FormToolbar'
-import { FormSchema } from '@/lib/tools/validateFormSchema'
+import { FormSchema } from '@/utils/schemas/formSchema'
 import { isEqual } from 'es-toolkit';
 import { useMemo } from 'react'
 
@@ -32,7 +32,7 @@ export function FormsPreview({
     <div className="flex h-full flex-col">
       <FormToolbar latestFormSchema={latestFormSchema} isSchemaDifferent={isSchemaDifferent} />
       <div className="flex-1 overflow-y-auto p-4">
-        <FormRenderer formSchema={latestFormSchema} isPreview={true} />
+        <FormRenderer formSchema={latestFormSchema} />
       </div>
     </div>
   )

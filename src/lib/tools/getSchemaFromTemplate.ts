@@ -1,7 +1,7 @@
 import { tool } from 'ai'
 import { z } from 'zod'
 import { templateFormSchemas } from '../templates/templateFormSchemas'
-import { FormSchema } from './validateFormSchema'
+import { FormSchema } from '@/utils/schemas/formSchema'
 
 export const getSchemaFromTemplate = tool({
   description: 'Get a form schema from a template',

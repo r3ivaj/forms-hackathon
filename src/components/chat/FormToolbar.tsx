@@ -8,7 +8,7 @@ import { FormUrlCopyButton } from './FormUrlCopyButton'
 import { useParams } from '@tanstack/react-router'
 import { useFormSettings } from '@/hooks/useFormSettings'
 import { useMutateFormSettings } from '@/hooks/useMutateFormSettings'
-import { FormSchema } from '@/lib/tools/validateFormSchema'
+import { FormSchema } from '@/utils/schemas/formSchema'
 
 export function FormToolbar({
   latestFormSchema,

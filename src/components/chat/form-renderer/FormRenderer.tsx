@@ -1,4 +1,4 @@
-import { FormSchema } from '@/lib/tools/validateFormSchema'
+import { FormSchema } from '@/utils/schemas/formSchema'
 import { useState, useRef } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { validateField, FieldValidation } from '@/utils/chat/validationUtils'
@@ -159,7 +159,7 @@ export function FormRenderer({
         />
 
         {/* Render all steps, but only show the current step */}
-        {formSchema.steps.map((step, idx) => (
+        {formSchema.steps.map((step: FormSchema['steps'][0], idx: number) => (
           <div
             key={step.id}
             className={`space-y-6 ${idx === currentStep ? '' : 'hidden'}`}

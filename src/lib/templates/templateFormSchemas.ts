@@ -1,4 +1,4 @@
-import { FormSchema } from '../tools/validateFormSchema'
+import { FormSchema } from '@/utils/schemas/formSchema'
 
 export const templateFormSchemas: Record<string, FormSchema> = {
   'onboarding-pm': {
