@@ -12,7 +12,6 @@
     "@ai-sdk/openai": "^2.0.46",
     "@ai-sdk/react": "^2.0.65",
     "@convex-dev/react-query": "0.0.0-alpha.11",
-    "@netlify/vite-plugin-tanstack-start": "^1.0.2",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -54,6 +53,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@netlify/vite-plugin-tanstack-start": "^1.0.2",
     "@types/node": "^22.18.9",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.1",
