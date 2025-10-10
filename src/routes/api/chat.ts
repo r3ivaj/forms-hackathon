@@ -13,9 +13,14 @@ export const Route = createFileRoute('/api/chat')({
       POST: async ({ request }) => {
         try {
           const { messages }: { messages: UIMessage[] } = await request.json()
+          const model = process.env.OPENAI_MODEL
+
+          if (!model) {
+            throw new Error('model is not set')
+          }
 
           const result = streamText({
-            model: openai('gpt-5-mini'),
+            model: openai(model),
             messages: convertToModelMessages(messages),
             tools: {
               validateFormSchema,

@@ -106,6 +106,7 @@ export const formSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string().optional(),
+  accountType: z.enum(['PM', 'PF']).describe('Tipo de cuenta: PM (Pessoa Moral) o PF (Pessoa Física)'),
   steps: z.array(stepSchema).min(1),
   sessionDuration: sessionDurationSchema,
 })
