@@ -8,12 +8,12 @@ export const Route = createFileRoute('/api/formconfig')({
     handlers: {
       POST: async ({ request }) => {
         try {
-          const { accountType, name, slug, chatId } = await request.json()
+          const { name, slug, chatId } = await request.json()
 
           // Validate required parameters
-          if (!accountType || !name || !slug || !chatId) {
+          if (!name || !slug || !chatId) {
             return json(
-              { error: { message: 'accountType, name, slug and chatId are required' } },
+              { error: { message: 'name, slug and chatId are required' } },
               { status: 400 }
             )
           }
@@ -23,7 +23,6 @@ export const Route = createFileRoute('/api/formconfig')({
 
           // Prepare the request body
           const requestBody = {
-            accountType,
             name,
             slug,
             configuration: {
@@ -61,7 +60,6 @@ export const Route = createFileRoute('/api/formconfig')({
           await convex.mutation(api.formSettings.patchFormSettings, {
             chatId: chatId,
             externalFormConfigId: data.id,
-            accountType: accountType,
             publishedOnce: true,
           })
 

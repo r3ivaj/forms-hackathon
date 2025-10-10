@@ -2,15 +2,13 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { EyeOff, Globe, User, Building } from 'lucide-react'
+import { EyeOff, Globe } from 'lucide-react'
 import { FormCancelDialog } from './FormCancelDialog'
 import { FormUrlCopyButton } from './FormUrlCopyButton'
-import { FirstTimePublishDialog } from './FirstTimePublishDialog'
 import { useParams } from '@tanstack/react-router'
 import { useFormSettings } from '@/hooks/useFormSettings'
 import { useMutateFormSettings } from '@/hooks/useMutateFormSettings'
 import { FormSchema } from '@/lib/tools/validateFormSchema'
-import { useState } from 'react'
 
 export function FormToolbar({
   latestFormSchema,
@@ -21,11 +19,10 @@ export function FormToolbar({
 }) {
   const { chatId } = useParams({ from: '/c/$chatId' })
   const { mutateAsync: mutateFormSettingsAsync } = useMutateFormSettings()
-  const [showFirstTimeDialog, setShowFirstTimeDialog] = useState(false)
 
   const { data: formSettings, isLoading: isFormSettingsLoading } = useFormSettings(chatId)
 
-  const handlePublish = async (data?: { slug: string; personType: string }) => {
+  const handlePublish = async () => {
     await mutateFormSettingsAsync({
       chatId: chatId as any,
       status: 'published',
@@ -34,17 +31,12 @@ export function FormToolbar({
     })
   }
 
-  const handleDirectPublish = async () => {
+  const handlePublishChanges = async () => {
     await handlePublish()
   }
 
   const handlePublishClick = () => {
-    // Check if this is the first time publishing (publishedOnce is false)
-    if (formSettings?.publishedOnce === false) {
-      setShowFirstTimeDialog(true)
-    } else {
-      handlePublish()
-    }
+    handlePublish()
   }
 
   return (
@@ -54,27 +46,6 @@ export function FormToolbar({
         <div className="flex items-center gap-3">
           {!isFormSettingsLoading && formSettings && (
             <>
-              {/* Account Type Badge */}
-              {formSettings.accountType && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Badge variant="secondary" className="h-6 w-6 p-0">
-                      {formSettings.accountType === 'PF' ? (
-                        <User className="h-3 w-3" />
-                      ) : formSettings.accountType === 'PM' ? (
-                        <Building className="h-3 w-3" />
-                      ) : null}
-                    </Badge>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>
-                      {formSettings.accountType === 'PF'
-                        ? 'Formulario para Persona Física'
-                        : 'Formulario para Persona Moral'}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              )}
 
               <Badge variant="secondary">
                 {formSettings.status === 'published' ? (
@@ -118,7 +89,7 @@ export function FormToolbar({
                     </Button>
                   </FormCancelDialog>
                   {isSchemaDifferent && (
-                    <Button onClick={handleDirectPublish} variant="default">
+                    <Button onClick={handlePublishChanges} variant="default">
                       <Globe className="h-4 w-4" />
                       Publicar cambios
                     </Button>
@@ -130,13 +101,6 @@ export function FormToolbar({
         </div>
       </div>
 
-      <FirstTimePublishDialog
-        open={showFirstTimeDialog}
-        onOpenChange={setShowFirstTimeDialog}
-        onConfirm={handlePublish}
-        formTitle={latestFormSchema?.title}
-        chatId={chatId}
-      />
     </div>
   )
 }

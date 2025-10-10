@@ -1,9 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 
 interface FormConfigData {
-  accountType: string
-  name: string
-  slug: string
   chatId: string
 }
 
