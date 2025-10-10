@@ -6,6 +6,7 @@ export const templateFormSchemas: Record<string, FormSchema> = {
     title: 'Onboarding Persona Moral',
     description:
       'Formulario para el proceso de onboarding de empresas y organizaciones',
+    accountType: 'PM',
     sessionDuration: {
       type: 'unlimited',
     },
@@ -84,6 +85,7 @@ export const templateFormSchemas: Record<string, FormSchema> = {
     id: 'onboarding-pf',
     title: 'Onboarding Persona Física',
     description: 'Formulario para el proceso de onboarding de personas físicas',
+    accountType: 'PF',
     sessionDuration: {
       type: 'unlimited',
     },
