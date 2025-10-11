@@ -19,7 +19,7 @@ function RouteComponent() {
 
     const chatId = await createChat()
     localStorage.setItem(`${chatId}:initialMessage`, message.text.trim() || '')
-    navigate({ to: '/c/$chatId', params: { chatId } })
+    await navigate({ to: '/c/$chatId', params: { chatId } })
   }
 
   return (
