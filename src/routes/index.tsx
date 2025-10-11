@@ -1,17 +1,18 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { PromptInput, PromptInputBody, PromptInputTextarea, PromptInputToolbar, PromptInputSubmit } from '@/components/ai-elements/prompt-input'
 import { useCreateChat } from '@/hooks/useCreateChat'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { createChat } = useCreateChat()
+  const { createChat, isCreating } = useCreateChat()
   const navigate = useNavigate()
+  const [textValue, setTextValue] = useState('')
 
   const handleSubmit = async (message: { text?: string; files?: any[] }, event: React.FormEvent<HTMLFormElement>) => {
-
     if (!message.text) {
       return
     }
@@ -31,11 +32,18 @@ function RouteComponent() {
 
         <PromptInput onSubmit={handleSubmit}>
           <PromptInputBody>
-            <PromptInputTextarea placeholder="Pidele al asistente el formulario que quieres crear..." />
+            <PromptInputTextarea 
+              placeholder="Pidele al asistente el formulario que quieres crear..." 
+              value={textValue}
+              onChange={(e) => setTextValue(e.target.value)}
+            />
             <PromptInputToolbar>
               {/* empty div to align the submit button to the right */}
               <div />
-              <PromptInputSubmit />
+              <PromptInputSubmit 
+                disabled={!textValue.trim() || isCreating}
+                status={isCreating ? 'submitted' : 'ready'}
+              />
             </PromptInputToolbar>
           </PromptInputBody>
         </PromptInput>
