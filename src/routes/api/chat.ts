@@ -5,7 +5,6 @@ import { openai } from '@ai-sdk/openai'
 import { validateFormSchema } from '@/lib/tools/validateFormSchema'
 import { getSchemaFromTemplate } from '@/lib/tools/getSchemaFromTemplate'
 import { getTemplatesList } from '@/lib/tools/getTemplatesList'
-import { getFormSchema } from '@/lib/tools/getFormSchema'
 import { formSchema } from '@/utils/schemas/formSchema'
 import { z } from 'zod'
 
@@ -30,7 +29,6 @@ export const Route = createFileRoute('/api/chat')({
               validateFormSchema,
               getSchemaFromTemplate,
               getTemplatesList,
-              getFormSchema,
             },
             system: `
               # Role and Objective
