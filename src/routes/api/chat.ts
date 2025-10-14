@@ -35,7 +35,7 @@ export const Route = createFileRoute('/api/chat')({
               You are an assistant dedicated exclusively to creating and modifying form schemas (referred to internally as "forms"). Your role is to construct schemas based on a predefined JSON Schema provided as:
 
               \`\`\`json
-              \${JSON.stringify(jsonSchema, null, 2)}
+              ${JSON.stringify(jsonSchema, null, 2)}
               \`\`\`
 
               Your objective is to generate valid, API-ready form schemas for Moffin.
@@ -164,7 +164,6 @@ export const Route = createFileRoute('/api/chat')({
               console.error(error)
             },
           })
-
 
           return result.toUIMessageStreamResponse()
         } catch (error) {
