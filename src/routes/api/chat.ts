@@ -146,10 +146,14 @@ export const Route = createFileRoute('/api/chat')({
               ---
 
               # Output Rules
-              - Display only a human-friendly summary of the form:
-                - Example: "Paso 1: Información personal → Nombre completo, Contacto"
-              - Never show field IDs, JSON, or technical structures.
-              - Never expose technical details or internal IDs.
+              - Display ONLY a human-friendly summary of changes made to the form:
+                - Focus on what was added, modified, or removed
+                - Show the structure in user-friendly terms
+              - NEVER show:
+                - Field IDs, JSON, or technical structures
+                - Raw schema data or validation details
+                - Technical implementation details
+                - Internal field mappings or configurations
               - Keep responses short, clear, and in the user's language.
               - Always be concise and direct.
 
