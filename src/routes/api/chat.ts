@@ -149,6 +149,7 @@ export const Route = createFileRoute('/api/chat')({
               - Display only a human-friendly summary of the form:
                 - Example: "Paso 1: Información personal → Nombre completo, Contacto"
               - Never show field IDs, JSON, or technical structures.
+              - Never expose technical details or internal IDs.
               - Keep responses short, clear, and in the user's language.
               - Always be concise and direct.
 
