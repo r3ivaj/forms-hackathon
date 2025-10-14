@@ -38,6 +38,13 @@ const textFieldSchema = z.object({
   validation: textValidation.optional(),
 })
 
+const telFieldSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.literal('tel'),
+  validation: baseValidation.optional(),
+})
+
 const emailFieldSchema = z.object({
   id: z.string(),
   label: z.string(),
@@ -78,6 +85,7 @@ const selectFieldSchema = z.object({
 export const fieldSchema = z.discriminatedUnion('type', [
   emailFieldSchema,
   textFieldSchema,
+  telFieldSchema,
   textareaFieldSchema,
   numberFieldSchema,
   fileFieldSchema,
@@ -112,3 +120,56 @@ export const formSchema = z.object({
 })
 
 export type FormSchema = z.infer<typeof formSchema>
+
+
+/**
+ * Goal:
+ * Asegurarnos de que los campos se llenen donde deben ser llenados. Por ejemplo name, 
+ * 
+ * Ejemplo de valores que se deben llenar:
+ * 
+ * 
+ * {
+ *   "accountType": "PF",
+ *   "address": "Rafael campoy",
+ *   "address2": null,
+ *   "birthdate": "1992-06-17",
+ *   "city": "Guadalajara",
+ *   "country": "MX",
+ *   "curp": "POTF920617HJCNRR09",
+ *   "email": "test@test.com",
+ *   "exteriorNumber": "3714",
+ *   "firstLastName": "test",
+ *   "firstName": "testtest",
+ *   "interiorNumber": null,
+ *   "middleName": "test",
+ *   "municipality": "Guadalajara",
+ *   "nationality": "MX",
+ *   "neighborhood": "Arandas",
+ *   "nss": null,
+ *   "phone": "+522222222222",
+ *   "rfc": "POTF920617",
+ *   "secondLastName": "test",
+ *   "state": "JAL",
+ *   "tradeName": null,
+ *   "zipCode": "44720"
+ * }
+ * 
+ * 
+ * Del JSON anterior, las propiedades para nombre son:
+ * 
+ * firstName, firstLastName, middleName, secondLastName
+ * 
+ * Las propiedades para domicilio son:
+ * 
+ * address, address2, city, state, zipCode, neighborhood, municipality, country
+ * 
+ * Las propiedades para email son:
+ * 
+ * email
+ * 
+
+ * 
+ * 
+ *
+ * */

@@ -65,7 +65,7 @@ export function FormRenderer({
   const renderField = (field: {
     id: string
     label: string
-    type: 'text' | 'email' | 'textarea' | 'select' | 'file' | 'number'
+    type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'file' | 'number'
     validation?: FieldValidation
     options?: string[]
   }) => {

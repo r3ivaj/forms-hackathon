@@ -6,7 +6,7 @@ import { FieldValidation } from '@/utils/chat/validationUtils'
 interface TextInputProps {
   id: string
   label: string
-  type: 'text' | 'email' | 'number'
+  type: 'text' | 'email' | 'tel' | 'number'
   value: string
   onChange: (value: string) => void
   onBlur: () => void

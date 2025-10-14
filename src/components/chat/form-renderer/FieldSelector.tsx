@@ -7,7 +7,7 @@ import { FieldValidation } from '@/utils/chat/validationUtils'
 interface FieldSelectorProps {
   id: string
   label: string
-  type: 'text' | 'email' | 'textarea' | 'select' | 'file' | 'number'
+  type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'file' | 'number'
   value: any
   onChange: (value: any) => void
   onBlur: () => void
@@ -32,6 +32,7 @@ export function FieldSelector({
   switch (type) {
     case 'text':
     case 'email':
+    case 'tel':
     case 'number':
       return (
         <TextInput
