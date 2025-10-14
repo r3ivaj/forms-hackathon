@@ -3,7 +3,7 @@ import { Box } from 'lucide-react'
 import { FormRenderer } from './form-renderer/FormRenderer'
 import { FormToolbar } from './FormToolbar'
 import { FormSchema } from '@/utils/schemas/formSchema'
-import { isEqual } from 'es-toolkit';
+import { isEqual } from 'es-toolkit'
 import { useMemo } from 'react'
 
 export function FormsPreview({
@@ -13,7 +13,6 @@ export function FormsPreview({
   latestFormSchema: FormSchema | null
   publishedFormSchema: FormSchema | null
 }) {
-
   if (!latestFormSchema) {
     return (
       <EmptySection
@@ -30,7 +29,10 @@ export function FormsPreview({
 
   return (
     <div className="flex h-full flex-col">
-      <FormToolbar latestFormSchema={latestFormSchema} isSchemaDifferent={isSchemaDifferent} />
+      <FormToolbar
+        latestFormSchema={latestFormSchema}
+        isSchemaDifferent={isSchemaDifferent}
+      />
       <div className="flex-1 overflow-y-auto p-4">
         <FormRenderer formSchema={latestFormSchema} />
       </div>

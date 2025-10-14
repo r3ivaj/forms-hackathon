@@ -1,7 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { EyeOff, Globe, Building2, User } from 'lucide-react'
 import { FormCancelDialog } from './FormCancelDialog'
 import { FormUrlCopyButton } from './FormUrlCopyButton'
@@ -12,7 +16,7 @@ import { FormSchema } from '@/utils/schemas/formSchema'
 
 export function FormToolbar({
   latestFormSchema,
-  isSchemaDifferent
+  isSchemaDifferent,
 }: {
   latestFormSchema: FormSchema
   isSchemaDifferent?: boolean
@@ -20,7 +24,8 @@ export function FormToolbar({
   const { chatId } = useParams({ from: '/c/$chatId' })
   const { mutateAsync: mutateFormSettingsAsync } = useMutateFormSettings()
 
-  const { data: formSettings, isLoading: isFormSettingsLoading } = useFormSettings(chatId)
+  const { data: formSettings, isLoading: isFormSettingsLoading } =
+    useFormSettings(chatId)
 
   const handlePublish = async () => {
     await mutateFormSettingsAsync({
@@ -59,15 +64,13 @@ export function FormToolbar({
               <TooltipContent>
                 {latestFormSchema.accountType === 'PM'
                   ? 'Formulario para Persona Moral'
-                  : 'Formulario para Persona Física'
-                }
+                  : 'Formulario para Persona Física'}
               </TooltipContent>
             </Tooltip>
           )}
 
           {!isFormSettingsLoading && formSettings && (
             <>
-
               <Badge variant="secondary">
                 {formSettings.status === 'published' ? (
                   <>
@@ -121,7 +124,6 @@ export function FormToolbar({
           )}
         </div>
       </div>
-
     </div>
   )
 }

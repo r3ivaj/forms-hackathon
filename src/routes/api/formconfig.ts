@@ -14,7 +14,7 @@ export const Route = createFileRoute('/api/formconfig')({
           if (!name || !slug || !chatId) {
             return json(
               { error: { message: 'name, slug and chatId are required' } },
-              { status: 400 }
+              { status: 400 },
             )
           }
 
@@ -38,16 +38,20 @@ export const Route = createFileRoute('/api/formconfig')({
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Token ${apiKey}`,
+              Authorization: `Token ${apiKey}`,
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
           })
 
           if (!response.ok) {
             const errorText = await response.text()
             return json(
-              { error: { message: `External API error: ${response.status} - ${errorText}` } },
-              { status: response.status }
+              {
+                error: {
+                  message: `External API error: ${response.status} - ${errorText}`,
+                },
+              },
+              { status: response.status },
             )
           }
 
@@ -64,12 +68,11 @@ export const Route = createFileRoute('/api/formconfig')({
           })
 
           return json(data)
-
         } catch (error) {
           console.error('Formconfig endpoint error:', error)
           return json(
             { error: { message: 'Internal server error' } },
-            { status: 500 }
+            { status: 500 },
           )
         }
       },

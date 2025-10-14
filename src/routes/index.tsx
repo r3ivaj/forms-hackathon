@@ -1,5 +1,11 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { PromptInput, PromptInputBody, PromptInputTextarea, PromptInputToolbar, PromptInputSubmit } from '@/components/ai-elements/prompt-input'
+import {
+  PromptInput,
+  PromptInputBody,
+  PromptInputTextarea,
+  PromptInputToolbar,
+  PromptInputSubmit,
+} from '@/components/ai-elements/prompt-input'
 import { useCreateChat } from '@/hooks/useCreateChat'
 import { useState } from 'react'
 
@@ -12,7 +18,10 @@ function RouteComponent() {
   const navigate = useNavigate()
   const [textValue, setTextValue] = useState('')
 
-  const handleSubmit = async (message: { text?: string; files?: any[] }, event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    message: { text?: string; files?: any[] },
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     if (!message.text) {
       return
     }
@@ -23,24 +32,28 @@ function RouteComponent() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-4xl mx-auto pt-[20vh]">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">¿Qué formulario quieres crear?</h1>
-          <p className="text-lg text-muted-foreground">Comienza a construir con una sola descripción.</p>
+    <div className="bg-background min-h-screen p-4">
+      <div className="mx-auto max-w-4xl pt-[20vh]">
+        <div className="mb-8 text-center">
+          <h1 className="mb-4 text-4xl font-bold">
+            ¿Qué formulario quieres crear?
+          </h1>
+          <p className="text-muted-foreground text-lg">
+            Comienza a construir con una sola descripción.
+          </p>
         </div>
 
         <PromptInput onSubmit={handleSubmit}>
           <PromptInputBody>
-            <PromptInputTextarea 
-              placeholder="Pidele al asistente el formulario que quieres crear..." 
+            <PromptInputTextarea
+              placeholder="Pidele al asistente el formulario que quieres crear..."
               value={textValue}
               onChange={(e) => setTextValue(e.target.value)}
             />
             <PromptInputToolbar>
               {/* empty div to align the submit button to the right */}
               <div />
-              <PromptInputSubmit 
+              <PromptInputSubmit
                 disabled={!textValue.trim() || isCreating}
                 status={isCreating ? 'submitted' : 'ready'}
               />

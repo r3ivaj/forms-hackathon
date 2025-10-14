@@ -10,12 +10,10 @@ export function TimerStartScreen({ duration, onStart }: TimerStartScreenProps) {
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6 text-center">
       <div className="space-y-4">
-        <Timer className="mx-auto h-12 w-12 text-muted-foreground" />
+        <Timer className="text-muted-foreground mx-auto h-12 w-12" />
 
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">
-            Tiempo Limitado
-          </h1>
+          <h1 className="text-2xl font-semibold">Tiempo Limitado</h1>
           <p className="text-muted-foreground">
             Tienes {duration} minutos para completar este formulario
           </p>

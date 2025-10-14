@@ -12,9 +12,9 @@ import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
-} from "convex/server";
-import type * as chats from "../chats.js";
-import type * as formSettings from "../formSettings.js";
+} from 'convex/server'
+import type * as chats from '../chats.js'
+import type * as formSettings from '../formSettings.js'
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -25,14 +25,14 @@ import type * as formSettings from "../formSettings.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  chats: typeof chats;
-  formSettings: typeof formSettings;
-}>;
+  chats: typeof chats
+  formSettings: typeof formSettings
+}>
 export declare const api: FilterApi<
   typeof fullApi,
-  FunctionReference<any, "public">
->;
+  FunctionReference<any, 'public'>
+>
 export declare const internal: FilterApi<
   typeof fullApi,
-  FunctionReference<any, "internal">
->;
+  FunctionReference<any, 'internal'>
+>

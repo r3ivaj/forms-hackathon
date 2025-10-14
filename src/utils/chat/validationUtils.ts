@@ -49,7 +49,12 @@ export function validateField(
   const stringValue = String(value)
 
   // Text/Email/Tel/Textarea validations
-  if (type === 'text' || type === 'email' || type === 'tel' || type === 'textarea') {
+  if (
+    type === 'text' ||
+    type === 'email' ||
+    type === 'tel' ||
+    type === 'textarea'
+  ) {
     // Min length validation
     if (validation?.minLength && stringValue.length < validation.minLength) {
       return {
@@ -159,7 +164,12 @@ export function getInputAttributes(
 ) {
   const attributes: Record<string, any> = {}
 
-  if (type === 'text' || type === 'email' || type === 'tel' || type === 'textarea') {
+  if (
+    type === 'text' ||
+    type === 'email' ||
+    type === 'tel' ||
+    type === 'textarea'
+  ) {
     if (validation?.minLength) {
       attributes.minLength = validation.minLength
     }

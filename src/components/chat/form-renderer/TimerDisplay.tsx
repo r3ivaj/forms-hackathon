@@ -7,7 +7,11 @@ interface TimerDisplayProps {
   formatTime: (seconds: number) => string
 }
 
-export function TimerDisplay({ timeLeft, isExpired, formatTime }: TimerDisplayProps) {
+export function TimerDisplay({
+  timeLeft,
+  isExpired,
+  formatTime,
+}: TimerDisplayProps) {
   if (isExpired) {
     return (
       <Alert variant="destructive" className="mb-6">

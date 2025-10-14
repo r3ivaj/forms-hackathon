@@ -1,9 +1,9 @@
-import { defineConfig } from "vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import tailwindcss from "@tailwindcss/vite";
-import tsConfigPaths from "vite-tsconfig-paths";
-import viteReact from "@vitejs/plugin-react";
-import { nitro } from "nitro/vite";
+import { defineConfig } from 'vite'
+import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+import tailwindcss from '@tailwindcss/vite'
+import tsConfigPaths from 'vite-tsconfig-paths'
+import viteReact from '@vitejs/plugin-react'
+import { nitro } from 'nitro/vite'
 
 export default defineConfig({
   server: {
@@ -11,7 +11,7 @@ export default defineConfig({
   },
   plugins: [
     tsConfigPaths({
-      projects: ["./tsconfig.json"],
+      projects: ['./tsconfig.json'],
     }),
     tanstackStart(),
     nitro(),
@@ -19,6 +19,6 @@ export default defineConfig({
     tailwindcss(),
   ],
   ssr: {
-    noExternal: ["streamdown"],
+    noExternal: ['streamdown'],
   },
-});
+})

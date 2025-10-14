@@ -15,7 +15,10 @@ interface UseTimerReturn {
   formatTime: (seconds: number) => string
 }
 
-export function useTimer({ durationMinutes, onTimeExpired }: UseTimerProps): UseTimerReturn {
+export function useTimer({
+  durationMinutes,
+  onTimeExpired,
+}: UseTimerProps): UseTimerReturn {
   const [timeLeft, setTimeLeft] = useState(durationMinutes * 60) // Convert to seconds
   const [isRunning, setIsRunning] = useState(false)
   const [isExpired, setIsExpired] = useState(false)

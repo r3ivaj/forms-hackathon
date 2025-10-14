@@ -15,15 +15,18 @@ export function FormRenderer({
   formSchema,
   onSubmit,
 }: {
-  formSchema: FormSchema,
-  onSubmit?: (values: any) => void | Promise<void>,
+  formSchema: FormSchema
+  onSubmit?: (values: any) => void | Promise<void>
 }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
 
   // Check if form has custom duration
   const hasCustomDuration = formSchema.sessionDuration.type === 'custom'
-  const durationMinutes = formSchema.sessionDuration.type === 'custom' ? formSchema.sessionDuration.customMinutes : 0
+  const durationMinutes =
+    formSchema.sessionDuration.type === 'custom'
+      ? formSchema.sessionDuration.customMinutes
+      : 0
 
   // Timer logic
   const timer = useTimer({ durationMinutes })
@@ -120,10 +123,7 @@ export function FormRenderer({
   // Show timer start screen if custom duration and not started
   if (hasCustomDuration && !hasStarted) {
     return (
-      <TimerStartScreen
-        duration={durationMinutes}
-        onStart={handleStartTimer}
-      />
+      <TimerStartScreen duration={durationMinutes} onStart={handleStartTimer} />
     )
   }
 

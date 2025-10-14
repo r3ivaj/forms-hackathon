@@ -32,29 +32,22 @@ export function FormCancelDialog({ children }: FormCancelDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Cancelar publicación</DialogTitle>
           <DialogDescription>
-            ¿Estás seguro de que quieres cancelar la publicación de este formulario?
-            Ya no será visible al público y volverá al estado de borrador.
+            ¿Estás seguro de que quieres cancelar la publicación de este
+            formulario? Ya no será visible al público y volverá al estado de
+            borrador.
           </DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => setOpen(false)}
-          >
+          <Button variant="outline" onClick={() => setOpen(false)}>
             Cancelar
           </Button>
-          <Button
-            onClick={handleHide}
-            variant="destructive"
-          >
+          <Button onClick={handleHide} variant="destructive">
             <EyeOff className="h-4 w-4" />
             Cancelar publicación
           </Button>

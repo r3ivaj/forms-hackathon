@@ -32,7 +32,10 @@ export function Navigation({
       </Button>
 
       {isLastStep ? (
-        <Button type="submit" disabled={!canSubmit || isSubmitting || isTimerExpired}>
+        <Button
+          type="submit"
+          disabled={!canSubmit || isSubmitting || isTimerExpired}
+        >
           {isSubmitting ? (
             'Enviando...'
           ) : (
