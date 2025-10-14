@@ -11,9 +11,16 @@ const templateSchema = z.object({
 
 export type Template = z.infer<typeof templateSchema>
 
+// Account type schema for PM (Personas Morales) and PF (Personas Físicas)
+const accountTypeSchema = z
+  .enum(['PM', 'PF'])
+  .describe(
+    'Tipo de cuenta: PM para Personas Morales (empresas u organizaciones), PF para Personas Físicas (individuos)',
+  )
+
 export const getTemplatesList = tool({
   description: 'Get a list of templates',
-  inputSchema: z.object({ accountType: z.enum(['PM', 'PF']).optional() }),
+  inputSchema: z.object({ accountType: accountTypeSchema }),
   execute: async ({
     accountType,
   }: {
