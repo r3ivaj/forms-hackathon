@@ -9,6 +9,7 @@ interface NavigationProps {
   canSubmit: boolean
   isSubmitting: boolean
   isTimerExpired?: boolean
+  onSubmit: () => void | Promise<void>
 }
 
 export function Navigation({
@@ -19,6 +20,7 @@ export function Navigation({
   canSubmit,
   isSubmitting,
   isTimerExpired = false,
+  onSubmit,
 }: NavigationProps) {
   return (
     <div className="flex justify-between">
@@ -33,8 +35,9 @@ export function Navigation({
 
       {isLastStep ? (
         <Button
-          type="submit"
+          type="button"
           disabled={!canSubmit || isSubmitting || isTimerExpired}
+          onClick={onSubmit}
         >
           {isSubmitting ? (
             'Enviando...'

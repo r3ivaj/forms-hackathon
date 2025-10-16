@@ -128,13 +128,7 @@ export function FormRenderer({
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        form.handleSubmit()
-      }}
-    >
+    <form>
       <div className="mx-auto max-w-2xl space-y-6 p-6">
         {/* Timer Display */}
         {hasCustomDuration && (
@@ -181,6 +175,7 @@ export function FormRenderer({
               canSubmit={canSubmit && !(hasCustomDuration && timer.isExpired)}
               isSubmitting={isSubmitting}
               isTimerExpired={hasCustomDuration && timer.isExpired}
+              onSubmit={form.handleSubmit}
             />
           )}
         />
