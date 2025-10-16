@@ -98,6 +98,9 @@ importers:
       es-toolkit:
         specifier: ^1.40.0
         version: 1.40.0
+      jwt-decode:
+        specifier: ^4.0.0
+        version: 4.0.0
       lucide-react:
         specifier: ^0.544.0
         version: 0.544.0(react@19.2.0)

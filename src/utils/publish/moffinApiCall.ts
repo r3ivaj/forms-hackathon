@@ -9,11 +9,12 @@ interface MoffinApiConfig {
 }
 
 interface ApiCallOptions {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
   endpoint: string
   body?: any
   headers?: Record<string, string>
   apiKey?: string
+  bearerToken?: string
 }
 
 interface ApiResponse<T = any> {
@@ -44,21 +45,44 @@ export async function moffinApiCall<T = any>(
 ): Promise<ApiResponse<T>> {
   try {
     const config = getMoffinConfig()
-    const { method, endpoint, body, headers = {}, apiKey } = options
+    const {
+      method,
+      endpoint,
+      body,
+      headers = {},
+      apiKey,
+      bearerToken,
+    } = options
 
-    // Usar la API key proporcionada o la por defecto
-    const keyToUse = apiKey || config.apiKey
+    // Usar Bearer token si está disponible, sino usar API key
+    const authorization = bearerToken
+      ? `Bearer ${bearerToken}`
+      : `Token ${apiKey || config.apiKey}`
 
     // Headers por defecto
-    const defaultHeaders = {
-      'Content-Type': 'application/json',
-      Authorization: `Token ${keyToUse}`,
+    const defaultHeaders: Record<string, string> = {
+      Authorization: authorization,
+    }
+
+    // Solo agregar Content-Type si no es FormData
+    if (!(body instanceof FormData)) {
+      defaultHeaders['Content-Type'] = 'application/json'
+    }
+
+    // Preparar el body
+    let requestBody: string | FormData | undefined
+    if (body) {
+      if (body instanceof FormData) {
+        requestBody = body
+      } else {
+        requestBody = JSON.stringify(body)
+      }
     }
 
     const response = await fetch(`${config.apiUrl}${endpoint}`, {
       method,
       headers: { ...defaultHeaders, ...headers },
-      body: body ? JSON.stringify(body) : undefined,
+      body: requestBody,
     })
 
     if (!response.ok) {

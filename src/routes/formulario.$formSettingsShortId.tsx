@@ -1,4 +1,5 @@
 import { useFormSettingsByShortId } from '@/hooks/useFormSettingsByShortId'
+import { useCreateFormSubmission } from '@/hooks/useCreateFormSubmission'
 import { createFileRoute } from '@tanstack/react-router'
 import { FormRenderer } from '@/components/chat/form-renderer/FormRenderer'
 import { EmptySection } from '@/components/EmptySection'
@@ -12,6 +13,7 @@ export const Route = createFileRoute('/formulario/$formSettingsShortId')({
 function RouteComponent() {
   const { formSettingsShortId } = Route.useParams()
   const { data } = useFormSettingsByShortId(formSettingsShortId)
+  const createFormSubmissionMutation = useCreateFormSubmission()
 
   const formSchema = useMemo(() => {
     if (!data?.formSchema) {
@@ -24,8 +26,19 @@ function RouteComponent() {
     return null
   }
 
-  const onSubmit = (values: any) => {
-    console.log(values)
+  const onSubmit = async (values: any) => {
+    try {
+      console.log('Submitting form with values:', values)
+
+      const result = await createFormSubmissionMutation.mutateAsync({
+        values,
+        formSettingsShortId,
+      })
+
+      console.log('Form submitted successfully:', result)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+    }
   }
 
   if (data.status === 'draft') {
