@@ -30,26 +30,22 @@ export function FormToolbar({
   const { data: formSettings, isLoading: isFormSettingsLoading } =
     useFormSettings(chatId)
 
-  // Hooks para publicación
   const publishForm = usePublishForm()
   const republishForm = useRepublishForm()
 
-  // Determinar si es primera publicación o republicación
   const isFirstTimePublishing =
     !formSettings?.publishedOnce || !formSettings?.externalFormConfigId
 
   const handlePublish = async () => {
     try {
       if (isFirstTimePublishing) {
-        // Primera publicación: usar usePublishForm
         await publishForm.mutateAsync({
           name: latestFormSchema.title,
-          slug: nanoid(), // Generar slug único
+          slug: nanoid(),
           chatId: chatId as string,
           formSchema: latestFormSchema,
         })
       } else {
-        // Republicación: usar useRepublishForm
         await republishForm.mutateAsync({
           chatId: chatId as string,
           formSchema: latestFormSchema,
@@ -57,7 +53,6 @@ export function FormToolbar({
       }
     } catch (error) {
       console.error('Error al publicar formulario:', error)
-      // El error se maneja automáticamente por React Query
     }
   }
 
@@ -69,9 +64,7 @@ export function FormToolbar({
     handlePublish()
   }
 
-  // Estados de carga combinados
   const isLoading = publishForm.isPending || republishForm.isPending
-  const hasError = publishForm.isError || republishForm.isError
 
   return (
     <div className="bg-background border-b px-6 py-4">
