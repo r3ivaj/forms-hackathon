@@ -1,14 +1,18 @@
+import { PREDEFINED_FIELD_IDS } from '../constants'
+
 // Transform form schema to custom pages config format
 export function transformFormSchemaToCustomPagesConfig(formSchema: any) {
-  // Extract all fields from all steps
+  // Extract all fields from all steps, excluding predefined field IDs
   const allFields =
     formSchema.steps?.flatMap(
       (step: any) =>
-        step.fields?.map((field: any) => ({
-          ...field,
-          stepId: step.id,
-          stepTitle: step.title,
-        })) || [],
+        step.fields
+          ?.filter((field: any) => !PREDEFINED_FIELD_IDS.includes(field.id))
+          ?.map((field: any) => ({
+            ...field,
+            stepId: step.id,
+            stepTitle: step.title,
+          })) || [],
     ) || []
 
   const fields = allFields.map((field: any) => {

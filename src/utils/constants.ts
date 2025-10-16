@@ -1,0 +1,26 @@
+// Predefined field IDs that should be excluded from custom pages config
+// These are the standard fields declared in the chat.ts prompt
+export const PREDEFINED_FIELD_IDS = [
+  'firstName',
+  'middleName',
+  'firstLastName',
+  'secondLastName',
+  'curp',
+  'rfc',
+  'nss',
+  'birthdate',
+  'nationality',
+  'email',
+  'phone',
+  'address',
+  'address2',
+  'exteriorNumber',
+  'interiorNumber',
+  'neighborhood',
+  'municipality',
+  'city',
+  'state',
+  'zipCode',
+  'country',
+  'tradeName',
+] as const

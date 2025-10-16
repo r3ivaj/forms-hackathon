@@ -55,19 +55,11 @@ export async function moffinApiCall<T = any>(
       Authorization: `Token ${keyToUse}`,
     }
 
-    console.log('moffinApiCall', {
-      method,
-      headers: { ...defaultHeaders, ...headers },
-      body: body ? JSON.stringify(body) : undefined,
-    })
-    console.log('url', `${config.apiUrl}${endpoint}`)
     const response = await fetch(`${config.apiUrl}${endpoint}`, {
       method,
       headers: { ...defaultHeaders, ...headers },
       body: body ? JSON.stringify(body) : undefined,
     })
-
-    console.log('response', response)
 
     if (!response.ok) {
       const errorText = await response.text()

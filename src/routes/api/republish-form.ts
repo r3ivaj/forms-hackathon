@@ -71,8 +71,9 @@ export const Route = createFileRoute('/api/republish-form')({
 
           const customPagesResult = await moffinApiCall({
             method: 'POST',
-            endpoint: `/api/admin/custom-pages-config/${moffinFormConfigId}`,
+            endpoint: `/admin/custom-pages-config/${moffinFormConfigId}`,
             body: customPagesConfig,
+            apiKey: process.env.MOFFIN_ADMIN_API_KEY,
           })
 
           if (!customPagesResult.success) {
@@ -90,7 +91,8 @@ export const Route = createFileRoute('/api/republish-form')({
           }
 
           const customPagesData = customPagesResult.data!
-          console.log('✅ Custom pages configuration updated:', customPagesData)
+          console.log('✅ Custom pages configuration updated:')
+          console.log(JSON.stringify(customPagesData, null, 2))
 
           // ========================================
           // STEP 4: UPDATE TIMESTAMP IN LOCAL DATABASE
