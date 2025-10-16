@@ -24,6 +24,10 @@ function RouteComponent() {
     return null
   }
 
+  const onSubmit = (values: any) => {
+    console.log(values)
+  }
+
   if (data.status === 'draft') {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -36,5 +40,5 @@ function RouteComponent() {
     )
   }
 
-  return <FormRenderer formSchema={formSchema} />
+  return <FormRenderer formSchema={formSchema} onSubmit={onSubmit} />
 }

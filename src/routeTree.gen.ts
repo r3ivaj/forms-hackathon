@@ -12,7 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FormularioFormSettingsShortIdRouteImport } from './routes/formulario.$formSettingsShortId'
 import { Route as CChatIdRouteImport } from './routes/c.$chatId'
-import { Route as ApiFormconfigRouteImport } from './routes/api/formconfig'
+import { Route as ApiRepublishFormRouteImport } from './routes/api/republish-form'
+import { Route as ApiPublishFormRouteImport } from './routes/api/publish-form'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
 const IndexRoute = IndexRouteImport.update({
@@ -31,9 +32,14 @@ const CChatIdRoute = CChatIdRouteImport.update({
   path: '/c/$chatId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiFormconfigRoute = ApiFormconfigRouteImport.update({
-  id: '/api/formconfig',
-  path: '/api/formconfig',
+const ApiRepublishFormRoute = ApiRepublishFormRouteImport.update({
+  id: '/api/republish-form',
+  path: '/api/republish-form',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublishFormRoute = ApiPublishFormRouteImport.update({
+  id: '/api/publish-form',
+  path: '/api/publish-form',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiChatRoute = ApiChatRouteImport.update({
@@ -45,14 +51,16 @@ const ApiChatRoute = ApiChatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
-  '/api/formconfig': typeof ApiFormconfigRoute
+  '/api/publish-form': typeof ApiPublishFormRoute
+  '/api/republish-form': typeof ApiRepublishFormRoute
   '/c/$chatId': typeof CChatIdRoute
   '/formulario/$formSettingsShortId': typeof FormularioFormSettingsShortIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
-  '/api/formconfig': typeof ApiFormconfigRoute
+  '/api/publish-form': typeof ApiPublishFormRoute
+  '/api/republish-form': typeof ApiRepublishFormRoute
   '/c/$chatId': typeof CChatIdRoute
   '/formulario/$formSettingsShortId': typeof FormularioFormSettingsShortIdRoute
 }
@@ -60,7 +68,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
-  '/api/formconfig': typeof ApiFormconfigRoute
+  '/api/publish-form': typeof ApiPublishFormRoute
+  '/api/republish-form': typeof ApiRepublishFormRoute
   '/c/$chatId': typeof CChatIdRoute
   '/formulario/$formSettingsShortId': typeof FormularioFormSettingsShortIdRoute
 }
@@ -69,21 +78,24 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api/chat'
-    | '/api/formconfig'
+    | '/api/publish-form'
+    | '/api/republish-form'
     | '/c/$chatId'
     | '/formulario/$formSettingsShortId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/api/chat'
-    | '/api/formconfig'
+    | '/api/publish-form'
+    | '/api/republish-form'
     | '/c/$chatId'
     | '/formulario/$formSettingsShortId'
   id:
     | '__root__'
     | '/'
     | '/api/chat'
-    | '/api/formconfig'
+    | '/api/publish-form'
+    | '/api/republish-form'
     | '/c/$chatId'
     | '/formulario/$formSettingsShortId'
   fileRoutesById: FileRoutesById
@@ -91,7 +103,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiChatRoute: typeof ApiChatRoute
-  ApiFormconfigRoute: typeof ApiFormconfigRoute
+  ApiPublishFormRoute: typeof ApiPublishFormRoute
+  ApiRepublishFormRoute: typeof ApiRepublishFormRoute
   CChatIdRoute: typeof CChatIdRoute
   FormularioFormSettingsShortIdRoute: typeof FormularioFormSettingsShortIdRoute
 }
@@ -119,11 +132,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CChatIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/formconfig': {
-      id: '/api/formconfig'
-      path: '/api/formconfig'
-      fullPath: '/api/formconfig'
-      preLoaderRoute: typeof ApiFormconfigRouteImport
+    '/api/republish-form': {
+      id: '/api/republish-form'
+      path: '/api/republish-form'
+      fullPath: '/api/republish-form'
+      preLoaderRoute: typeof ApiRepublishFormRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/publish-form': {
+      id: '/api/publish-form'
+      path: '/api/publish-form'
+      fullPath: '/api/publish-form'
+      preLoaderRoute: typeof ApiPublishFormRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/chat': {
@@ -139,7 +159,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiChatRoute: ApiChatRoute,
-  ApiFormconfigRoute: ApiFormconfigRoute,
+  ApiPublishFormRoute: ApiPublishFormRoute,
+  ApiRepublishFormRoute: ApiRepublishFormRoute,
   CChatIdRoute: CChatIdRoute,
   FormularioFormSettingsShortIdRoute: FormularioFormSettingsShortIdRoute,
 }

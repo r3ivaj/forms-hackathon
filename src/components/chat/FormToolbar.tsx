@@ -11,8 +11,12 @@ import { FormCancelDialog } from './FormCancelDialog'
 import { FormUrlCopyButton } from './FormUrlCopyButton'
 import { useParams } from '@tanstack/react-router'
 import { useFormSettings } from '@/hooks/useFormSettings'
-import { useMutateFormSettings } from '@/hooks/useMutateFormSettings'
+import { usePublishForm } from '@/hooks/usePublishForm'
+import { useRepublishForm } from '@/hooks/useRepublishForm'
 import { FormSchema } from '@/utils/schemas/formSchema'
+import { customAlphabet } from 'nanoid'
+
+const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10)
 
 export function FormToolbar({
   latestFormSchema,
@@ -22,18 +26,39 @@ export function FormToolbar({
   isSchemaDifferent?: boolean
 }) {
   const { chatId } = useParams({ from: '/c/$chatId' })
-  const { mutateAsync: mutateFormSettingsAsync } = useMutateFormSettings()
 
   const { data: formSettings, isLoading: isFormSettingsLoading } =
     useFormSettings(chatId)
 
+  // Hooks para publicación
+  const publishForm = usePublishForm()
+  const republishForm = useRepublishForm()
+
+  // Determinar si es primera publicación o republicación
+  const isFirstTimePublishing =
+    !formSettings?.publishedOnce || !formSettings?.externalFormConfigId
+
   const handlePublish = async () => {
-    await mutateFormSettingsAsync({
-      chatId: chatId as any,
-      status: 'published',
-      formSchema: JSON.stringify(latestFormSchema),
-      publishedOnce: true,
-    })
+    try {
+      if (isFirstTimePublishing) {
+        // Primera publicación: usar usePublishForm
+        await publishForm.mutateAsync({
+          name: latestFormSchema.title,
+          slug: nanoid(), // Generar slug único
+          chatId: chatId as string,
+          formSchema: latestFormSchema,
+        })
+      } else {
+        // Republicación: usar useRepublishForm
+        await republishForm.mutateAsync({
+          chatId: chatId as string,
+          formSchema: latestFormSchema,
+        })
+      }
+    } catch (error) {
+      console.error('Error al publicar formulario:', error)
+      // El error se maneja automáticamente por React Query
+    }
   }
 
   const handlePublishChanges = async () => {
@@ -43,6 +68,10 @@ export function FormToolbar({
   const handlePublishClick = () => {
     handlePublish()
   }
+
+  // Estados de carga combinados
+  const isLoading = publishForm.isPending || republishForm.isPending
+  const hasError = publishForm.isError || republishForm.isError
 
   return (
     <div className="bg-background border-b px-6 py-4">
@@ -101,9 +130,9 @@ export function FormToolbar({
           ) : (
             <>
               {formSettings?.status === 'draft' ? (
-                <Button onClick={handlePublishClick}>
+                <Button onClick={handlePublishClick} disabled={isLoading}>
                   <Globe className="h-4 w-4" />
-                  Publicar
+                  {isLoading ? 'Publicando...' : 'Publicar'}
                 </Button>
               ) : (
                 <div className="flex items-center gap-2">
@@ -113,9 +142,13 @@ export function FormToolbar({
                     </Button>
                   </FormCancelDialog>
                   {isSchemaDifferent && (
-                    <Button onClick={handlePublishChanges} variant="default">
+                    <Button
+                      onClick={handlePublishChanges}
+                      variant="default"
+                      disabled={isLoading}
+                    >
                       <Globe className="h-4 w-4" />
-                      Publicar cambios
+                      {isLoading ? 'Actualizando...' : 'Publicar cambios'}
                     </Button>
                   )}
                 </div>
