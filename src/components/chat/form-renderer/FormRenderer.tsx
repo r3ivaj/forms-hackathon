@@ -70,7 +70,7 @@ export function FormRenderer({
     label: string
     type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'file' | 'number'
     validation?: FieldValidation
-    options?: string[]
+    options?: Array<{ label: string; value: string }>
   }) => {
     const { id, label, type, validation, options } = field
     const required = validation?.required || false

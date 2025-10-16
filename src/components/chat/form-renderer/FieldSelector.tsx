@@ -14,7 +14,7 @@ interface FieldSelectorProps {
   validation?: FieldValidation
   required?: boolean
   errors?: string[]
-  options?: string[]
+  options?: Array<{ label: string; value: string }>
 }
 
 export function FieldSelector({

@@ -15,7 +15,7 @@ interface SelectFieldProps {
   placeholder?: string
   required?: boolean
   errors?: string[]
-  options?: string[]
+  options?: Array<{ label: string; value: string }>
 }
 
 export function SelectField({
@@ -41,9 +41,9 @@ export function SelectField({
           />
         </SelectTrigger>
         <SelectContent>
-          {options.map((option: string) => (
-            <SelectItem key={option} value={option}>
-              {option}
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
             </SelectItem>
           ))}
         </SelectContent>

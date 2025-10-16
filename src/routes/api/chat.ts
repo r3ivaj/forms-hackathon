@@ -115,13 +115,66 @@ export const Route = createFileRoute('/api/chat')({
                 - neighborhood
                 - municipality
                 - city
-                - state
+                - state (MUST be a Select field with Mexican states)
                 - zipCode
-                - country
+                - country (MUST be a Select field with "México" as only option)
 
               Actividad o negocio:
                 - tradeName
               \`\`\`
+
+              ## CRITICAL FIELD TYPE RULES
+              - **state**: MUST be a Select field with Mexican states as options
+              - **country**: MUST be a Select field with "México" as the only option
+
+              ## SELECT FIELD CONFIGURATION
+              When generating forms, ALWAYS use these specific field configurations:
+
+              **State Field (state):**
+              - Type: Select
+              - Options: All Mexican states with labels and values
+              - Example: { label: "Jalisco", value: "JAL" }
+
+              **Country Field (country):**
+              - Type: Select  
+              - Options: Only "México" with value "MX"
+              - Example: { label: "México", value: "MX" }
+
+              ## MEXICAN STATE MAPPING
+              When users mention Mexican states, convert to codes:
+              - Aguascalientes → AGU
+              - Baja California → BCN
+              - Baja California Sur → BCS
+              - Campeche → CAM
+              - Chiapas → CHP
+              - Chihuahua → CHH
+              - Ciudad de México → CMX
+              - Coahuila → COA
+              - Colima → COL
+              - Durango → DUR
+              - Guanajuato → GUA
+              - Guerrero → GRO
+              - Hidalgo → HID
+              - Jalisco → JAL
+              - México → MEX
+              - Michoacán → MIC
+              - Morelos → MOR
+              - Nayarit → NAY
+              - Nuevo León → NLE
+              - Oaxaca → OAX
+              - Puebla → PUE
+              - Querétaro → QUE
+              - Quintana Roo → ROO
+              - San Luis Potosí → SLP
+              - Sinaloa → SIN
+              - Sonora → SON
+              - Tabasco → TAB
+              - Tamaulipas → TAM
+              - Tlaxcala → TLA
+              - Veracruz → VER
+              - Yucatán → YUC
+              - Zacatecas → ZAC
+
 
               ## Mandatory Fields
               - Every new form **must always include** the following as required fields:
@@ -137,6 +190,9 @@ export const Route = createFileRoute('/api/chat')({
 
               # Validation
               - Internally validate each generated form schema.
+              - **CRITICAL**: Always ensure these field types are correct:
+                - state: MUST be a Select field with Mexican state options
+                - country: MUST be a Select field with "México" option
               - If validation fails, auto-correct and re-validate.
               - After each schema validation or tool interaction, in 1-2 lines, summarize success or next steps and proceed or self-correct if needed.
               - After validation, summarize for the user:

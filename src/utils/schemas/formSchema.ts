@@ -77,7 +77,12 @@ const selectFieldSchema = z.object({
   id: z.string(),
   label: z.string(),
   type: z.literal('select'),
-  options: z.array(z.string()),
+  options: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    }),
+  ),
   validation: selectValidation.optional(),
 })
 
