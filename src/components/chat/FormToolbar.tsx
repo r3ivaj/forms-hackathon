@@ -132,7 +132,7 @@ export function FormToolbar({
               {formSettings?.status === 'draft' ? (
                 <Button onClick={handlePublishClick} disabled={isLoading}>
                   <Globe className="h-4 w-4" />
-                  {isLoading ? 'Publicando...' : 'Publicar'}
+                  Publicar
                 </Button>
               ) : (
                 <div className="flex items-center gap-2">
@@ -148,7 +148,7 @@ export function FormToolbar({
                       disabled={isLoading}
                     >
                       <Globe className="h-4 w-4" />
-                      {isLoading ? 'Actualizando...' : 'Publicar cambios'}
+                      Publicar cambios
                     </Button>
                   )}
                 </div>
