@@ -23,4 +23,4 @@ export const PREDEFINED_FIELD_IDS = [
   'zipCode',
   'country',
   'tradeName',
-] as const
+]

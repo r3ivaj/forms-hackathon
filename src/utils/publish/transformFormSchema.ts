@@ -1,110 +1,106 @@
 import { PREDEFINED_FIELD_IDS } from '../constants'
+import { FormSchema } from '@/utils/schemas/formSchema'
 
 // Transform form schema to custom pages config format
-export function transformFormSchemaToCustomPagesConfig(formSchema: any) {
+export function transformFormSchemaToCustomPagesConfig(formSchema: FormSchema) {
   // Extract all fields from all steps, excluding predefined field IDs
   const allFields =
     formSchema.steps?.flatMap(
-      (step: any) =>
-        step.fields
-          ?.filter((field: any) => !PREDEFINED_FIELD_IDS.includes(field.id))
-          ?.map((field: any) => ({
-            ...field,
-            stepId: step.id,
-            stepTitle: step.title,
-          })) || [],
+      (step) =>
+        step.fields?.filter(
+          (field) => !PREDEFINED_FIELD_IDS.includes(field.id),
+        ) || [],
     ) || []
 
-  const fields = allFields.map((field: any) => {
+  // Transform fields to the desired structure
+  const fields = allFields.map((field) => {
     const baseField = {
       label: field.label,
-      slug: field.id, // Use field.id as slug
+      slug: field.id,
       component: mapFieldTypeToComponent(field.type),
-      section: field.stepId, // Use stepId as section
+      section: 'testsection', // Single section as requested
       isRequired: field.validation?.required || false,
     }
 
-    // Add component-specific config
-    if (field.type === 'select' && field.options) {
-      return {
-        ...baseField,
-        config: {
-          options: field.options.map((option: string) => ({
-            label: option,
-            value: option,
-          })),
-        },
-      }
-    }
+    // Add component-specific config based on field type
+    switch (field.type) {
+      case 'select':
+        return {
+          ...baseField,
+          config: {
+            options:
+              field.options?.map((option) => ({
+                label: option.label,
+                value: option.value,
+              })) || [],
+          },
+        }
 
-    if (
-      field.type === 'text' ||
-      field.type === 'email' ||
-      field.type === 'tel'
-    ) {
-      return {
-        ...baseField,
-        config: {
-          minLength: field.validation?.minLength || 0,
-          maxLength: field.validation?.maxLength || 256,
-        },
-      }
-    }
+      case 'text':
+      case 'email':
+      case 'tel':
+        return {
+          ...baseField,
+          config: {
+            minLength: 0,
+            maxLength: 20000,
+          },
+        }
 
-    if (field.type === 'textarea') {
-      return {
-        ...baseField,
-        config: {
-          minLength: field.validation?.minLength || 0,
-          maxLength: field.validation?.maxLength || 256,
-        },
-      }
-    }
+      case 'textarea':
+        return {
+          ...baseField,
+          config: {
+            minLength: 0,
+            maxLength: 20000,
+          },
+        }
 
-    if (field.type === 'file') {
-      return {
-        ...baseField,
-        config: {
-          label: field.label,
-          fileType: 'pdf', // Default to pdf, could be enhanced based on validation.extensions
-        },
-      }
-    }
+      case 'file':
+        return {
+          ...baseField,
+          config: {
+            label: field.label,
+            fileType: field.validation?.extensions?.[0] || 'pdf',
+          },
+        }
 
-    if (field.type === 'number') {
-      return {
-        ...baseField,
-        config: {
-          min: field.validation?.min,
-          max: field.validation?.max,
-        },
-      }
-    }
+      case 'number':
+        return {
+          ...baseField,
+          config: {
+            min: field.validation?.min,
+            max: field.validation?.max,
+          },
+        }
 
-    return baseField
+      default:
+        return baseField
+    }
   })
 
-  // Create pages structure based on steps
+  // Create simplified pages structure (single page, single section)
   const pages = {
     beforeGeneralInformation: [],
-    afterGeneralInformation:
-      formSchema.steps?.map((step: any) => ({
-        slug: step.id,
-        name: step.title,
+    afterGeneralInformation: [
+      {
+        slug: 'testpage',
+        name: 'testPage',
         submitButton: {
           label: 'Continuar',
         },
         descriptionPage: {
-          label: step.title,
+          label: 'testPage',
         },
         sections: [
           {
-            slug: step.id,
-            name: step.title,
-            fields: step.fields?.map((field: any) => field.id) || [],
+            slug: 'testsection',
+            name: 'testSection',
+            fields: fields.map((field) => field.slug),
           },
         ],
-      })) || [],
+      },
+    ],
   }
 
   return {
@@ -127,7 +123,7 @@ export function mapFieldTypeToComponent(fieldType: string): string {
     case 'select':
       return 'Select'
     case 'number':
-      return 'TextInput' // Numbers are typically handled as text inputs
+      return 'TextInput'
     default:
       return 'TextInput'
   }
