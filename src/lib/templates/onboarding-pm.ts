@@ -117,7 +117,7 @@ export const onboardingPmSchema: FormSchema = {
       title: 'Documentos Legales',
       fields: [
         {
-          id: 'constitutive-act',
+          id: 'constitutiveAct',
           label: 'Acta Constitutiva',
           type: 'file',
           validation: { required: true },
@@ -129,7 +129,7 @@ export const onboardingPmSchema: FormSchema = {
       title: 'Comprobantes de Domicilio',
       fields: [
         {
-          id: 'address-proof',
+          id: 'addressProof',
           label: 'Comprobante de domicilio',
           type: 'file',
           validation: { required: true },

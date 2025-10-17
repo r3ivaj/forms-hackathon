@@ -140,20 +140,20 @@ export const onboardingPfSchema: FormSchema = {
       title: 'Situación Personal',
       fields: [
         {
-          id: 'marital-status',
+          id: 'maritalStatus',
           label: 'Estado civil',
           type: 'select',
           options: [
-            'Soltero(a)',
-            'Casado(a)',
-            'Divorciado(a)',
-            'Viudo(a)',
-            'Unión libre',
+            { label: 'Soltero(a)', value: 'soltero' },
+            { label: 'Casado(a)', value: 'casado' },
+            { label: 'Divorciado(a)', value: 'divorciado' },
+            { label: 'Viudo(a)', value: 'viudo' },
+            { label: 'Unión libre', value: 'union_libre' },
           ],
           validation: { required: true },
         },
         {
-          id: 'economic-dependents',
+          id: 'economicDependents',
           label: 'Número de dependientes económicos',
           type: 'number',
           validation: { required: true },
@@ -165,7 +165,7 @@ export const onboardingPfSchema: FormSchema = {
       title: 'Documentos de Identidad',
       fields: [
         {
-          id: 'ine-photo',
+          id: 'inePhoto',
           label: 'Foto de INE (anverso y reverso)',
           type: 'file',
           validation: { required: true },
@@ -177,7 +177,7 @@ export const onboardingPfSchema: FormSchema = {
       title: 'Documentos Fiscales',
       fields: [
         {
-          id: 'fiscal-situation',
+          id: 'fiscalSituation',
           label: 'Constancia de Situación Fiscal',
           type: 'file',
           validation: { required: true },
@@ -189,7 +189,7 @@ export const onboardingPfSchema: FormSchema = {
       title: 'Comprobantes de Domicilio',
       fields: [
         {
-          id: 'address-proof',
+          id: 'addressProof',
           label: 'Comprobante de domicilio',
           type: 'file',
           validation: { required: true },
