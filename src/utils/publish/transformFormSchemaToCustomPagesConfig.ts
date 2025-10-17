@@ -43,7 +43,7 @@ export function transformFormSchemaToCustomPagesConfig(formSchema: FormSchema) {
           ...baseField,
           config: {
             minLength: 0,
-            maxLength: 20000,
+            maxLength: 1024,
           },
         }
 
@@ -52,7 +52,7 @@ export function transformFormSchemaToCustomPagesConfig(formSchema: FormSchema) {
           ...baseField,
           config: {
             minLength: 0,
-            maxLength: 20000,
+            maxLength: 1024,
           },
         }
 
