@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { json } from '@tanstack/react-start'
 import { ConvexHttpClient } from 'convex/browser'
 import { api } from '../../../convex/_generated/api'
-import { transformFormSchemaToCustomPagesConfig } from '../../utils/publish/transformFormSchema'
+import { transformFormSchemaToCustomPagesConfig } from '../../utils/publish/transformFormSchemaToCustomPagesConfig'
 import { moffinApiCall } from '../../utils/publish/moffinApiCall'
 
 export const Route = createFileRoute('/api/republish-form')({
