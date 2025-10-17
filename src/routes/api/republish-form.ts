@@ -61,38 +61,49 @@ export const Route = createFileRoute('/api/republish-form')({
           const moffinFormConfigId = currentFormSettings.externalFormConfigId!
 
           // ========================================
-          // STEP 3: UPDATE CUSTOM PAGES CONFIGURATION
+          // STEP 3: UPDATE CUSTOM PAGES CONFIGURATION (if needed)
           // ========================================
-          console.log('📄 Updating custom pages configuration...')
+          console.log('📄 Checking for custom fields...')
 
           // Transform form schema to Moffin required format
           const customPagesConfig =
             transformFormSchemaToCustomPagesConfig(formSchema)
 
-          const customPagesResult = await moffinApiCall({
-            method: 'POST',
-            endpoint: `/admin/custom-pages-config/${moffinFormConfigId}`,
-            body: customPagesConfig,
-            apiKey: process.env.MOFFIN_ADMIN_API_KEY,
-          })
+          let customPagesData = null
 
-          if (!customPagesResult.success) {
-            return json(
-              {
-                error: {
-                  message:
-                    customPagesResult.error?.message ||
-                    'Error updating custom pages',
-                  details: customPagesResult.error?.details,
+          // Only update custom pages if there are custom fields
+          if (customPagesConfig.fields.length > 0) {
+            console.log('📄 Updating custom pages configuration...')
+
+            const customPagesResult = await moffinApiCall({
+              method: 'POST',
+              endpoint: `/admin/custom-pages-config/${moffinFormConfigId}`,
+              body: customPagesConfig,
+              apiKey: process.env.MOFFIN_ADMIN_API_KEY,
+            })
+
+            if (!customPagesResult.success) {
+              return json(
+                {
+                  error: {
+                    message:
+                      customPagesResult.error?.message ||
+                      'Error updating custom pages',
+                    details: customPagesResult.error?.details,
+                  },
                 },
-              },
-              { status: customPagesResult.error?.status || 500 },
+                { status: customPagesResult.error?.status || 500 },
+              )
+            }
+
+            customPagesData = customPagesResult.data!
+            console.log('✅ Custom pages configuration updated:')
+            console.log(JSON.stringify(customPagesData, null, 2))
+          } else {
+            console.log(
+              '⏭️ No custom fields found, skipping custom pages configuration',
             )
           }
-
-          const customPagesData = customPagesResult.data!
-          console.log('✅ Custom pages configuration updated:')
-          console.log(JSON.stringify(customPagesData, null, 2))
 
           // ========================================
           // STEP 4: UPDATE TIMESTAMP IN LOCAL DATABASE
@@ -116,7 +127,9 @@ export const Route = createFileRoute('/api/republish-form')({
               message: 'Existing form configuration reused',
             },
             customPagesConfig: customPagesData,
-            message: 'Form republished successfully',
+            message: customPagesData
+              ? 'Form republished successfully with custom fields'
+              : 'Form republished successfully without custom fields',
             republishedAt: new Date().toISOString(),
           })
         } catch (error) {
