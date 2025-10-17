@@ -79,11 +79,19 @@ export async function moffinApiCall<T = any>(
       }
     }
 
+    console.log('request', {
+      method,
+      headers: { ...defaultHeaders, ...headers },
+      body: requestBody,
+    })
+
     const response = await fetch(`${config.apiUrl}${endpoint}`, {
       method,
       headers: { ...defaultHeaders, ...headers },
       body: requestBody,
     })
+
+    console.log('response', response)
 
     if (!response.ok) {
       const errorText = await response.text()
@@ -94,6 +102,14 @@ export async function moffinApiCall<T = any>(
           status: response.status,
           details: errorText,
         },
+      }
+    }
+
+    // Handle 204 responses that don't have a body
+    if (response.status === 204) {
+      return {
+        success: true,
+        data: undefined,
       }
     }
 
