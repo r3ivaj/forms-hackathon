@@ -50,6 +50,7 @@ export const publishForm = mutation({
     chatId: v.id('chats'),
     externalFormConfigId: v.number(),
     formSchema: v.string(),
+    slug: v.string(),
   },
   handler: async (ctx, args) => {
     const chat = await ctx.db.get(args.chatId)
@@ -70,6 +71,7 @@ export const publishForm = mutation({
     return await ctx.db.patch(chat.formSettingsId, {
       externalFormConfigId: args.externalFormConfigId,
       publishedOnce: true,
+      slug: args.slug,
       status: 'published',
       formSchema: args.formSchema,
       updatedAt: Date.now(),

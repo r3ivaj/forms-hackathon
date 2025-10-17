@@ -81,10 +81,10 @@ export const Route = createFileRoute(
           console.log('📋 Form creation data:', formCreationData)
 
           // Use the form short_id as slug
-          const formSlug = formSettings.short_id
+          const formSlug = formSettings.slug
           const formResult = await moffinApiCall({
             method: 'POST',
-            endpoint: `/v1/customer/moffin/form/${formSlug}`,
+            endpoint: `/v1/customer/hackaton-javi-y-nico/form/${formSlug}`,
             body: formCreationData,
           })
 
@@ -96,7 +96,7 @@ export const Route = createFileRoute(
                   details: formResult.error?.details,
                 },
               },
-              { status: formResult.error?.status || 500 },
+              { status: 500 },
             )
           }
 
@@ -133,7 +133,7 @@ export const Route = createFileRoute(
               // Use moffinApiCall for file upload with Bearer token
               const fileResult = await moffinApiCall({
                 method: 'POST',
-                endpoint: `/v1/customer/moffin/form/${formId}/file`,
+                endpoint: `/v1/customer/hackaton-javi-y-nico/form/${formId}/file`,
                 bearerToken: token,
                 body: fileFormData,
               })
@@ -182,14 +182,19 @@ export const Route = createFileRoute(
           }
 
           // Use moffinApiCall for PATCH with Bearer token
+          console.log('customPagesAnswers', customPagesAnswers)
+          console.log('token', token)
+          console.log('formId', formId)
           const updateResult = await moffinApiCall({
             method: 'PATCH',
-            endpoint: `/v1/customer/moffin/form/${formId}`,
+            endpoint: `/v1/customer/hackaton-javi-y-nico/form/${formId}`,
             bearerToken: token,
             body: {
               customPagesAnswers,
             },
           })
+
+          console.log('updateResult', updateResult)
 
           if (!updateResult.success) {
             return json(

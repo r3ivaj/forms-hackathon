@@ -147,6 +147,7 @@ export const Route = createFileRoute('/api/publish-form')({
             chatId: chatId as any,
             externalFormConfigId: moffinFormConfigId,
             formSchema: JSON.stringify(formSchema),
+            slug,
           })
           console.log('🎉 Form published successfully for the first time!')
 

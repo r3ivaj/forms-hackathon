@@ -25,6 +25,7 @@ export default defineSchema({
     publishedOnce: v.optional(v.boolean()),
     // External form configuration data
     externalFormConfigId: v.optional(v.number()),
+    slug: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
   }).index('by_short_id', ['short_id']),
