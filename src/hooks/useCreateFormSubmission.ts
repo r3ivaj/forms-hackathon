@@ -28,22 +28,29 @@ export function useCreateFormSubmission() {
       // Create FormData from values object
       const formData = new FormData()
 
-      // Add all values to FormData
+      // Filter out empty fields before adding to FormData
       Object.entries(data.values).forEach(([key, value]) => {
         if (value instanceof File) {
           formData.append(key, value)
-        } else if (value !== null && value !== undefined) {
+        } else if (value !== null && value !== undefined && value !== '') {
+          console.log('🔍 Adding key:', key, 'Value:', value)
           formData.append(key, String(value))
         }
       })
 
-      const response = await fetch(
-        `/api/create-form-submission/${data.formSettingsShortId}`,
-        {
-          method: 'POST',
-          body: formData,
-        },
-      )
+      const url = `/api/create-form-submission/${data.formSettingsShortId}`
+      console.log('🔍 Fetching URL:', url)
+      console.log('🔍 formSettingsShortId:', data.formSettingsShortId)
+
+      console.log('🔍 FormData entries:')
+      for (const [key, value] of formData.entries()) {
+        console.log(`  ${key}:`, value)
+      }
+
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData,
+      })
 
       if (!response.ok) {
         const errorData = await response.json()
