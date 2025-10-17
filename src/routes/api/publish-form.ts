@@ -95,6 +95,11 @@ export const Route = createFileRoute('/api/publish-form')({
           const customPagesConfig =
             transformFormSchemaToCustomPagesConfig(formSchema)
 
+          console.log(
+            'customPagesConfig',
+            JSON.stringify(customPagesConfig, null, 2),
+          )
+
           const customPagesResult = await moffinApiCall({
             method: 'POST',
             endpoint: `/admin/custom-pages-config/${moffinFormConfigId}`,
