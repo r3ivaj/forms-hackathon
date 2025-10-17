@@ -11,7 +11,7 @@ export const onboardingPmSchema: FormSchema = {
   },
   steps: [
     {
-      id: 'basic-company-info',
+      id: 'basicCompanyInfo',
       title: 'Información Básica de la Empresa',
       fields: [
         {
@@ -35,7 +35,7 @@ export const onboardingPmSchema: FormSchema = {
       ],
     },
     {
-      id: 'contact-info',
+      id: 'contactInfo',
       title: 'Información de Contacto',
       fields: [
         {
@@ -53,7 +53,7 @@ export const onboardingPmSchema: FormSchema = {
       ],
     },
     {
-      id: 'address-info',
+      id: 'addressInfo',
       title: 'Dirección Fiscal',
       fields: [
         {
@@ -113,7 +113,7 @@ export const onboardingPmSchema: FormSchema = {
       ],
     },
     {
-      id: 'legal-documents',
+      id: 'legalDocuments',
       title: 'Documentos Legales',
       fields: [
         {
@@ -125,7 +125,7 @@ export const onboardingPmSchema: FormSchema = {
       ],
     },
     {
-      id: 'address-documents',
+      id: 'addressDocuments',
       title: 'Comprobantes de Domicilio',
       fields: [
         {

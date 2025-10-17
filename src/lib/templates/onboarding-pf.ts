@@ -10,7 +10,7 @@ export const onboardingPfSchema: FormSchema = {
   },
   steps: [
     {
-      id: 'personal-identity',
+      id: 'personalIdentity',
       title: 'Identidad Personal',
       fields: [
         {
@@ -40,7 +40,7 @@ export const onboardingPfSchema: FormSchema = {
       ],
     },
     {
-      id: 'fiscal-identity',
+      id: 'fiscalIdentity',
       title: 'Identidad Fiscal',
       fields: [
         {
@@ -58,7 +58,7 @@ export const onboardingPfSchema: FormSchema = {
       ],
     },
     {
-      id: 'contact-info',
+      id: 'contactInfo',
       title: 'Información de Contacto',
       fields: [
         {
@@ -76,7 +76,7 @@ export const onboardingPfSchema: FormSchema = {
       ],
     },
     {
-      id: 'address-info',
+      id: 'addressInfo',
       title: 'Domicilio',
       fields: [
         {
@@ -136,7 +136,7 @@ export const onboardingPfSchema: FormSchema = {
       ],
     },
     {
-      id: 'personal-situation',
+      id: 'personalSituation',
       title: 'Situación Personal',
       fields: [
         {
@@ -161,7 +161,7 @@ export const onboardingPfSchema: FormSchema = {
       ],
     },
     {
-      id: 'identity-documents',
+      id: 'identityDocuments',
       title: 'Documentos de Identidad',
       fields: [
         {
@@ -173,7 +173,7 @@ export const onboardingPfSchema: FormSchema = {
       ],
     },
     {
-      id: 'fiscal-documents',
+      id: 'fiscalDocuments',
       title: 'Documentos Fiscales',
       fields: [
         {
@@ -185,7 +185,7 @@ export const onboardingPfSchema: FormSchema = {
       ],
     },
     {
-      id: 'address-documents',
+      id: 'addressDocuments',
       title: 'Comprobantes de Domicilio',
       fields: [
         {
