@@ -1,5 +1,5 @@
 import { FormSchema } from '@/utils/schemas/formSchema'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { validateField, FieldValidation } from '@/utils/chat/validationUtils'
 import { StepProgress } from './StepProgress'

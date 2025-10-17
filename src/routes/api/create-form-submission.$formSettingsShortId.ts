@@ -5,6 +5,7 @@ import { PREDEFINED_FIELD_IDS } from '../../utils/constants'
 import { ConvexHttpClient } from 'convex/browser'
 import { api } from '../../../convex/_generated/api'
 import { jwtDecode } from 'jwt-decode'
+import { pickBy } from 'es-toolkit'
 
 export const Route = createFileRoute(
   '/api/create-form-submission/$formSettingsShortId',
@@ -68,14 +69,17 @@ export const Route = createFileRoute(
           const formSchema = formSettings.formSchema
             ? JSON.parse(formSettings.formSchema)
             : null
-          const accountType = formSchema?.accountType as 'PM' | 'PF'
+          const accountType = formSchema?.accountType
 
           console.log('📋 Account type from form schema:', accountType)
 
-          const formCreationData = {
-            ...predefinedFields,
-            accountType,
-          }
+          const formCreationData = pickBy(
+            {
+              ...predefinedFields,
+              accountType,
+            },
+            (value) => value !== undefined && value !== null && value !== '',
+          )
 
           // Use the form short_id as slug
           const formSlug = formSettings.short_id
