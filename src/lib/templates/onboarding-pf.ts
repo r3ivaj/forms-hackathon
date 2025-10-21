@@ -161,8 +161,8 @@ export const onboardingPfSchema: FormSchema = {
       ],
     },
     {
-      id: 'identityDocuments',
-      title: 'Documentos de Identidad',
+      id: 'documents',
+      title: 'Documentos',
       fields: [
         {
           id: 'inePhoto',
@@ -170,24 +170,12 @@ export const onboardingPfSchema: FormSchema = {
           type: 'file',
           validation: { required: true },
         },
-      ],
-    },
-    {
-      id: 'fiscalDocuments',
-      title: 'Documentos Fiscales',
-      fields: [
         {
           id: 'fiscalSituation',
           label: 'Constancia de Situación Fiscal',
           type: 'file',
           validation: { required: true },
         },
-      ],
-    },
-    {
-      id: 'addressDocuments',
-      title: 'Comprobantes de Domicilio',
-      fields: [
         {
           id: 'addressProof',
           label: 'Comprobante de domicilio',
