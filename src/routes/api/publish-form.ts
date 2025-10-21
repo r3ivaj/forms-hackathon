@@ -63,7 +63,7 @@ export const Route = createFileRoute('/api/publish-form')({
             body: {
               name,
               slug,
-              configuration: { isActive: true, nip: false },
+              configuration: { isActive: true, nip: { isActive: false } },
               accountType: formSchema.accountType,
             },
           })
