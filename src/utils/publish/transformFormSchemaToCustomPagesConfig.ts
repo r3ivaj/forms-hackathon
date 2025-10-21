@@ -69,8 +69,8 @@ export function transformFormSchemaToCustomPagesConfig(formSchema: FormSchema) {
         return {
           ...baseField,
           config: {
-            min: field.validation?.min,
-            max: field.validation?.max,
+            // Note: Moffin TextInput component doesn't support min/max properties
+            // Validation will be handled on the frontend
           },
         }
 
