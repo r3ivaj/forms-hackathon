@@ -1,72 +1,224 @@
-# Welcome to TanStack.com!
+# Forms Hackathon
 
-This site is built with TanStack Router!
+Una aplicación web para crear formularios inteligentes mediante conversación con IA. Permite diseñar, publicar y gestionar formularios complejos de manera intuitiva a través de un chat conversacional.
 
-- [TanStack Router Docs](https://tanstack.com/router)
+## 🚀 Características Principales
 
-It's deployed automagically with Netlify!
+### 🤖 Creación de Formularios con IA
 
-- [Netlify](https://netlify.com/)
+- **Chat Conversacional**: Crea formularios describiendo lo que necesitas en lenguaje natural
+- **Asistente Especializado**: IA entrenada específicamente para construcción de formularios
+- **Templates Predefinidos**: Formularios de onboarding para Persona Física (PF) y Persona Moral (PM)
+- **Validación Inteligente**: Campos con validación automática según el tipo de dato
 
-## Development
+### 📝 Editor de Formularios Avanzado
 
-From your terminal:
+- **Formularios Multi-paso**: Organiza campos en pasos lógicos para mejor UX
+- **Tipos de Campo Diversos**: Texto, email, teléfono, textarea, select, archivos, números
+- **Timer Personalizable**: Configuración de tiempo límite para completar el formulario
+- **Navegación Intuitiva**: Botones de anterior/siguiente con validación por paso
 
-```sh
-pnpm install
-pnpm dev
+### 🌐 Publicación y Compartir
+
+- **URLs Amigables**: Genera enlaces únicos para cada formulario
+- **Integración con Moffin**: Publica formularios directamente a la plataforma Moffin
+- **Estado de Publicación**: Control de versiones (draft/published)
+- **Republicación**: Actualiza formularios ya publicados
+
+### 💾 Gestión de Datos
+
+- **Base de Datos Convex**: Almacenamiento en tiempo real
+- **Sesiones de Usuario**: Tracking de respuestas por sesión
+- **Chats Persistentes**: Historial de conversaciones para iterar en formularios
+
+## 🛠️ Stack Tecnológico
+
+### Frontend
+
+- **React 19** con TypeScript
+- **TanStack Router** para routing
+- **TanStack Form** para manejo de formularios
+- **TanStack Query** para gestión de estado del servidor
+- **Tailwind CSS** para estilos
+- **Radix UI** para componentes accesibles
+- **Framer Motion** para animaciones
+
+### Backend
+
+- **Convex** para backend-as-a-service
+- **AI SDK** para integración con OpenAI
+- **Zod** para validación de esquemas
+
+### Herramientas de Desarrollo
+
+- **Vite** como bundler
+- **TypeScript** para tipado estático
+- **Prettier** para formateo de código
+- **pnpm** como gestor de paquetes
+
+## 📁 Estructura del Proyecto
+
+```
+src/
+├── components/
+│   ├── ai-elements/          # Componentes de chat y IA
+│   ├── chat/                  # Componentes específicos del chat
+│   │   ├── form-renderer/    # Renderizado de formularios
+│   │   └── ...
+│   └── ui/                    # Componentes base reutilizables
+├── hooks/                     # Custom hooks
+├── lib/
+│   ├── templates/            # Templates de formularios
+│   └── tools/                # Utilidades y validadores
+├── routes/                   # Rutas de la aplicación
+├── utils/                     # Utilidades generales
+└── styles/                   # Estilos globales
+
+convex/
+├── schema.ts                 # Esquema de la base de datos
+├── chats.ts                  # Funciones de chat
+└── formSettings.ts           # Funciones de configuración
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+## 🚀 Instalación y Desarrollo
 
-## Editing and previewing the docs of TanStack projects locally
+### Prerrequisitos
 
-The documentations for all TanStack projects except for `React Charts` are hosted on [https://tanstack.com](https://tanstack.com), powered by this TanStack Router app.
-In production, the markdown doc pages are fetched from the GitHub repos of the projects, but in development they are read from the local file system.
+- Node.js 18+
+- pnpm 10.18.1+
 
-Follow these steps if you want to edit the doc pages of a project (in these steps we'll assume it's [`TanStack/form`](https://github.com/tanstack/form)) and preview them locally :
+### Configuración
 
-1. Create a new directory called `tanstack`.
+1. Clona el repositorio
+2. Instala dependencias:
 
-```sh
-mkdir tanstack
+   ```bash
+   pnpm install
+   ```
+
+3. Configura las variables de entorno:
+
+   ```bash
+   # Copia el archivo de ejemplo
+   cp env.example .env.local
+
+   # Edita .env.local con tus credenciales reales
+   ```
+
+### Variables de Entorno Requeridas
+
+- **OPENAI_API_KEY**: API key de OpenAI para el procesamiento de IA
+- **OPENAI_MODEL**: Modelo de OpenAI a utilizar (ej: gpt-4o-mini)
+- **CONVEX_DEPLOYMENT**: URL de tu deployment de Convex
+- **CONVEX_DEPLOY_KEY**: Key para deployment de Convex
+- **MOFFIN_API_URL**: URL de la API de Moffin
+- **MOFFIN_API_KEY**: API key de Moffin
+- **MOFFIN_ADMIN_API_KEY**: API key de administrador de Moffin
+
+4. Inicia el servidor de desarrollo:
+   ```bash
+   pnpm dev
+   ```
+
+## 🔄 Flujo Técnico del Proyecto
+
+### Arquitectura de Generación de Formularios
+
+El proyecto funciona mediante un flujo de **IA → JSON → Renderizado**:
+
+1. **Entrada del Usuario**: El usuario describe el formulario en lenguaje natural
+2. **Procesamiento de IA**:
+   - La IA (OpenAI) recibe el prompt del usuario
+   - Utiliza un sistema de prompts especializado (`createSystemPrompt.ts`)
+   - Genera un JSON Schema válido siguiendo el formato `FormSchema`
+3. **Validación**: El JSON generado se valida contra el esquema Zod definido
+4. **Renderizado**: El `FormRenderer` convierte el JSON en una interfaz de usuario funcional
+5. **Publicación**: El formulario se puede publicar a Moffin o generar URLs compartibles
+
+### Componentes Clave del Flujo
+
+- **`createSystemPrompt.ts`**: Define las reglas y limitaciones para la IA
+- **`FormRenderer.tsx`**: Renderiza el JSON Schema en componentes React
+- **`transformFormSchemaToCustomPagesConfig.ts`**: Convierte el schema a formato Moffin
+- **`validationUtils.ts`**: Valida campos en tiempo real durante el renderizado
+
+### Estructura del JSON Schema
+
+```typescript
+interface FormSchema {
+  title: string
+  steps: Array<{
+    title: string
+    fields: Array<{
+      id: string
+      label: string
+      type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'file' | 'number'
+      validation?: FieldValidation
+      options?: Array<{ label: string; value: string }>
+    }>
+  }>
+  sessionDuration: {
+    type: 'unlimited' | 'custom'
+    customMinutes?: number
+  }
+}
 ```
 
-2. Enter the directory and clone this repo and the repo of the project there.
+## 📖 Uso
 
-```sh
-cd tanstack
-git clone git@github.com:TanStack/tanstack.com.git
-git clone git@github.com:TanStack/form.git
-```
+### Crear un Formulario
 
-> [!NOTE]
-> Your `tanstack` directory should look like this:
->
-> ```
-> tanstack/
->    |
->    +-- form/
->    |
->    +-- tanstack.com/
-> ```
+1. **Inicio**: Describe el formulario que quieres crear en lenguaje natural
+2. **Conversación**: El asistente te guiará para definir:
+   - Tipo de persona (Física o Moral)
+   - Campos específicos necesarios
+   - Validaciones requeridas
+   - Estructura por pasos
+3. **Preview**: Ve el formulario en tiempo real mientras lo construyes
+4. **Publicar**: Genera un enlace público para compartir
 
-> [!WARNING]
-> Make sure the name of the directory in your local file system matches the name of the project's repo. For example, `tanstack/form` must be cloned into `form` (this is the default) instead of `some-other-name`, because that way, the doc pages won't be found.
+### Tipos de Formularios Soportados
 
-3. Enter the `tanstack/tanstack.com` directory, install the dependencies and run the app in dev mode:
+- **Onboarding Persona Física**: 8 pasos con información personal, fiscal y de contacto
+- **Onboarding Persona Moral**: 5 pasos para empresas con datos legales y fiscales
+- **Formularios Personalizados**: Crea cualquier tipo de formulario según tus necesidades
 
-```sh
-cd tanstack.com
-pnpm i
-# The app will run on https://localhost:3000 by default
-pnpm dev
-```
+### Características Avanzadas
 
-4. Now you can visit http://localhost:3000/form/latest/docs/overview in the browser and see the changes you make in `tanstack/form/docs`.
+- **Timer de Sesión**: Configura tiempo límite para completar el formulario
+- **Validación en Tiempo Real**: Los campos se validan mientras el usuario escribe
+- **Navegación Inteligente**: Solo permite avanzar cuando el paso actual es válido
+- **Persistencia de Datos**: Las respuestas se guardan automáticamente
 
-> [!NOTE]
-> The updated pages need to be manually reloaded in the browser.
+## 🔧 API y Integración
 
-> [!WARNING]
-> You will need to update the `docs/config.json` file (in the project's repo) if you add a new doc page!
+### Endpoints Principales
+
+- `POST /api/chat` - Procesamiento de mensajes de IA
+- `POST /api/publish-form` - Publicar formulario
+- `POST /api/republish-form` - Republicar formulario
+- `POST /api/create-form-submission` - Crear nueva sesión de formulario
+
+### Esquema de Base de Datos
+
+- **chats**: Conversaciones y títulos de formularios
+- **formSettings**: Configuración de formularios con esquemas
+- **sessions**: Sesiones de usuarios completando formularios
+
+## 🤝 Contribución
+
+Este es un proyecto de hackathon. Para contribuir:
+
+1. Fork el repositorio
+2. Crea una rama para tu feature
+3. Haz commit de tus cambios
+4. Push a la rama
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto es parte de un hackathon y está bajo desarrollo activo.
+
+---
+
+**Nota**: Este proyecto utiliza pnpm como gestor de paquetes. Asegúrate de tener pnpm instalado antes de comenzar el desarrollo.
