@@ -213,7 +213,32 @@ export const Route = createFileRoute(
           console.log('✅ Form submission answers updated successfully')
 
           // ========================================
-          // STEP 5: FINAL RESPONSE
+          // STEP 5: MARK FORM AS COMPLETED
+          // ========================================
+          console.log('🏁 Marking form as completed...')
+
+          const completeResult = await moffinApiCall({
+            method: 'POST',
+            endpoint: `/v1/customer/hackaton-javi-y-nico/form/${formId}/complete`,
+            bearerToken: token,
+            body: {
+              nip: null,
+            },
+          })
+
+          if (!completeResult.success) {
+            console.warn(
+              '⚠️ Failed to mark form as completed:',
+              completeResult.error,
+            )
+            // Don't fail the entire request if completion fails
+            // The form is still submitted successfully
+          } else {
+            console.log('✅ Form marked as completed successfully')
+          }
+
+          // ========================================
+          // STEP 6: FINAL RESPONSE
           // ========================================
           return json({
             success: true,
@@ -221,6 +246,7 @@ export const Route = createFileRoute(
             message: 'Form submission created and submitted successfully',
             fileUploads: fileUploadResults,
             customAnswers,
+            completed: completeResult.success,
           })
         } catch (error) {
           console.error('❌ Error in create-form-submission endpoint:', error)
