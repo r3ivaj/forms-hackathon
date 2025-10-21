@@ -45,7 +45,7 @@ export const onboardingPfSchema: FormSchema = {
       fields: [
         {
           id: 'rfc',
-          label: 'RFC',
+          label: 'RFC sin homoclave',
           type: 'text',
           validation: { required: true },
         },
